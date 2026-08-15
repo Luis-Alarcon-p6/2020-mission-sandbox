@@ -1,0 +1,275 @@
+<!-- AGENT-2 EXHIBIT START: Photon Pinball Well -->
+<section id="g2-photon-well" class="g2-exhibit">
+  <style>
+    #g2-photon-well {
+      --g2-bg: #11131d;
+      --g2-panel: #171a28;
+      --g2-accent: #6ee7ff;
+      --g2-accent-2: #b56dff;
+      --g2-text: #e7ecff;
+      --g2-muted: #9aa5d1;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--g2-text);
+      background: radial-gradient(circle at 10% 0%, #1f2845 0%, var(--g2-bg) 60%);
+      border: 1px solid #2a3150;
+      border-radius: 18px;
+      padding: 1rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    #g2-photon-well .g2-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    #g2-photon-well .g2-title {
+      margin: 0;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+    }
+
+    #g2-photon-well .g2-sub {
+      color: var(--g2-muted);
+      font-size: 0.9rem;
+    }
+
+    #g2-photon-well .g2-stage-wrap {
+      background: linear-gradient(180deg, #101527, #0b0f1f);
+      border: 1px solid #2a3150;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    #g2-photon-well #g2-photon-well-canvas {
+      width: 100%;
+      height: 290px;
+      display: block;
+      cursor: crosshair;
+      background: radial-gradient(circle at 50% 45%, rgba(83, 141, 255, 0.16), rgba(5, 8, 20, 0.85) 70%);
+    }
+
+    #g2-photon-well .g2-controls {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.65rem;
+      align-items: center;
+      padding: 0.6rem 0.8rem 0.8rem;
+      font-size: 0.84rem;
+      color: var(--g2-muted);
+    }
+
+    #g2-photon-well .g2-gravity-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+
+    #g2-photon-well #g2-photon-well-gravity {
+      width: 100%;
+      accent-color: var(--g2-accent);
+    }
+
+    #g2-photon-well .g2-pill {
+      border: 1px solid #394065;
+      border-radius: 999px;
+      padding: 0.3rem 0.55rem;
+      font-size: 0.78rem;
+      white-space: nowrap;
+      color: #d8defb;
+      background: #1b2035;
+    }
+
+    #g2-photon-well #g2-photon-well-toggle {
+      border: 1px solid #4d5686;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #262e50, #1b2139);
+      color: #eff2ff;
+      padding: 0.38rem 0.78rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: transform 120ms ease, filter 120ms ease;
+    }
+
+    #g2-photon-well #g2-photon-well-toggle:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+    }
+
+    #g2-photon-well #g2-photon-well-toggle:active {
+      transform: translateY(0);
+    }
+  </style>
+
+  <div class="g2-head">
+    <h3 class="g2-title">Agent 2 Exhibit: Photon Pinball Well</h3>
+    <div class="g2-sub">Move your mouse to steer the gravity core. Click to switch attract/repel mode.</div>
+  </div>
+
+  <div class="g2-stage-wrap">
+    <canvas id="g2-photon-well-canvas" width="900" height="290" aria-label="Photon Pinball Well interactive canvas"></canvas>
+    <div class="g2-controls">
+      <label class="g2-gravity-wrap" for="g2-photon-well-gravity">
+        <span>Field Strength</span>
+        <input id="g2-photon-well-gravity" type="range" min="20" max="170" value="85" />
+      </label>
+      <span class="g2-pill" id="g2-photon-well-coherence">Coherence: 0%</span>
+      <button id="g2-photon-well-toggle" type="button">Mode: Attract</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const root = document.getElementById("g2-photon-well");
+      if (!root) return;
+
+      const canvas = root.querySelector("#g2-photon-well-canvas");
+      const ctx = canvas.getContext("2d");
+      const slider = root.querySelector("#g2-photon-well-gravity");
+      const coherenceLabel = root.querySelector("#g2-photon-well-coherence");
+      const modeButton = root.querySelector("#g2-photon-well-toggle");
+
+      const photonCount = 95;
+      const photons = [];
+      const pointer = { x: canvas.width * 0.5, y: canvas.height * 0.5 };
+      let repel = false;
+      let gravityScale = Number(slider.value);
+      let rafId = 0;
+
+      function randomBetween(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function spawnPhoton() {
+        const angle = randomBetween(0, Math.PI * 2);
+        const speed = randomBetween(0.7, 2.4);
+        return {
+          x: randomBetween(0, canvas.width),
+          y: randomBetween(0, canvas.height),
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          hue: randomBetween(180, 300),
+        };
+      }
+
+      function resizeCanvas() {
+        const dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(320, Math.floor(rect.width));
+        const h = Math.max(220, Math.floor(rect.height));
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (pointer.x > w || pointer.y > h) {
+          pointer.x = w * 0.5;
+          pointer.y = h * 0.5;
+        }
+      }
+
+      function ensurePhotons() {
+        while (photons.length < photonCount) {
+          photons.push(spawnPhoton());
+        }
+      }
+
+      function drawField(cx, cy) {
+        const radius = 30 + gravityScale * 0.22;
+        const ring = ctx.createRadialGradient(cx, cy, 2, cx, cy, radius);
+        ring.addColorStop(0, repel ? "rgba(255, 116, 196, 0.9)" : "rgba(110, 231, 255, 0.95)");
+        ring.addColorStop(0.55, repel ? "rgba(181, 109, 255, 0.36)" : "rgba(103, 157, 255, 0.3)");
+        ring.addColorStop(1, "rgba(0, 0, 0, 0)");
+        ctx.fillStyle = ring;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function step() {
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+
+        ctx.clearRect(0, 0, w, h);
+        drawField(pointer.x, pointer.y);
+
+        let sumVelX = 0;
+        let sumVelY = 0;
+        const sign = repel ? -1 : 1;
+
+        for (let i = 0; i < photons.length; i += 1) {
+          const p = photons[i];
+          const dx = pointer.x - p.x;
+          const dy = pointer.y - p.y;
+          const distSq = dx * dx + dy * dy + 120;
+          const force = (gravityScale * sign) / distSq;
+
+          p.vx += dx * force;
+          p.vy += dy * force;
+
+          p.vx *= 0.996;
+          p.vy *= 0.996;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > w) {
+            p.vx *= -0.92;
+            p.x = Math.max(0, Math.min(w, p.x));
+          }
+          if (p.y < 0 || p.y > h) {
+            p.vy *= -0.92;
+            p.y = Math.max(0, Math.min(h, p.y));
+          }
+
+          const speed = Math.hypot(p.vx, p.vy);
+          const size = 1.5 + Math.min(2.8, speed * 0.75);
+          ctx.fillStyle = "hsla(" + p.hue + ", 100%, 72%, 0.85)";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+          ctx.fill();
+
+          sumVelX += p.vx;
+          sumVelY += p.vy;
+        }
+
+        const avgMagnitude = Math.hypot(sumVelX / photons.length, sumVelY / photons.length);
+        const coherence = Math.max(0, Math.min(100, Math.round(avgMagnitude * 38)));
+        coherenceLabel.textContent = "Coherence: " + coherence + "%";
+
+        rafId = window.requestAnimationFrame(step);
+      }
+
+      canvas.addEventListener("pointermove", function (event) {
+        const rect = canvas.getBoundingClientRect();
+        pointer.x = event.clientX - rect.left;
+        pointer.y = event.clientY - rect.top;
+      });
+
+      canvas.addEventListener("pointerleave", function () {
+        pointer.x = canvas.clientWidth * 0.5;
+        pointer.y = canvas.clientHeight * 0.5;
+      });
+
+      modeButton.addEventListener("click", function () {
+        repel = !repel;
+        modeButton.textContent = repel ? "Mode: Repel" : "Mode: Attract";
+      });
+
+      slider.addEventListener("input", function () {
+        gravityScale = Number(slider.value);
+      });
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      ensurePhotons();
+      step();
+
+      root.addEventListener("remove", function () {
+        if (rafId) window.cancelAnimationFrame(rafId);
+      });
+    })();
+  </script>
+</section>
+<!-- AGENT-2 EXHIBIT END -->
