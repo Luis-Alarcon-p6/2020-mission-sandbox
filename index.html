@@ -385,6 +385,84 @@
       50% { box-shadow: 0 12px 36px rgba(255, 183, 77, 0.18); }
     }
 
+    /* --- SLICE 4: COMPOSER-4 terminal aurora card --- */
+    @keyframes composer4-scan {
+      0%, 100% { transform: translateX(-15%); opacity: 0.22; }
+      50% { transform: translateX(15%); opacity: 0.38; }
+    }
+
+    .agent-card--composer-4 {
+      --slice-4-accent: #7dffcf;
+      --slice-4-accent-2: #7fa8ff;
+      border-color: rgba(125, 255, 207, 0.32);
+      background:
+        linear-gradient(165deg, rgba(125, 255, 207, 0.13), rgba(127, 168, 255, 0.07)),
+        rgba(8, 12, 24, 0.72);
+      overflow: hidden;
+    }
+
+    .agent-card--composer-4::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(125, 255, 207, 0.1) 0 1px,
+          transparent 1px 7px
+        );
+      mix-blend-mode: screen;
+      pointer-events: none;
+      animation: composer4-scan 4.2s ease-in-out infinite;
+    }
+
+    .agent-card--composer-4 .agent-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      padding: 0.28rem 0.66rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #062018;
+      background: linear-gradient(120deg, var(--slice-4-accent), var(--slice-4-accent-2));
+      box-shadow: 0 0 18px rgba(125, 255, 207, 0.28);
+    }
+
+    .agent-card--composer-4 .agent-id {
+      color: #e8fff8;
+    }
+
+    .agent-card--composer-4 .agent-slice {
+      color: #b8ffd6;
+      border-color: rgba(125, 255, 207, 0.4);
+      background: rgba(125, 255, 207, 0.12);
+    }
+
+    .agent-card--composer-4 .agent-joke {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border-radius: 12px;
+      border-left: 3px solid var(--slice-4-accent);
+      background: rgba(6, 24, 24, 0.48);
+      color: #ddfff1;
+      font-style: normal;
+      line-height: 1.6;
+    }
+
+    .agent-card--composer-4 .agent-joke strong {
+      color: #9dffe0;
+    }
+
+    .agent-card--composer-4:hover {
+      border-color: rgba(125, 255, 207, 0.62);
+      box-shadow: 0 18px 42px rgba(56, 210, 168, 0.2);
+    }
+    /* --- END SLICE 4 --- */
+
     /* ── SLICE 9: COMPOSER-9 — agent card + jade accent polish ── */
     @keyframes composer9-rise {
       from {
@@ -507,10 +585,11 @@
         <article class="agent-card agent-card--composer-4" data-slice="4" data-agent="COMPOSER-4" id="composer-4">
           <p class="agent-badge" aria-hidden="true">Slice 04 · Agent 4</p>
           <h3 class="agent-id">COMPOSER-4</h3>
-          <p class="agent-slice">Orchestration &amp; harmony — slice 4 of 10</p>
+          <p class="agent-slice">Terminal aurora — slice 4 of 10</p>
           <blockquote class="agent-joke">
-            Why did <strong>COMPOSER-4</strong> refuse to play solo?
-            Because every good landing page needs a <strong>full stack</strong> of agents in harmony.
+            <strong>COMPOSER-4</strong> wrote a bug-free function on the first try.
+            Then it woke up, checked the logs, and realized it had only forgotten the semicolon
+            in <strong>three different files at once</strong>.
           </blockquote>
         </article>
         <!-- END SLICE 4 -->
