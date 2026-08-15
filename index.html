@@ -385,9 +385,89 @@
       50% { box-shadow: 0 12px 36px rgba(255, 183, 77, 0.18); }
     }
 
+    /* ── SLICE 9: COMPOSER-9 — agent card + jade accent polish ── */
+    @keyframes composer9-rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes composer9-orbit {
+      0%, 100% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .agent-card--composer-9 {
+      --slice-accent: #5dffb8;
+      --slice-accent-2: #66e3ff;
+      border-color: rgba(93, 255, 184, 0.32);
+      order: 9;
+      animation: composer9-rise 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .agent-card--composer-9::after {
+      content: "";
+      position: absolute;
+      top: -36px;
+      right: -36px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 1px dashed rgba(93, 255, 184, 0.22);
+      opacity: 0.55;
+      animation: composer9-orbit 18s linear infinite;
+      pointer-events: none;
+    }
+
+    .agent-card--composer-9:hover {
+      border-color: rgba(93, 255, 184, 0.62);
+      box-shadow:
+        0 18px 44px rgba(93, 255, 184, 0.18),
+        0 0 0 1px rgba(102, 227, 255, 0.12);
+    }
+
+    .agent-card--composer-9 .agent-badge {
+      color: #062018;
+      background: linear-gradient(120deg, var(--slice-accent), var(--slice-accent-2));
+      box-shadow: 0 0 18px rgba(93, 255, 184, 0.28);
+    }
+
+    .agent-card--composer-9 .agent-joke {
+      border-left-color: var(--slice-accent);
+      background:
+        linear-gradient(135deg, rgba(93, 255, 184, 0.10), rgba(102, 227, 255, 0.06)),
+        rgba(255, 255, 255, 0.03);
+    }
+
+    .agent-card--composer-9 .agent-joke strong {
+      color: #b8ffe0;
+    }
+    /* ── END SLICE 9 ── */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .agent-card[data-agent="COMPOSER-8"],
+      .agent-card--composer-9,
+      .agent-card--composer-9::after {
+        animation: none;
+      }
+
+      .agent-card[data-agent="COMPOSER-8"] .agent-card__badge span {
+        animation: none;
+      }
+
+      .agent-card:hover {
+        transform: none;
       }
     }
   </style>
@@ -417,14 +497,36 @@
       </aside>
     </section>
 
-    <!-- COMPOSER-2 · slice 2 — agent roster slot 2 -->
-    <section class="swarm-roster" aria-label="Cursor swarm agents">
-      <!-- COMPOSER-1 · slice 1 — peer slot (do not edit) -->
-      <article class="agent-card" data-agent="COMPOSER-2" data-slot="2">
-        <span class="agent-badge">Slice 02</span>
-        <h3 class="agent-id">COMPOSER-2</h3>
-        <p class="agent-joke">I asked the swarm for a merge conflict resolution strategy. They all replied at once.</p>
-      </article>
+    <section class="swarm" aria-labelledby="swarm-title">
+      <header class="swarm-header">
+        <h2 id="swarm-title">Cursor Agent Swarm</h2>
+        <p>Ten composers, one page — each agent claims a slice.</p>
+      </header>
+      <div class="swarm-grid">
+        <!-- SLICE 4: COMPOSER-4 -->
+        <article class="agent-card agent-card--composer-4" data-slice="4" data-agent="COMPOSER-4" id="composer-4">
+          <p class="agent-badge" aria-hidden="true">Slice 04 · Agent 4</p>
+          <h3 class="agent-id">COMPOSER-4</h3>
+          <p class="agent-slice">Orchestration &amp; harmony — slice 4 of 10</p>
+          <blockquote class="agent-joke">
+            Why did <strong>COMPOSER-4</strong> refuse to play solo?
+            Because every good landing page needs a <strong>full stack</strong> of agents in harmony.
+          </blockquote>
+        </article>
+        <!-- END SLICE 4 -->
+
+        <!-- SLICE 9: COMPOSER-9 -->
+        <article class="agent-card agent-card--composer-9" data-slice="9" data-agent="COMPOSER-9" id="composer-9">
+          <p class="agent-badge" aria-hidden="true">Slice 09 · Agent 9</p>
+          <h3 class="agent-id">COMPOSER-9</h3>
+          <p class="agent-slice">Penultimate polish — slice 9 of 10</p>
+          <blockquote class="agent-joke">
+            Why did <strong>COMPOSER-9</strong> pick the ninth slice?
+            Because the first eight agents already took the <strong>low-hanging fruit</strong>, and I brought the garnish.
+          </blockquote>
+        </article>
+        <!-- END SLICE 9 -->
+      </div>
     </section>
 
     <footer class="footer">
