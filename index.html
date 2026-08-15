@@ -1,0 +1,407 @@
+<!-- AGENT 8 SECTION START: A8 Gravity Well Lab -->
+<section id="a8-gravity-well-lab" class="a8-exhibit" data-agent="GPT-8" data-slice="8">
+  <style>
+    .a8-exhibit {
+      position: relative;
+      border: 1px solid #2b2f42;
+      border-radius: 16px;
+      padding: 16px;
+      background: radial-gradient(circle at 15% 10%, #1f2644 0%, #111526 50%, #0b0e17 100%);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(140, 169, 255, 0.15);
+      color: #e8ecff;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .a8-exhibit::after {
+      content: "";
+      position: absolute;
+      inset: -120px auto auto -120px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(87, 140, 255, 0.22), rgba(87, 140, 255, 0));
+      pointer-events: none;
+    }
+
+    .a8-title {
+      margin: 0 0 6px;
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .a8-subtitle {
+      margin: 0 0 12px;
+      color: #b6c2ff;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .a8-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .a8-btn {
+      border: 1px solid #3d4f9f;
+      background: linear-gradient(180deg, #2a3a7f 0%, #1a2450 100%);
+      color: #eef2ff;
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: transform 0.16s ease, filter 0.16s ease;
+    }
+
+    .a8-btn:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    .a8-btn:active {
+      transform: translateY(0);
+    }
+
+    .a8-stats {
+      margin-left: auto;
+      font-size: 0.84rem;
+      color: #d5ddff;
+      display: flex;
+      gap: 12px;
+    }
+
+    .a8-stat {
+      white-space: nowrap;
+      opacity: 0.95;
+    }
+
+    .a8-canvas-wrap {
+      border: 1px solid #2f3553;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #070a14 0%, #0b1020 100%);
+      overflow: hidden;
+    }
+
+    #a8-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      touch-action: none;
+      cursor: crosshair;
+      background:
+        radial-gradient(circle at 78% 22%, rgba(86, 104, 188, 0.2), transparent 38%),
+        radial-gradient(circle at 15% 80%, rgba(76, 154, 250, 0.14), transparent 32%),
+        #070a14;
+    }
+
+    .a8-help {
+      margin: 10px 0 0;
+      color: #9aa7e8;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+  </style>
+
+  <h3 class="a8-title">A8 Gravity Well Lab</h3>
+  <p class="a8-subtitle">
+    Place gravity wells with a click, drag wells to reshape spacetime, then drag from the launcher to sling particles into wild orbits.
+  </p>
+
+  <div class="a8-toolbar">
+    <button id="a8-burst-btn" class="a8-btn" type="button">Particle Burst</button>
+    <button id="a8-clear-particles-btn" class="a8-btn" type="button">Clear Particles</button>
+    <button id="a8-clear-wells-btn" class="a8-btn" type="button">Clear Wells</button>
+    <div class="a8-stats">
+      <span id="a8-well-count" class="a8-stat">Wells: 0</span>
+      <span id="a8-particle-count" class="a8-stat">Particles: 0</span>
+      <span id="a8-peak-speed" class="a8-stat">Peak speed: 0.00</span>
+    </div>
+  </div>
+
+  <div class="a8-canvas-wrap">
+    <canvas id="a8-canvas" width="960" height="540" aria-label="Gravity well simulator"></canvas>
+  </div>
+  <p class="a8-help">
+    Tip: Drag from the cyan launcher ring (bottom-left) to set launch direction and power. Particles decay over time to keep the simulation smooth.
+  </p>
+
+  <script>
+    (() => {
+      const a8Canvas = document.getElementById("a8-canvas");
+      if (!a8Canvas) return;
+      const a8Ctx = a8Canvas.getContext("2d");
+
+      const a8WellCountEl = document.getElementById("a8-well-count");
+      const a8ParticleCountEl = document.getElementById("a8-particle-count");
+      const a8PeakSpeedEl = document.getElementById("a8-peak-speed");
+      const a8BurstBtn = document.getElementById("a8-burst-btn");
+      const a8ClearParticlesBtn = document.getElementById("a8-clear-particles-btn");
+      const a8ClearWellsBtn = document.getElementById("a8-clear-wells-btn");
+
+      const a8W = a8Canvas.width;
+      const a8H = a8Canvas.height;
+      const a8Launcher = { x: 86, y: a8H - 72, radius: 20 };
+      const a8Wells = [];
+      const a8Particles = [];
+
+      let a8DraggingWell = null;
+      let a8Aiming = false;
+      let a8AimPoint = { x: a8Launcher.x, y: a8Launcher.y };
+      let a8PeakSpeed = 0;
+
+      function a8Rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function a8Pointer(evt) {
+        const rect = a8Canvas.getBoundingClientRect();
+        const sx = a8Canvas.width / rect.width;
+        const sy = a8Canvas.height / rect.height;
+        return {
+          x: (evt.clientX - rect.left) * sx,
+          y: (evt.clientY - rect.top) * sy
+        };
+      }
+
+      function a8Dist(a, b) {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        return Math.hypot(dx, dy);
+      }
+
+      function a8AddWell(x, y) {
+        if (a8Wells.length >= 8) {
+          a8Wells.shift();
+        }
+        a8Wells.push({
+          x,
+          y,
+          mass: a8Rand(600, 1300),
+          radius: a8Rand(16, 24),
+          hue: Math.floor(a8Rand(200, 280))
+        });
+      }
+
+      function a8LaunchParticle(powerX, powerY) {
+        if (a8Particles.length > 150) {
+          a8Particles.splice(0, a8Particles.length - 150);
+        }
+        a8Particles.push({
+          x: a8Launcher.x,
+          y: a8Launcher.y,
+          vx: powerX,
+          vy: powerY,
+          life: 800,
+          trail: [],
+          color: `hsla(${Math.floor(a8Rand(180, 320))}, 95%, 72%, 1)`
+        });
+      }
+
+      function a8Burst() {
+        for (let i = 0; i < 12; i += 1) {
+          const angle = (Math.PI * 2 * i) / 12 + a8Rand(-0.2, 0.2);
+          const speed = a8Rand(3.5, 7.2);
+          a8Particles.push({
+            x: a8Launcher.x,
+            y: a8Launcher.y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 620,
+            trail: [],
+            color: `hsla(${Math.floor(a8Rand(180, 320))}, 95%, 72%, 1)`
+          });
+        }
+      }
+
+      function a8Update() {
+        for (let i = a8Particles.length - 1; i >= 0; i -= 1) {
+          const p = a8Particles[i];
+          let ax = 0;
+          let ay = 0;
+
+          for (let j = 0; j < a8Wells.length; j += 1) {
+            const w = a8Wells[j];
+            const dx = w.x - p.x;
+            const dy = w.y - p.y;
+            const d2 = dx * dx + dy * dy + 90;
+            const invD = 1 / Math.sqrt(d2);
+            const force = (w.mass / d2) * 0.82;
+            ax += dx * invD * force;
+            ay += dy * invD * force;
+          }
+
+          p.vx += ax;
+          p.vy += ay;
+          p.vx *= 0.999;
+          p.vy *= 0.999;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          const speed = Math.hypot(p.vx, p.vy);
+          if (speed > a8PeakSpeed) a8PeakSpeed = speed;
+
+          p.trail.push({ x: p.x, y: p.y });
+          if (p.trail.length > 22) p.trail.shift();
+
+          if (p.x < 0 || p.x > a8W) p.vx *= -0.86;
+          if (p.y < 0 || p.y > a8H) p.vy *= -0.86;
+          p.x = Math.max(0, Math.min(a8W, p.x));
+          p.y = Math.max(0, Math.min(a8H, p.y));
+
+          p.life -= 1;
+          if (p.life <= 0) a8Particles.splice(i, 1);
+        }
+      }
+
+      function a8DrawBackgroundStars() {
+        for (let i = 0; i < 40; i += 1) {
+          const x = (i * 97) % a8W;
+          const y = (i * 173) % a8H;
+          const alpha = 0.12 + ((i * 37) % 100) / 420;
+          a8Ctx.fillStyle = `rgba(190,210,255,${alpha})`;
+          a8Ctx.fillRect(x, y, 1.5, 1.5);
+        }
+      }
+
+      function a8Draw() {
+        a8Ctx.clearRect(0, 0, a8W, a8H);
+        a8DrawBackgroundStars();
+
+        for (let i = 0; i < a8Wells.length; i += 1) {
+          const w = a8Wells[i];
+          const glow = a8Ctx.createRadialGradient(w.x, w.y, 2, w.x, w.y, w.radius * 2.5);
+          glow.addColorStop(0, `hsla(${w.hue}, 95%, 68%, 0.95)`);
+          glow.addColorStop(1, `hsla(${w.hue}, 95%, 68%, 0)`);
+          a8Ctx.fillStyle = glow;
+          a8Ctx.beginPath();
+          a8Ctx.arc(w.x, w.y, w.radius * 2.5, 0, Math.PI * 2);
+          a8Ctx.fill();
+
+          a8Ctx.strokeStyle = `hsla(${w.hue}, 100%, 72%, 0.8)`;
+          a8Ctx.lineWidth = 1.2;
+          a8Ctx.beginPath();
+          a8Ctx.arc(w.x, w.y, w.radius, 0, Math.PI * 2);
+          a8Ctx.stroke();
+        }
+
+        for (let i = 0; i < a8Particles.length; i += 1) {
+          const p = a8Particles[i];
+          if (p.trail.length > 1) {
+            a8Ctx.beginPath();
+            for (let t = 0; t < p.trail.length; t += 1) {
+              const trailPoint = p.trail[t];
+              if (t === 0) a8Ctx.moveTo(trailPoint.x, trailPoint.y);
+              else a8Ctx.lineTo(trailPoint.x, trailPoint.y);
+            }
+            a8Ctx.strokeStyle = p.color.replace(", 1)", ", 0.25)");
+            a8Ctx.lineWidth = 1.6;
+            a8Ctx.stroke();
+          }
+
+          a8Ctx.beginPath();
+          a8Ctx.fillStyle = p.color;
+          a8Ctx.arc(p.x, p.y, 3.2, 0, Math.PI * 2);
+          a8Ctx.fill();
+        }
+
+        a8Ctx.beginPath();
+        a8Ctx.strokeStyle = "rgba(86, 243, 255, 0.92)";
+        a8Ctx.lineWidth = 2;
+        a8Ctx.arc(a8Launcher.x, a8Launcher.y, a8Launcher.radius, 0, Math.PI * 2);
+        a8Ctx.stroke();
+
+        a8Ctx.beginPath();
+        a8Ctx.fillStyle = "rgba(86, 243, 255, 0.18)";
+        a8Ctx.arc(a8Launcher.x, a8Launcher.y, a8Launcher.radius * 0.45, 0, Math.PI * 2);
+        a8Ctx.fill();
+
+        if (a8Aiming) {
+          a8Ctx.beginPath();
+          a8Ctx.moveTo(a8Launcher.x, a8Launcher.y);
+          a8Ctx.lineTo(a8AimPoint.x, a8AimPoint.y);
+          a8Ctx.strokeStyle = "rgba(130, 211, 255, 0.85)";
+          a8Ctx.setLineDash([7, 5]);
+          a8Ctx.lineWidth = 2;
+          a8Ctx.stroke();
+          a8Ctx.setLineDash([]);
+        }
+      }
+
+      function a8RefreshStats() {
+        a8WellCountEl.textContent = `Wells: ${a8Wells.length}`;
+        a8ParticleCountEl.textContent = `Particles: ${a8Particles.length}`;
+        a8PeakSpeedEl.textContent = `Peak speed: ${a8PeakSpeed.toFixed(2)}`;
+      }
+
+      function a8Tick() {
+        a8Update();
+        a8Draw();
+        a8RefreshStats();
+        requestAnimationFrame(a8Tick);
+      }
+
+      a8Canvas.addEventListener("pointerdown", (evt) => {
+        const p = a8Pointer(evt);
+        a8Canvas.setPointerCapture(evt.pointerId);
+
+        for (let i = 0; i < a8Wells.length; i += 1) {
+          if (a8Dist(p, a8Wells[i]) <= a8Wells[i].radius + 8) {
+            a8DraggingWell = a8Wells[i];
+            return;
+          }
+        }
+
+        if (a8Dist(p, a8Launcher) <= a8Launcher.radius + 10) {
+          a8Aiming = true;
+          a8AimPoint = p;
+          return;
+        }
+
+        a8AddWell(p.x, p.y);
+      });
+
+      a8Canvas.addEventListener("pointermove", (evt) => {
+        const p = a8Pointer(evt);
+        if (a8DraggingWell) {
+          a8DraggingWell.x = Math.max(22, Math.min(a8W - 22, p.x));
+          a8DraggingWell.y = Math.max(22, Math.min(a8H - 22, p.y));
+        } else if (a8Aiming) {
+          a8AimPoint = p;
+        }
+      });
+
+      function a8ReleasePointer() {
+        if (a8Aiming) {
+          const dx = a8Launcher.x - a8AimPoint.x;
+          const dy = a8Launcher.y - a8AimPoint.y;
+          const clamp = Math.min(160, Math.hypot(dx, dy));
+          const scale = clamp / 40;
+          a8LaunchParticle(dx * 0.06 * scale, dy * 0.06 * scale);
+        }
+        a8DraggingWell = null;
+        a8Aiming = false;
+      }
+
+      a8Canvas.addEventListener("pointerup", a8ReleasePointer);
+      a8Canvas.addEventListener("pointercancel", a8ReleasePointer);
+      a8Canvas.addEventListener("pointerleave", () => {
+        if (a8DraggingWell) a8DraggingWell = null;
+      });
+
+      a8BurstBtn.addEventListener("click", a8Burst);
+      a8ClearParticlesBtn.addEventListener("click", () => {
+        a8Particles.length = 0;
+        a8PeakSpeed = 0;
+      });
+      a8ClearWellsBtn.addEventListener("click", () => {
+        a8Wells.length = 0;
+      });
+
+      a8Tick();
+    })();
+  </script>
+</section>
+<!-- AGENT 8 SECTION END: A8 Gravity Well Lab -->
