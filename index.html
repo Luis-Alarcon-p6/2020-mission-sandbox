@@ -1207,3 +1207,547 @@
   </script>
 </section>
 <!-- AGENT 8 SECTION END: A8 Gravity Well Lab -->
+<!-- AGENT 5 SECTION START: A5 Orbit Painter (slice 5/10) -->
+<section id="a5-orbit-painter" class="a5-exhibit-card">
+  <style>
+    #a5-orbit-painter {
+      --a5-bg: #101320;
+      --a5-panel: #171b2e;
+      --a5-ink: #edf1ff;
+      --a5-subtle: #9ba7d7;
+      --a5-accent: #7c5cff;
+      --a5-accent-2: #25d0ff;
+      --a5-danger: #ff5e8a;
+      margin: 0;
+      border-radius: 18px;
+      background: radial-gradient(circle at 20% 0%, #20274a 0%, var(--a5-bg) 50%, #0b0e18 100%);
+      border: 1px solid rgba(124, 92, 255, 0.45);
+      box-shadow: 0 22px 55px rgba(2, 6, 20, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      padding: 18px;
+      color: var(--a5-ink);
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #a5-orbit-painter * {
+      box-sizing: border-box;
+    }
+
+    #a5-orbit-painter .a5-title {
+      margin: 0 0 4px;
+      font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+      letter-spacing: 0.02em;
+      font-weight: 700;
+    }
+
+    #a5-orbit-painter .a5-subtitle {
+      margin: 0 0 14px;
+      color: var(--a5-subtle);
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+
+    #a5-orbit-painter .a5-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    #a5-orbit-painter .a5-canvas-wrap {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid rgba(123, 133, 196, 0.38);
+      background: linear-gradient(180deg, rgba(20, 24, 43, 0.88), rgba(9, 12, 22, 0.95));
+      overflow: hidden;
+      min-height: 270px;
+    }
+
+    #a5-orbit-painter #a5-canvas {
+      display: block;
+      width: 100%;
+      height: 320px;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    #a5-orbit-painter .a5-overlay {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: #dbe2ff;
+      pointer-events: none;
+      background: rgba(7, 9, 17, 0.45);
+      border: 1px solid rgba(160, 178, 255, 0.25);
+      border-radius: 999px;
+      padding: 6px 10px;
+      backdrop-filter: blur(3px);
+    }
+
+    #a5-orbit-painter .a5-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--a5-accent), var(--a5-accent-2));
+      box-shadow: 0 0 10px rgba(87, 184, 255, 0.9);
+    }
+
+    #a5-orbit-painter .a5-controls {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 9px;
+      align-items: end;
+    }
+
+    #a5-orbit-painter .a5-control {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    #a5-orbit-painter .a5-control > label {
+      font-size: 0.76rem;
+      color: #ccd5ff;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #a5-orbit-painter .a5-range {
+      accent-color: var(--a5-accent-2);
+      width: 100%;
+    }
+
+    #a5-orbit-painter .a5-btn {
+      width: 100%;
+      border: 1px solid rgba(138, 162, 255, 0.35);
+      background: linear-gradient(180deg, rgba(45, 55, 100, 0.9), rgba(28, 34, 64, 0.92));
+      color: var(--a5-ink);
+      border-radius: 10px;
+      padding: 9px 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+    }
+
+    #a5-orbit-painter .a5-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(28, 177, 255, 0.2);
+      border-color: rgba(167, 188, 255, 0.7);
+    }
+
+    #a5-orbit-painter .a5-btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    #a5-orbit-painter .a5-btn.a5-danger {
+      border-color: rgba(255, 94, 138, 0.42);
+      background: linear-gradient(180deg, rgba(97, 30, 55, 0.92), rgba(64, 21, 38, 0.95));
+    }
+
+    #a5-orbit-painter .a5-stats {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    #a5-orbit-painter .a5-pill {
+      border: 1px solid rgba(126, 146, 232, 0.38);
+      border-radius: 999px;
+      padding: 6px 10px;
+      text-align: center;
+      font-size: 0.77rem;
+      color: #d8e0ff;
+      background: rgba(21, 27, 51, 0.8);
+    }
+
+    #a5-orbit-painter .a5-pill strong {
+      color: #f3f6ff;
+      font-weight: 700;
+    }
+
+    @media (max-width: 760px) {
+      #a5-orbit-painter .a5-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #a5-orbit-painter #a5-canvas {
+        height: 300px;
+      }
+    }
+  </style>
+
+  <h3 class="a5-title">A5 Orbit Painter</h3>
+  <p class="a5-subtitle">
+    Click the arena to place gravity wells. Drag and release to launch a comet. Shift+click removes the nearest well.
+  </p>
+
+  <div class="a5-layout">
+    <div class="a5-canvas-wrap">
+      <canvas id="a5-canvas" width="900" height="520" aria-label="A5 Orbit Painter canvas"></canvas>
+      <div class="a5-overlay">
+        <span class="a5-dot" aria-hidden="true"></span>
+        <span id="a5-hint">Place wells, then sling comets through them</span>
+      </div>
+    </div>
+
+    <div class="a5-controls">
+      <div class="a5-control">
+        <label for="a5-mass">Well mass: <span id="a5-mass-value">22</span></label>
+        <input id="a5-mass" class="a5-range" type="range" min="8" max="48" value="22" />
+      </div>
+
+      <div class="a5-control">
+        <label for="a5-drag">Space drag: <span id="a5-drag-value">0.988</span></label>
+        <input id="a5-drag" class="a5-range" type="range" min="970" max="998" value="988" />
+      </div>
+
+      <div class="a5-control">
+        <button id="a5-burst" class="a5-btn" type="button">Launch Burst</button>
+      </div>
+
+      <div class="a5-control">
+        <button id="a5-clear" class="a5-btn a5-danger" type="button">Clear Arena</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="a5-stats">
+    <div class="a5-pill">Wells <strong id="a5-well-count">0</strong></div>
+    <div class="a5-pill">Comets <strong id="a5-comet-count">0</strong></div>
+    <div class="a5-pill">Best loop <strong id="a5-best-orbit">0.0s</strong></div>
+  </div>
+
+  <script>
+    (() => {
+      const a5Root = document.getElementById("a5-orbit-painter");
+      if (!a5Root) return;
+
+      const a5Canvas = a5Root.querySelector("#a5-canvas");
+      const a5Ctx = a5Canvas.getContext("2d");
+      const a5MassInput = a5Root.querySelector("#a5-mass");
+      const a5MassValue = a5Root.querySelector("#a5-mass-value");
+      const a5DragInput = a5Root.querySelector("#a5-drag");
+      const a5DragValue = a5Root.querySelector("#a5-drag-value");
+      const a5BurstBtn = a5Root.querySelector("#a5-burst");
+      const a5ClearBtn = a5Root.querySelector("#a5-clear");
+      const a5WellCount = a5Root.querySelector("#a5-well-count");
+      const a5CometCount = a5Root.querySelector("#a5-comet-count");
+      const a5BestOrbit = a5Root.querySelector("#a5-best-orbit");
+
+      const a5State = {
+        wells: [],
+        comets: [],
+        bestOrbitMs: 0,
+        launch: null,
+        lastTime: performance.now(),
+        burstHue: 0
+      };
+
+      const a5BaseWidth = a5Canvas.width;
+      const a5BaseHeight = a5Canvas.height;
+      const a5G = 1900;
+      const a5MaxComets = 140;
+
+      function a5Resize() {
+        const a5Rect = a5Canvas.getBoundingClientRect();
+        const a5Dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
+        a5Canvas.width = Math.floor(a5Rect.width * a5Dpr);
+        a5Canvas.height = Math.floor(a5Rect.height * a5Dpr);
+        a5Ctx.setTransform(a5Dpr, 0, 0, a5Dpr, 0, 0);
+      }
+
+      function a5ToLocal(a5Evt) {
+        const a5Rect = a5Canvas.getBoundingClientRect();
+        return {
+          x: a5Evt.clientX - a5Rect.left,
+          y: a5Evt.clientY - a5Rect.top
+        };
+      }
+
+      function a5AddWell(a5X, a5Y) {
+        const a5Mass = Number(a5MassInput.value);
+        a5State.wells.push({ x: a5X, y: a5Y, mass: a5Mass });
+      }
+
+      function a5RemoveNearestWell(a5X, a5Y) {
+        if (!a5State.wells.length) return;
+        let a5NearestIndex = 0;
+        let a5NearestDist = Infinity;
+        for (let a5I = 0; a5I < a5State.wells.length; a5I += 1) {
+          const a5W = a5State.wells[a5I];
+          const a5Dx = a5W.x - a5X;
+          const a5Dy = a5W.y - a5Y;
+          const a5Dist = a5Dx * a5Dx + a5Dy * a5Dy;
+          if (a5Dist < a5NearestDist) {
+            a5NearestDist = a5Dist;
+            a5NearestIndex = a5I;
+          }
+        }
+        if (a5NearestDist < 1600) a5State.wells.splice(a5NearestIndex, 1);
+      }
+
+      function a5SpawnComet(a5X, a5Y, a5Vx, a5Vy, a5Hue = null) {
+        if (a5State.comets.length > a5MaxComets) a5State.comets.shift();
+        const a5ColorHue = a5Hue == null ? (200 + Math.random() * 120) % 360 : a5Hue % 360;
+        a5State.comets.push({
+          x: a5X,
+          y: a5Y,
+          vx: a5Vx,
+          vy: a5Vy,
+          life: 0,
+          nearOriginForMs: 0,
+          trail: [],
+          hue: a5ColorHue
+        });
+      }
+
+      function a5Burst() {
+        const a5Rect = a5Canvas.getBoundingClientRect();
+        const a5Cx = a5Rect.width / 2;
+        const a5Cy = a5Rect.height / 2;
+        for (let a5I = 0; a5I < 14; a5I += 1) {
+          const a5Angle = (Math.PI * 2 * a5I) / 14;
+          const a5Speed = 1.5 + Math.random() * 2.7;
+          const a5Hue = (a5State.burstHue + a5I * 13) % 360;
+          a5SpawnComet(
+            a5Cx + Math.cos(a5Angle) * 14,
+            a5Cy + Math.sin(a5Angle) * 14,
+            Math.cos(a5Angle) * a5Speed,
+            Math.sin(a5Angle) * a5Speed,
+            a5Hue
+          );
+        }
+        a5State.burstHue = (a5State.burstHue + 37) % 360;
+      }
+
+      function a5DrawLaunchGuide() {
+        if (!a5State.launch) return;
+        const { start, now } = a5State.launch;
+        const a5Dx = start.x - now.x;
+        const a5Dy = start.y - now.y;
+        a5Ctx.save();
+        a5Ctx.strokeStyle = "rgba(128, 232, 255, 0.95)";
+        a5Ctx.lineWidth = 2;
+        a5Ctx.setLineDash([7, 5]);
+        a5Ctx.beginPath();
+        a5Ctx.moveTo(start.x, start.y);
+        a5Ctx.lineTo(now.x, now.y);
+        a5Ctx.stroke();
+        a5Ctx.setLineDash([]);
+        a5Ctx.fillStyle = "rgba(164, 244, 255, 0.95)";
+        a5Ctx.beginPath();
+        a5Ctx.arc(start.x, start.y, 4, 0, Math.PI * 2);
+        a5Ctx.fill();
+        const a5Power = Math.min(100, Math.hypot(a5Dx, a5Dy));
+        a5Ctx.fillStyle = "rgba(225, 239, 255, 0.9)";
+        a5Ctx.font = '12px Inter, "Segoe UI", sans-serif';
+        a5Ctx.fillText(`launch ${a5Power.toFixed(0)}`, start.x + 8, start.y - 10);
+        a5Ctx.restore();
+      }
+
+      function a5Update(a5Dt) {
+        const a5Rect = a5Canvas.getBoundingClientRect();
+        const a5Drag = Number(a5DragInput.value) / 1000;
+        const a5W = a5Rect.width;
+        const a5H = a5Rect.height;
+
+        for (let a5I = a5State.comets.length - 1; a5I >= 0; a5I -= 1) {
+          const a5C = a5State.comets[a5I];
+          let a5Ax = 0;
+          let a5Ay = 0;
+
+          for (let a5J = 0; a5J < a5State.wells.length; a5J += 1) {
+            const a5Well = a5State.wells[a5J];
+            const a5Dx = a5Well.x - a5C.x;
+            const a5Dy = a5Well.y - a5C.y;
+            const a5DistSq = Math.max(110, a5Dx * a5Dx + a5Dy * a5Dy);
+            const a5Dist = Math.sqrt(a5DistSq);
+            const a5Pull = (a5G * a5Well.mass) / a5DistSq;
+            a5Ax += (a5Dx / a5Dist) * a5Pull;
+            a5Ay += (a5Dy / a5Dist) * a5Pull;
+
+            if (a5Dist < Math.max(7, a5Well.mass * 0.35)) {
+              a5State.comets.splice(a5I, 1);
+              break;
+            }
+          }
+          if (!a5State.comets[a5I]) continue;
+
+          a5C.vx = (a5C.vx + a5Ax * a5Dt) * a5Drag;
+          a5C.vy = (a5C.vy + a5Ay * a5Dt) * a5Drag;
+          a5C.x += a5C.vx;
+          a5C.y += a5C.vy;
+          a5C.life += a5Dt * 1000;
+
+          const a5FromCenter = Math.hypot(a5C.x - a5W / 2, a5C.y - a5H / 2);
+          if (a5FromCenter < 36) a5C.nearOriginForMs += a5Dt * 1000;
+          if (a5C.nearOriginForMs > a5State.bestOrbitMs) a5State.bestOrbitMs = a5C.nearOriginForMs;
+
+          a5C.trail.push({ x: a5C.x, y: a5C.y });
+          if (a5C.trail.length > 20) a5C.trail.shift();
+
+          const a5Out = a5C.x < -40 || a5C.x > a5W + 40 || a5C.y < -40 || a5C.y > a5H + 40 || a5C.life > 30000;
+          if (a5Out) a5State.comets.splice(a5I, 1);
+        }
+      }
+
+      function a5Render() {
+        const a5Rect = a5Canvas.getBoundingClientRect();
+        const a5W = a5Rect.width;
+        const a5H = a5Rect.height;
+        a5Ctx.clearRect(0, 0, a5W, a5H);
+
+        const a5Bg = a5Ctx.createRadialGradient(a5W * 0.5, a5H * 0.5, 20, a5W * 0.5, a5H * 0.5, a5W * 0.7);
+        a5Bg.addColorStop(0, "rgba(32, 38, 78, 0.42)");
+        a5Bg.addColorStop(1, "rgba(5, 7, 15, 0.96)");
+        a5Ctx.fillStyle = a5Bg;
+        a5Ctx.fillRect(0, 0, a5W, a5H);
+
+        a5Ctx.strokeStyle = "rgba(70, 84, 150, 0.2)";
+        a5Ctx.lineWidth = 1;
+        for (let a5X = 0; a5X <= a5W; a5X += 36) {
+          a5Ctx.beginPath();
+          a5Ctx.moveTo(a5X, 0);
+          a5Ctx.lineTo(a5X, a5H);
+          a5Ctx.stroke();
+        }
+        for (let a5Y = 0; a5Y <= a5H; a5Y += 36) {
+          a5Ctx.beginPath();
+          a5Ctx.moveTo(0, a5Y);
+          a5Ctx.lineTo(a5W, a5Y);
+          a5Ctx.stroke();
+        }
+
+        for (let a5I = 0; a5I < a5State.wells.length; a5I += 1) {
+          const a5Well = a5State.wells[a5I];
+          const a5R = Math.max(6, a5Well.mass * 0.32);
+          const a5Glow = a5Ctx.createRadialGradient(a5Well.x, a5Well.y, 0, a5Well.x, a5Well.y, a5R * 2.7);
+          a5Glow.addColorStop(0, "rgba(155, 123, 255, 0.9)");
+          a5Glow.addColorStop(0.6, "rgba(58, 92, 255, 0.32)");
+          a5Glow.addColorStop(1, "rgba(58, 92, 255, 0)");
+          a5Ctx.fillStyle = a5Glow;
+          a5Ctx.beginPath();
+          a5Ctx.arc(a5Well.x, a5Well.y, a5R * 2.7, 0, Math.PI * 2);
+          a5Ctx.fill();
+
+          a5Ctx.fillStyle = "rgba(231, 241, 255, 0.96)";
+          a5Ctx.beginPath();
+          a5Ctx.arc(a5Well.x, a5Well.y, a5R, 0, Math.PI * 2);
+          a5Ctx.fill();
+        }
+
+        for (let a5I = 0; a5I < a5State.comets.length; a5I += 1) {
+          const a5C = a5State.comets[a5I];
+          for (let a5T = 1; a5T < a5C.trail.length; a5T += 1) {
+            const a5P1 = a5C.trail[a5T - 1];
+            const a5P2 = a5C.trail[a5T];
+            const a5Alpha = a5T / a5C.trail.length;
+            a5Ctx.strokeStyle = `hsla(${a5C.hue}, 95%, 72%, ${a5Alpha * 0.82})`;
+            a5Ctx.lineWidth = 1.6 + a5Alpha * 1.2;
+            a5Ctx.beginPath();
+            a5Ctx.moveTo(a5P1.x, a5P1.y);
+            a5Ctx.lineTo(a5P2.x, a5P2.y);
+            a5Ctx.stroke();
+          }
+          a5Ctx.fillStyle = `hsl(${a5C.hue}, 100%, 84%)`;
+          a5Ctx.beginPath();
+          a5Ctx.arc(a5C.x, a5C.y, 2.5, 0, Math.PI * 2);
+          a5Ctx.fill();
+        }
+
+        a5DrawLaunchGuide();
+      }
+
+      function a5Tick(a5Now) {
+        const a5Dt = Math.min(0.035, (a5Now - a5State.lastTime) / 1000);
+        a5State.lastTime = a5Now;
+        a5Update(a5Dt);
+        a5Render();
+        a5WellCount.textContent = String(a5State.wells.length);
+        a5CometCount.textContent = String(a5State.comets.length);
+        a5BestOrbit.textContent = `${(a5State.bestOrbitMs / 1000).toFixed(1)}s`;
+        requestAnimationFrame(a5Tick);
+      }
+
+      a5Canvas.addEventListener("contextmenu", (a5Evt) => {
+        a5Evt.preventDefault();
+      });
+
+      a5Canvas.addEventListener("pointerdown", (a5Evt) => {
+        const a5Pos = a5ToLocal(a5Evt);
+        if (a5Evt.shiftKey || a5Evt.button === 2) {
+          a5RemoveNearestWell(a5Pos.x, a5Pos.y);
+          return;
+        }
+        if (a5Evt.button !== 0) return;
+        a5State.launch = { start: a5Pos, now: a5Pos };
+      });
+
+      a5Canvas.addEventListener("pointermove", (a5Evt) => {
+        if (!a5State.launch) return;
+        a5State.launch.now = a5ToLocal(a5Evt);
+      });
+
+      a5Canvas.addEventListener("pointerup", (a5Evt) => {
+        const a5Pos = a5ToLocal(a5Evt);
+        if (!a5State.launch) {
+          a5AddWell(a5Pos.x, a5Pos.y);
+          return;
+        }
+        const a5Dx = a5State.launch.start.x - a5Pos.x;
+        const a5Dy = a5State.launch.start.y - a5Pos.y;
+        const a5Dist = Math.hypot(a5Dx, a5Dy);
+        if (a5Dist < 8) {
+          a5AddWell(a5Pos.x, a5Pos.y);
+        } else {
+          const a5Scale = 0.055;
+          a5SpawnComet(a5State.launch.start.x, a5State.launch.start.y, a5Dx * a5Scale, a5Dy * a5Scale);
+        }
+        a5State.launch = null;
+      });
+
+      a5Canvas.addEventListener("pointerleave", () => {
+        if (a5State.launch) a5State.launch.now = a5State.launch.start;
+      });
+
+      a5MassInput.addEventListener("input", () => {
+        a5MassValue.textContent = a5MassInput.value;
+      });
+
+      a5DragInput.addEventListener("input", () => {
+        a5DragValue.textContent = (Number(a5DragInput.value) / 1000).toFixed(3);
+      });
+
+      a5BurstBtn.addEventListener("click", a5Burst);
+      a5ClearBtn.addEventListener("click", () => {
+        a5State.wells = [];
+        a5State.comets = [];
+        a5State.bestOrbitMs = 0;
+      });
+
+      const a5InitialScaleX = a5Canvas.getBoundingClientRect().width / a5BaseWidth;
+      const a5InitialScaleY = a5Canvas.getBoundingClientRect().height / a5BaseHeight;
+      a5AddWell(250 * a5InitialScaleX, 170 * a5InitialScaleY);
+      a5AddWell(470 * a5InitialScaleX, 165 * a5InitialScaleY);
+      a5AddWell(350 * a5InitialScaleX, 115 * a5InitialScaleY);
+      a5Burst();
+
+      a5Resize();
+      window.addEventListener("resize", a5Resize);
+      requestAnimationFrame((a5Now) => {
+        a5State.lastTime = a5Now;
+        a5Tick(a5Now);
+      });
+    })();
+  </script>
+</section>
+<!-- AGENT 5 SECTION END -->
