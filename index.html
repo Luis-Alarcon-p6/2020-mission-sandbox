@@ -640,6 +640,65 @@
     }
     /* ── END SLICE 9: GPT-9 ── */
 
+    /* --- SLICE 1: GPT-1 scaffold for 5-agent swarm mission --- */
+    .gpt1-swarm-showcase {
+      margin: 0 clamp(20px, 4vw, 44px) 28px;
+      padding: clamp(22px, 3.2vw, 34px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background:
+        radial-gradient(650px 260px at 10% -30%, rgba(102, 227, 255, 0.14), transparent 70%),
+        radial-gradient(650px 260px at 90% -40%, rgba(155, 140, 255, 0.14), transparent 68%),
+        rgba(8, 11, 23, 0.55);
+    }
+
+    .gpt1-swarm-showcase h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3.4vw, 1.95rem);
+      letter-spacing: -0.02em;
+    }
+
+    .gpt1-swarm-showcase p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 68ch;
+    }
+
+    .gpt1-swarm-lanes {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    }
+
+    .gpt1-lane {
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .gpt1-lane h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #dff8ff;
+    }
+
+    .gpt1-lane p {
+      margin-top: 7px;
+      font-size: 0.92rem;
+      color: #d6defa;
+    }
+
+    .gpt1-lane--claimed {
+      border-color: rgba(102, 227, 255, 0.5);
+      background: linear-gradient(130deg, rgba(102, 227, 255, 0.18), rgba(255, 255, 255, 0.03));
+    }
+    /* --- END SLICE 1 --- */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -742,6 +801,38 @@
         and one joke wired directly into production static HTML.
       </p>
     </section>
+
+    <!-- SLICE 1 START: GPT-1 mission scaffold -->
+    <section class="gpt1-swarm-showcase" id="gpt-swarm-showcase" aria-labelledby="gpt-swarm-title">
+      <h2 id="gpt-swarm-title">GPT Swarm Showcase · 5 Agents, One Static Page</h2>
+      <p>
+        Slice 1 establishes the shared mission lane: GPT-1 handles the scaffold and intro while GPT-2,
+        GPT-3, GPT-4, and GPT-5 each plug in their own independently mergeable section.
+      </p>
+      <div class="gpt1-swarm-lanes">
+        <article class="gpt1-lane gpt1-lane--claimed" id="gpt-1-slot">
+          <h3>GPT-1 · Claimed</h3>
+          <p>Scaffold, framing copy, and slot map are live in this block.</p>
+        </article>
+        <article class="gpt1-lane" id="gpt-2-slot">
+          <h3>GPT-2 · Open Slot</h3>
+          <p>Reserved for Slice 2 content.</p>
+        </article>
+        <article class="gpt1-lane" id="gpt-3-slot">
+          <h3>GPT-3 · Open Slot</h3>
+          <p>Reserved for Slice 3 content.</p>
+        </article>
+        <article class="gpt1-lane" id="gpt-4-slot">
+          <h3>GPT-4 · Open Slot</h3>
+          <p>Reserved for Slice 4 content.</p>
+        </article>
+        <article class="gpt1-lane" id="gpt-5-slot">
+          <h3>GPT-5 · Open Slot</h3>
+          <p>Reserved for Slice 5 content.</p>
+        </article>
+      </div>
+    </section>
+    <!-- SLICE 1 END: GPT-1 mission scaffold -->
 
     <footer class="footer">
       <span>Slice 1 deployed by <strong>COMPOSER-1</strong> · static hosting with style and speed.</span>
