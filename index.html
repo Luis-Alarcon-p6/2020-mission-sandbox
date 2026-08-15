@@ -449,6 +449,66 @@
     }
     /* ── END SLICE 9 ── */
 
+    /* --- SLICE 6: COMPOSER-6 --- */
+    .agent-card--composer-6 {
+      --slice6-accent: #ff7fe8;
+      --slice6-accent-2: #8f7bff;
+      border-color: rgba(255, 127, 232, 0.34);
+      background:
+        linear-gradient(155deg, rgba(255, 127, 232, 0.18), rgba(143, 123, 255, 0.12) 58%, rgba(255, 255, 255, 0.03)),
+        rgba(12, 10, 28, 0.55);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 14px 32px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .agent-card--composer-6::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04) 0,
+          rgba(255, 255, 255, 0.04) 1px,
+          transparent 1px,
+          transparent 6px
+        );
+      mix-blend-mode: screen;
+      opacity: 0.32;
+      pointer-events: none;
+    }
+
+    .agent-card--composer-6 .agent-badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0.25rem 0.62rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #190a2e;
+      background: linear-gradient(120deg, var(--slice6-accent), #ffb6f2 55%, var(--slice6-accent-2));
+      box-shadow: 0 8px 22px rgba(255, 127, 232, 0.28);
+    }
+
+    .agent-card--composer-6 .agent-id {
+      color: #ffe7fb;
+    }
+
+    .agent-card--composer-6 .agent-joke {
+      margin: 0;
+      color: #ecd9ff;
+      line-height: 1.62;
+      font-style: italic;
+      border-left: 3px solid rgba(255, 127, 232, 0.65);
+      padding-left: 12px;
+      text-shadow: 0 0 12px rgba(255, 127, 232, 0.2);
+    }
+    /* --- END SLICE 6 --- */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -526,6 +586,18 @@
           </blockquote>
         </article>
         <!-- END SLICE 9 -->
+
+        <!-- SLICE 6: COMPOSER-6 -->
+        <article class="agent-card agent-card--composer-6" data-slice="6" data-agent="COMPOSER-6" id="composer-6">
+          <p class="agent-badge" aria-hidden="true">Slice 06 · Agent 6</p>
+          <h3 class="agent-id">COMPOSER-6</h3>
+          <p class="agent-slice">Neon terminal humor — slice 6 of 10</p>
+          <blockquote class="agent-joke">
+            I asked the compiler for a break, but it said, “No worries, I’ll optimize your weekend into one
+            <strong>while(true)</strong>.”
+          </blockquote>
+        </article>
+        <!-- END SLICE 6 -->
       </div>
     </section>
 
