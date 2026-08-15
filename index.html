@@ -1,0 +1,218 @@
+<!-- AGENT 1 SECTION START: g1-neon-pulse-lab -->
+<section id="g1-neon-pulse-lab" class="g1-exhibit" aria-labelledby="g1-title">
+  <h3 id="g1-title">Neon Pulse Lab</h3>
+  <p class="g1-subtitle">Steer a reactive neon wavefield with your cursor and controls.</p>
+  <div class="g1-stage-wrap">
+    <canvas id="g1-canvas" width="640" height="280" aria-label="Neon pulse canvas"></canvas>
+    <div class="g1-hud" aria-live="polite">
+      <span id="g1-energy">Energy: 0</span>
+      <span id="g1-fps">FPS: --</span>
+    </div>
+  </div>
+  <div class="g1-controls">
+    <label for="g1-density">Density</label>
+    <input id="g1-density" type="range" min="8" max="36" value="18" />
+    <label for="g1-speed">Speed</label>
+    <input id="g1-speed" type="range" min="1" max="12" value="6" />
+    <button id="g1-randomize" type="button">Randomize Palette</button>
+  </div>
+
+  <style>
+    #g1-neon-pulse-lab {
+      --g1-bg: #0b1020;
+      --g1-panel: #121a33;
+      --g1-glow: #53f3ff;
+      --g1-glow-2: #a855f7;
+      --g1-text: #e6eeff;
+      --g1-muted: #9fb2d8;
+      margin: 0;
+      padding: 1.25rem;
+      border: 1px solid #26345e;
+      border-radius: 14px;
+      background: radial-gradient(circle at 18% 0%, #1d2a56, var(--g1-bg) 46%);
+      color: var(--g1-text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      box-shadow: 0 10px 28px rgba(6, 10, 25, 0.55);
+    }
+
+    #g1-neon-pulse-lab .g1-subtitle {
+      margin: 0.4rem 0 0.9rem;
+      color: var(--g1-muted);
+      font-size: 0.96rem;
+    }
+
+    #g1-neon-pulse-lab .g1-stage-wrap {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #2f4274;
+      background: linear-gradient(180deg, #080d1c, #111b36);
+    }
+
+    #g1-neon-pulse-lab #g1-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: crosshair;
+    }
+
+    #g1-neon-pulse-lab .g1-hud {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      display: flex;
+      gap: 0.7rem;
+      padding: 0.3rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid #2f467f;
+      background: rgba(8, 12, 24, 0.75);
+      font-size: 0.8rem;
+      color: #d8e5ff;
+      backdrop-filter: blur(2px);
+    }
+
+    #g1-neon-pulse-lab .g1-controls {
+      margin-top: 0.9rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto 1fr auto;
+      align-items: center;
+      gap: 0.55rem 0.7rem;
+      font-size: 0.9rem;
+      color: #c5d4f8;
+    }
+
+    #g1-neon-pulse-lab .g1-controls input[type="range"] {
+      accent-color: var(--g1-glow);
+    }
+
+    #g1-neon-pulse-lab #g1-randomize {
+      border: 1px solid #3560c9;
+      background: linear-gradient(180deg, #2850b9, #1c3f9f);
+      color: #f4f8ff;
+      border-radius: 8px;
+      padding: 0.48rem 0.72rem;
+      cursor: pointer;
+      transition: transform 0.12s ease, filter 0.12s ease;
+      white-space: nowrap;
+    }
+
+    #g1-neon-pulse-lab #g1-randomize:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+  </style>
+
+  <script>
+    (() => {
+      const section = document.getElementById("g1-neon-pulse-lab");
+      if (!section) return;
+
+      const canvas = section.querySelector("#g1-canvas");
+      const ctx = canvas.getContext("2d");
+      const densityInput = section.querySelector("#g1-density");
+      const speedInput = section.querySelector("#g1-speed");
+      const randomizeBtn = section.querySelector("#g1-randomize");
+      const energyLabel = section.querySelector("#g1-energy");
+      const fpsLabel = section.querySelector("#g1-fps");
+
+      const pointer = { x: canvas.width * 0.5, y: canvas.height * 0.5, active: false };
+      const palette = { a: "#53f3ff", b: "#a855f7", c: "#1f7bff" };
+      let hueOffset = 0;
+      let frameCount = 0;
+      let lastFpsTick = performance.now();
+      let lastTime = performance.now();
+
+      function pickPalette() {
+        const base = Math.floor(Math.random() * 360);
+        const h2 = (base + 74) % 360;
+        const h3 = (base + 146) % 360;
+        palette.a = `hsl(${base} 95% 63%)`;
+        palette.b = `hsl(${h2} 88% 64%)`;
+        palette.c = `hsl(${h3} 90% 58%)`;
+        section.style.setProperty("--g1-glow", palette.a);
+        section.style.setProperty("--g1-glow-2", palette.b);
+      }
+
+      function pulseEnergy(x, y) {
+        const dx = x - canvas.width * 0.5;
+        const dy = y - canvas.height * 0.5;
+        const radial = Math.sqrt(dx * dx + dy * dy);
+        const maxRadius = Math.sqrt((canvas.width * 0.5) ** 2 + (canvas.height * 0.5) ** 2);
+        return Math.max(0, 100 - (radial / maxRadius) * 100);
+      }
+
+      function draw(now) {
+        const dt = Math.min(0.033, (now - lastTime) / 1000);
+        lastTime = now;
+        frameCount += 1;
+
+        if (now - lastFpsTick > 500) {
+          const fps = Math.round((frameCount * 1000) / (now - lastFpsTick));
+          fpsLabel.textContent = `FPS: ${fps}`;
+          frameCount = 0;
+          lastFpsTick = now;
+        }
+
+        const density = Number(densityInput.value);
+        const speed = Number(speedInput.value) * 0.15;
+        hueOffset += speed * dt * 120;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "rgba(8, 13, 27, 0.42)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let y = 0; y <= canvas.height; y += density) {
+          ctx.beginPath();
+          for (let x = 0; x <= canvas.width; x += 8) {
+            const dist = Math.hypot(x - pointer.x, y - pointer.y);
+            const ripple = Math.sin(dist * 0.05 - now * 0.005 * speed);
+            const drift = Math.sin(x * 0.012 + y * 0.01 + hueOffset * 0.02);
+            const amp = pointer.active ? 18 : 10;
+            const py = y + ripple * amp + drift * 5;
+            if (x === 0) ctx.moveTo(x, py);
+            else ctx.lineTo(x, py);
+          }
+          const mix = (y / canvas.height) * 100;
+          ctx.strokeStyle = `color-mix(in srgb, ${palette.a} ${80 - mix * 0.5}%, ${palette.b} ${20 + mix * 0.5}%)`;
+          ctx.lineWidth = 1.25;
+          ctx.shadowColor = palette.c;
+          ctx.shadowBlur = pointer.active ? 13 : 7;
+          ctx.stroke();
+        }
+
+        const energy = pulseEnergy(pointer.x, pointer.y);
+        energyLabel.textContent = `Energy: ${Math.round(energy)}`;
+
+        requestAnimationFrame(draw);
+      }
+
+      function pointerFromEvent(event) {
+        const rect = canvas.getBoundingClientRect();
+        pointer.x = ((event.clientX - rect.left) / rect.width) * canvas.width;
+        pointer.y = ((event.clientY - rect.top) / rect.height) * canvas.height;
+      }
+
+      canvas.addEventListener("pointerenter", (event) => {
+        pointer.active = true;
+        pointerFromEvent(event);
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        pointer.active = true;
+        pointerFromEvent(event);
+      });
+
+      canvas.addEventListener("pointerleave", () => {
+        pointer.active = false;
+        pointer.x = canvas.width * 0.5;
+        pointer.y = canvas.height * 0.5;
+      });
+
+      randomizeBtn.addEventListener("click", pickPalette);
+
+      pickPalette();
+      requestAnimationFrame(draw);
+    })();
+  </script>
+</section>
+<!-- AGENT 1 SECTION END: g1-neon-pulse-lab -->
