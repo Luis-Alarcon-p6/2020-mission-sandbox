@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Swarm Arcade — ten agent-built interactive exhibits in one static page." />
+  <title>The Swarm Arcade</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --arc-bg-1: #050810;
+      --arc-bg-2: #0f1730;
+      --arc-card: rgba(255, 255, 255, 0.06);
+      --arc-text: #eaf1ff;
+      --arc-muted: #b1bdd9;
+      --arc-accent: #7be5ff;
+      --arc-accent-2: #9d7dff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--arc-text);
+      background:
+        radial-gradient(1000px 500px at 0% -10%, rgba(123, 229, 255, 0.2), transparent 55%),
+        radial-gradient(900px 550px at 110% 0%, rgba(157, 125, 255, 0.2), transparent 58%),
+        linear-gradient(160deg, var(--arc-bg-1), var(--arc-bg-2));
+      padding: 24px;
+    }
+
+    .arcade-shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .arcade-hero {
+      padding: clamp(28px, 4.5vw, 56px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: grid;
+      gap: 16px;
+    }
+
+    .arcade-hero-kicker {
+      margin: 0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--arc-accent);
+      font-weight: 700;
+    }
+
+    .arcade-hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5.4vw, 3.7rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .arcade-hero p {
+      margin: 0;
+      max-width: 68ch;
+      color: var(--arc-muted);
+      line-height: 1.62;
+    }
+
+    .arcade-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: clamp(20px, 4vw, 36px);
+    }
+
+    .arcade-exhibit {
+      min-height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <main class="arcade-shell">
+    <header class="arcade-hero">
+      <p class="arcade-hero-kicker">Cursor Swarm Arcade</p>
+      <h1>The Swarm Arcade</h1>
+      <p>
+        Ten agents, ten exhibits, one static page. Explore interactive toys, tiny games, and audiovisual experiments crafted as self-contained sections.
+      </p>
+    </header>
+
+    <section class="arcade-grid" aria-label="Interactive exhibits">
+      <!-- GPT-9 EXHIBIT START: slice 9/10 -->
+      <section id="g9-exhibit" class="arcade-exhibit" data-agent="GPT-9" aria-label="Neon Swarm Constellation">
+        <style>
+          #g9-exhibit {
+            border-radius: 18px;
+            border: 1px solid rgba(123, 229, 255, 0.35);
+            background:
+              radial-gradient(120% 100% at 50% 0%, rgba(86, 243, 255, 0.15), rgba(7, 12, 25, 0.9) 60%),
+              rgba(4, 7, 18, 0.88);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 14px 38px rgba(0, 0, 0, 0.35);
+            padding: 16px;
+            position: relative;
+            overflow: hidden;
+          }
+
+          #g9-exhibit::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            pointer-events: none;
+            background: linear-gradient(130deg, rgba(123, 229, 255, 0.5), transparent 42%, rgba(157, 125, 255, 0.45));
+            opacity: 0.35;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            padding: 1px;
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+          }
+
+          #g9-exhibit .g9-header {
+            display: grid;
+            gap: 6px;
+            margin-bottom: 10px;
+          }
+
+          #g9-exhibit .g9-kicker {
+            margin: 0;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: #8cefff;
+            font-weight: 700;
+          }
+
+          #g9-exhibit .g9-title {
+            margin: 0;
+            font-size: 1.18rem;
+            letter-spacing: -0.01em;
+          }
+
+          #g9-exhibit .g9-copy {
+            margin: 0 0 12px;
+            color: #bdd2f0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+          }
+
+          #g9-exhibit #g9-canvas {
+            width: 100%;
+            height: 220px;
+            display: block;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: radial-gradient(circle at 50% 40%, rgba(49, 76, 138, 0.28), rgba(3, 7, 16, 0.95) 65%);
+            cursor: crosshair;
+          }
+
+          #g9-exhibit .g9-controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+          }
+
+          #g9-exhibit #g9-reset {
+            border: 1px solid rgba(123, 229, 255, 0.5);
+            background: rgba(123, 229, 255, 0.1);
+            color: #d9f9ff;
+            border-radius: 999px;
+            padding: 0.45rem 0.82rem;
+            font-weight: 650;
+            cursor: pointer;
+            transition: transform 120ms ease, background-color 120ms ease;
+          }
+
+          #g9-exhibit #g9-reset:hover {
+            transform: translateY(-1px);
+            background: rgba(123, 229, 255, 0.2);
+          }
+
+          #g9-exhibit .g9-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: #c8d7f3;
+            user-select: none;
+          }
+
+          #g9-exhibit .g9-score {
+            font-size: 0.85rem;
+            color: #d8d2ff;
+            padding: 0.26rem 0.62rem;
+            border-radius: 999px;
+            border: 1px solid rgba(157, 125, 255, 0.45);
+            background: rgba(157, 125, 255, 0.13);
+            min-width: 92px;
+            text-align: center;
+          }
+        </style>
+
+        <header class="g9-header">
+          <p class="g9-kicker">Agent 9 · Slice 9</p>
+          <h2 class="g9-title">Neon Swarm Constellation</h2>
+        </header>
+        <p class="g9-copy">
+          Guide a drone swarm into glowing constellations. Move your pointer to bend orbits, click to invert polarity, and press space to emit a pulse wave.
+        </p>
+        <canvas id="g9-canvas" width="620" height="220"></canvas>
+        <div class="g9-controls">
+          <button id="g9-reset" type="button">Reset swarm</button>
+          <label class="g9-toggle"><input id="g9-trails" type="checkbox" checked /> Trails on</label>
+          <output id="g9-score" class="g9-score" aria-live="polite">Sync 0%</output>
+        </div>
+
+        <script>
+          (function () {
+            const g9Root = document.getElementById("g9-exhibit");
+            if (!g9Root) return;
+
+            const g9Canvas = g9Root.querySelector("#g9-canvas");
+            const g9Ctx = g9Canvas.getContext("2d");
+            const g9Reset = g9Root.querySelector("#g9-reset");
+            const g9Trails = g9Root.querySelector("#g9-trails");
+            const g9Score = g9Root.querySelector("#g9-score");
+
+            const g9Particles = [];
+            const g9Pointer = { x: 0, y: 0, active: false, polarity: 1 };
+            let g9Pulse = 0;
+            let g9Width = 0;
+            let g9Height = 0;
+            let g9Dpr = 1;
+
+            function g9Resize() {
+              const g9Rect = g9Canvas.getBoundingClientRect();
+              g9Dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+              g9Width = Math.max(240, Math.floor(g9Rect.width));
+              g9Height = Math.max(180, Math.floor(g9Rect.height));
+              g9Canvas.width = Math.floor(g9Width * g9Dpr);
+              g9Canvas.height = Math.floor(g9Height * g9Dpr);
+              g9Ctx.setTransform(g9Dpr, 0, 0, g9Dpr, 0, 0);
+            }
+
+            function g9Seed() {
+              g9Particles.length = 0;
+              const g9Count = 46;
+              const g9CenterX = g9Width * 0.5;
+              const g9CenterY = g9Height * 0.52;
+
+              for (let g9I = 0; g9I < g9Count; g9I += 1) {
+                const g9Angle = (Math.PI * 2 * g9I) / g9Count + Math.random() * 0.55;
+                const g9Radius = 26 + Math.random() * Math.min(g9Width, g9Height) * 0.34;
+                const g9Speed = 0.5 + Math.random() * 0.95;
+                g9Particles.push({
+                  x: g9CenterX + Math.cos(g9Angle) * g9Radius,
+                  y: g9CenterY + Math.sin(g9Angle) * g9Radius,
+                  vx: Math.cos(g9Angle + Math.PI / 2) * g9Speed,
+                  vy: Math.sin(g9Angle + Math.PI / 2) * g9Speed,
+                  r: 1.4 + Math.random() * 2.2
+                });
+              }
+            }
+
+            function g9PointerFromEvent(g9Event) {
+              const g9Rect = g9Canvas.getBoundingClientRect();
+              g9Pointer.x = g9Event.clientX - g9Rect.left;
+              g9Pointer.y = g9Event.clientY - g9Rect.top;
+              g9Pointer.active = true;
+            }
+
+            function g9KickPulse() {
+              g9Pulse = 1;
+            }
+
+            function g9Tick() {
+              if (!g9Trails.checked) {
+                g9Ctx.clearRect(0, 0, g9Width, g9Height);
+              } else {
+                g9Ctx.fillStyle = "rgba(3, 7, 16, 0.22)";
+                g9Ctx.fillRect(0, 0, g9Width, g9Height);
+              }
+
+              const g9CenterX = g9Width * 0.5;
+              const g9CenterY = g9Height * 0.52;
+              let g9Links = 0;
+              let g9Energy = 0;
+
+              if (g9Pulse > 0.001) {
+                g9Pulse *= 0.94;
+              }
+
+              for (let g9I = 0; g9I < g9Particles.length; g9I += 1) {
+                const g9P = g9Particles[g9I];
+
+                const g9Cx = g9CenterX - g9P.x;
+                const g9Cy = g9CenterY - g9P.y;
+                g9P.vx += g9Cx * 0.0007;
+                g9P.vy += g9Cy * 0.0007;
+
+                if (g9Pointer.active) {
+                  const g9Dx = g9Pointer.x - g9P.x;
+                  const g9Dy = g9Pointer.y - g9P.y;
+                  const g9DistSq = g9Dx * g9Dx + g9Dy * g9Dy + 0.001;
+                  const g9Force = (75 * g9Pointer.polarity) / g9DistSq;
+                  g9P.vx += g9Dx * g9Force;
+                  g9P.vy += g9Dy * g9Force;
+                }
+
+                if (g9Pulse > 0.01) {
+                  const g9PdX = g9P.x - g9CenterX;
+                  const g9PdY = g9P.y - g9CenterY;
+                  const g9Pd = Math.sqrt(g9PdX * g9PdX + g9PdY * g9PdY) + 0.001;
+                  const g9Wave = g9Pulse * 0.12;
+                  g9P.vx += (g9PdX / g9Pd) * g9Wave;
+                  g9P.vy += (g9PdY / g9Pd) * g9Wave;
+                }
+
+                g9P.vx *= 0.984;
+                g9P.vy *= 0.984;
+                g9P.x += g9P.vx;
+                g9P.y += g9P.vy;
+
+                if (g9P.x < -20) g9P.x = g9Width + 20;
+                if (g9P.x > g9Width + 20) g9P.x = -20;
+                if (g9P.y < -20) g9P.y = g9Height + 20;
+                if (g9P.y > g9Height + 20) g9P.y = -20;
+
+                g9Energy += Math.abs(g9P.vx) + Math.abs(g9P.vy);
+
+                g9Ctx.beginPath();
+                g9Ctx.fillStyle = "rgba(136, 241, 255, 0.95)";
+                g9Ctx.shadowBlur = 10;
+                g9Ctx.shadowColor = "rgba(136, 241, 255, 0.8)";
+                g9Ctx.arc(g9P.x, g9P.y, g9P.r, 0, Math.PI * 2);
+                g9Ctx.fill();
+              }
+
+              g9Ctx.shadowBlur = 0;
+
+              for (let g9I = 0; g9I < g9Particles.length; g9I += 1) {
+                for (let g9J = g9I + 1; g9J < g9Particles.length; g9J += 1) {
+                  const g9A = g9Particles[g9I];
+                  const g9B = g9Particles[g9J];
+                  const g9Dx = g9A.x - g9B.x;
+                  const g9Dy = g9A.y - g9B.y;
+                  const g9Dist = Math.sqrt(g9Dx * g9Dx + g9Dy * g9Dy);
+                  if (g9Dist < 64) {
+                    g9Links += 1;
+                    const g9Alpha = (1 - g9Dist / 64) * 0.58;
+                    g9Ctx.beginPath();
+                    g9Ctx.strokeStyle = "rgba(157, 125, 255, " + g9Alpha.toFixed(3) + ")";
+                    g9Ctx.lineWidth = 1;
+                    g9Ctx.moveTo(g9A.x, g9A.y);
+                    g9Ctx.lineTo(g9B.x, g9B.y);
+                    g9Ctx.stroke();
+                  }
+                }
+              }
+
+              const g9SyncRaw = Math.min(100, (g9Links / (g9Particles.length * 2.2)) * 100);
+              const g9SyncEnergy = Math.max(0, 100 - Math.min(80, g9Energy * 0.45));
+              const g9Sync = Math.round(g9SyncRaw * 0.65 + g9SyncEnergy * 0.35);
+              g9Score.textContent = "Sync " + g9Sync + "%";
+
+              window.requestAnimationFrame(g9Tick);
+            }
+
+            g9Canvas.addEventListener("pointermove", g9PointerFromEvent);
+            g9Canvas.addEventListener("pointerenter", g9PointerFromEvent);
+            g9Canvas.addEventListener("pointerleave", function () {
+              g9Pointer.active = false;
+            });
+            g9Canvas.addEventListener("click", function () {
+              g9Pointer.polarity *= -1;
+              g9KickPulse();
+            });
+            g9Reset.addEventListener("click", function () {
+              g9Seed();
+              g9KickPulse();
+            });
+
+            window.addEventListener("keydown", function (g9Event) {
+              if (g9Event.code === "Space") {
+                g9Event.preventDefault();
+                g9KickPulse();
+              }
+            });
+
+            const g9ResizeObserver = new ResizeObserver(function () {
+              g9Resize();
+              g9Seed();
+            });
+            g9ResizeObserver.observe(g9Root);
+
+            g9Resize();
+            g9Seed();
+            g9Tick();
+          })();
+        </script>
+      </section>
+      <!-- GPT-9 EXHIBIT END -->
+    </section>
+  </main>
+</body>
+</html>
