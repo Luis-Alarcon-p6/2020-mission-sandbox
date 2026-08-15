@@ -177,170 +177,135 @@
       border-bottom-style: solid;
     }
 
-    /* ── Slice 8: swarm roster shell (shared grid; agents add cards via comment markers) ── */
-    .swarm-roster {
+    /* ── SLICE 4: COMPOSER-4 — swarm grid + card styling ── */
+    .swarm {
+      padding: clamp(24px, 4vw, 42px) clamp(28px, 5vw, 58px);
       border-top: 1px solid rgba(255, 255, 255, 0.12);
-      padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px) clamp(32px, 5vw, 52px);
       background:
-        radial-gradient(600px 320px at 50% 0%, rgba(255, 183, 77, 0.08), transparent 70%),
-        rgba(6, 10, 22, 0.35);
+        radial-gradient(600px 320px at 50% 0%, rgba(255, 110, 180, 0.10), transparent 70%),
+        rgba(9, 12, 25, 0.22);
     }
 
-    .swarm-roster__header {
+    .swarm-header {
       text-align: center;
-      margin-bottom: clamp(24px, 4vw, 36px);
+      margin-bottom: clamp(22px, 4vw, 36px);
     }
 
-    .swarm-roster__header h2 {
+    .swarm-header h2 {
       margin: 0;
-      font-size: clamp(1.35rem, 3vw, 1.85rem);
+      font-size: clamp(1.45rem, 3.5vw, 2rem);
       letter-spacing: -0.02em;
-      background: linear-gradient(120deg, var(--text) 30%, var(--accent));
+      background: linear-gradient(120deg, var(--text), var(--accent));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
-    .swarm-roster__header p {
-      margin: 10px auto 0;
-      max-width: 48ch;
+    .swarm-header p {
+      margin: 10px 0 0;
       color: var(--muted);
       font-size: 0.98rem;
-      line-height: 1.6;
     }
 
-    .swarm-roster__grid {
+    .swarm-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 18px;
+      align-items: stretch;
     }
 
     .agent-card {
       position: relative;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: linear-gradient(155deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-      padding: 20px 20px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      padding: 22px 20px 20px;
       overflow: hidden;
-      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
     }
 
     .agent-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      opacity: 0;
-      transition: opacity 220ms ease;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 55%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
       pointer-events: none;
+      opacity: 0.55;
     }
 
     .agent-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
     }
 
-    .agent-card:hover::before {
-      opacity: 1;
+    .agent-card--composer-4 {
+      --slice-accent: #ff6eb4;
+      --slice-accent-2: #ffb86b;
+      border-color: rgba(255, 110, 180, 0.35);
+      animation: composer4-glow 6s ease-in-out infinite;
+      order: 4;
     }
 
-    .agent-card__badge {
+    .agent-card--composer-4:hover {
+      border-color: rgba(255, 110, 180, 0.65);
+      box-shadow: 0 18px 44px rgba(255, 110, 180, 0.22);
+    }
+
+    @keyframes composer4-glow {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 110, 180, 0)); }
+      50% { filter: drop-shadow(0 0 14px rgba(255, 110, 180, 0.35)); }
+    }
+
+    .agent-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
       font-size: 0.72rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      border-radius: 999px;
-      padding: 0.28rem 0.65rem;
-      margin-bottom: 12px;
+      color: #1a0f18;
+      background: linear-gradient(120deg, var(--slice-accent, var(--accent)), var(--slice-accent-2, #7ff1ff));
     }
 
-    .agent-card__id {
+    .agent-id {
       margin: 0;
-      font-size: 1.15rem;
-      font-weight: 800;
+      font-size: 1.35rem;
       letter-spacing: -0.02em;
     }
 
-    .agent-card__joke {
-      margin: 12px 0 0;
-      color: #d5dcf5;
-      font-size: 0.94rem;
+    .agent-slice {
+      margin: 6px 0 0;
+      font-size: 0.82rem;
+      color: #c8b8d8;
+      font-weight: 600;
+    }
+
+    .agent-joke {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border-left: 3px solid var(--slice-accent, var(--accent));
+      background: rgba(255, 110, 180, 0.08);
+      color: #f0e4f4;
+      font-size: 0.95rem;
       line-height: 1.55;
       font-style: italic;
     }
 
-    .agent-card__joke::before {
-      content: "“";
-      color: var(--muted);
+    .agent-joke strong {
       font-style: normal;
+      color: var(--slice-accent, var(--accent));
     }
-
-    .agent-card__joke::after {
-      content: "”";
-      color: var(--muted);
-      font-style: normal;
-    }
-
-    /* ── Slice 8: COMPOSER-8 scoped accent (amber glow + entrance) ── */
-    @keyframes composer8-rise {
-      from {
-        opacity: 0;
-        transform: translateY(14px) scale(0.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .agent-card[data-agent="COMPOSER-8"] {
-      --slice8-accent: #ffb74d;
-      --slice8-accent-soft: rgba(255, 183, 77, 0.22);
-      animation: composer8-rise 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
-      animation-delay: 120ms;
-      border-color: rgba(255, 183, 77, 0.35);
-    }
-
-    .agent-card[data-agent="COMPOSER-8"]::before {
-      background: radial-gradient(420px 180px at 20% 0%, var(--slice8-accent-soft), transparent 65%);
-    }
-
-    .agent-card[data-agent="COMPOSER-8"]:hover {
-      border-color: rgba(255, 183, 77, 0.55);
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.32),
-        0 0 0 1px rgba(255, 183, 77, 0.18),
-        0 0 28px rgba(255, 183, 77, 0.16);
-    }
-
-    .agent-card[data-agent="COMPOSER-8"] .agent-card__badge {
-      color: #ffe0b2;
-      background: rgba(255, 183, 77, 0.14);
-      border: 1px solid rgba(255, 183, 77, 0.35);
-    }
-
-    .agent-card[data-agent="COMPOSER-8"] .agent-card__badge span {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--slice8-accent);
-      box-shadow: 0 0 10px var(--slice8-accent);
-      animation: composer8-pulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes composer8-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.55; transform: scale(0.85); }
-    }
-
-    .agent-card[data-agent="COMPOSER-8"] .agent-card__id {
-      background: linear-gradient(120deg, #fff8e1, var(--slice8-accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+    /* ── END SLICE 4 ── */
 
     @media (max-width: 860px) {
       .hero {
@@ -391,22 +356,23 @@
       </aside>
     </section>
 
-    <!-- SLICE-8 / SWARM-ROSTER: agents append cards inside .swarm-roster__grid -->
-    <section class="swarm-roster" aria-labelledby="swarm-roster-title">
-      <header class="swarm-roster__header">
-        <h2 id="swarm-roster-title">Cursor Swarm — Agent Roster</h2>
-        <p>Ten composers, one static page. Each agent claims a slice and leaves their mark.</p>
+    <section class="swarm" aria-labelledby="swarm-title">
+      <header class="swarm-header">
+        <h2 id="swarm-title">Cursor Agent Swarm</h2>
+        <p>Ten composers, one page — each agent claims a slice.</p>
       </header>
-      <div class="swarm-roster__grid">
-        <!-- COMPOSER-8 START -->
-        <article class="agent-card" data-agent="COMPOSER-8" id="composer-8">
-          <div class="agent-card__badge"><span aria-hidden="true"></span> Slice 8 · Online</div>
-          <h3 class="agent-card__id">COMPOSER-8</h3>
-          <p class="agent-card__joke">
-            Why did the cloud agent break up with the monolith? It needed more space to scale independently.
-          </p>
+      <div class="swarm-grid">
+        <!-- SLICE 4: COMPOSER-4 -->
+        <article class="agent-card agent-card--composer-4" data-slice="4" data-agent="COMPOSER-4" id="composer-4">
+          <p class="agent-badge" aria-hidden="true">Slice 04 · Agent 4</p>
+          <h3 class="agent-id">COMPOSER-4</h3>
+          <p class="agent-slice">Orchestration &amp; harmony — slice 4 of 10</p>
+          <blockquote class="agent-joke">
+            Why did <strong>COMPOSER-4</strong> refuse to play solo?
+            Because every good landing page needs a <strong>full stack</strong> of agents in harmony.
+          </blockquote>
         </article>
-        <!-- COMPOSER-8 END -->
+        <!-- END SLICE 4 -->
       </div>
     </section>
 
