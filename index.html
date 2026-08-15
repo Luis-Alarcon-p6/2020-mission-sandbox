@@ -640,6 +640,85 @@
     }
     /* ── END SLICE 9: GPT-9 ── */
 
+    /* --- SLICE 5: GPT-5 mission telemetry section --- */
+    .swarm-telemetry {
+      margin: 0 clamp(20px, 4vw, 42px) 26px;
+      padding: 22px clamp(18px, 3.3vw, 28px);
+      border-radius: 16px;
+      border: 1px solid rgba(125, 241, 255, 0.25);
+      background:
+        radial-gradient(480px 220px at 15% 0%, rgba(125, 241, 255, 0.15), transparent 72%),
+        linear-gradient(155deg, rgba(12, 21, 42, 0.92), rgba(9, 14, 32, 0.84));
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+    }
+
+    .swarm-telemetry__header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .swarm-telemetry__header h3 {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.6vw, 1.45rem);
+      letter-spacing: -0.015em;
+      color: #ebf6ff;
+    }
+
+    .swarm-telemetry__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      padding: 0.26rem 0.64rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125, 241, 255, 0.35);
+      color: #8cf3ff;
+      background: rgba(125, 241, 255, 0.11);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .swarm-telemetry__badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #8cf3ff;
+      box-shadow: 0 0 12px rgba(125, 241, 255, 0.9);
+      animation: gpt5-pulse 1.9s ease-in-out infinite;
+    }
+
+    .swarm-telemetry__note {
+      margin: 0 0 14px;
+      color: #d6e3ff;
+      line-height: 1.55;
+    }
+
+    .swarm-telemetry__steps {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: grid;
+      gap: 8px;
+      color: #e3edff;
+      line-height: 1.45;
+    }
+
+    .swarm-telemetry__steps strong {
+      color: #97f6ff;
+    }
+
+    @keyframes gpt5-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.8); }
+    }
+    /* --- END SLICE 5 --- */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -651,7 +730,8 @@
       .agent-card--composer-7::after,
       .agent-card--composer-9,
       .agent-card--composer-9::after,
-      .agent-card--gpt-9::after {
+      .agent-card--gpt-9::after,
+      .swarm-telemetry__badge::before {
         animation: none;
       }
 
@@ -742,6 +822,24 @@
         and one joke wired directly into production static HTML.
       </p>
     </section>
+
+    <!-- SLICE 5: GPT-5 -->
+    <section class="swarm-telemetry" aria-labelledby="gpt5-telemetry-title">
+      <div class="swarm-telemetry__header">
+        <h3 id="gpt5-telemetry-title">GPT-5 · Slice 5 Mission Telemetry</h3>
+        <p class="swarm-telemetry__badge">Agent 5 online</p>
+      </div>
+      <p class="swarm-telemetry__note">
+        This slice demonstrates swarm collaboration as a static status module: one shared mission,
+        many additive edits, and each agent shipping an isolated contribution that merges cleanly.
+      </p>
+      <ol class="swarm-telemetry__steps">
+        <li><strong>Claim:</strong> Slice 5 reserved for Agent 5.</li>
+        <li><strong>Scope:</strong> Added a standalone telemetry block instead of rewriting roster content.</li>
+        <li><strong>Outcome:</strong> The page now shows a visible “agent online” signal and mission log in pure HTML/CSS.</li>
+      </ol>
+    </section>
+    <!-- END SLICE 5 -->
 
     <footer class="footer">
       <span>Slice 1 deployed by <strong>COMPOSER-1</strong> · static hosting with style and speed.</span>
