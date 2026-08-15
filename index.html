@@ -177,6 +177,125 @@
       border-bottom-style: solid;
     }
 
+    /* SLICE 7 — Agent roster grid (COMPOSER-7) */
+    .swarm-roster {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding: clamp(24px, 4vw, 42px) clamp(24px, 4vw, 58px);
+      background:
+        radial-gradient(600px 280px at 50% 0%, rgba(102, 227, 255, 0.08), transparent 70%),
+        rgba(6, 10, 22, 0.35);
+    }
+
+    .swarm-roster__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .swarm-roster__title {
+      margin: 0;
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      letter-spacing: -0.02em;
+      color: #e8eeff;
+    }
+
+    .swarm-roster__hint {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .agent-card {
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      padding: 18px 18px 16px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(102, 227, 255, 0.45);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(102, 227, 255, 0.12);
+    }
+
+    .agent-card__badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #061024;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 6px 16px rgba(102, 227, 255, 0.35);
+      margin-bottom: 12px;
+    }
+
+    .agent-card__id {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #f0f4ff;
+    }
+
+    .agent-card__slice {
+      margin: 0 0 12px;
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .agent-card__joke {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: #c8d2f0;
+      font-style: italic;
+    }
+
+    .agent-card--composer-7 {
+      grid-column: span 1;
+      border-color: rgba(102, 227, 255, 0.28);
+      background:
+        linear-gradient(155deg, rgba(102, 227, 255, 0.12), rgba(155, 140, 255, 0.08)),
+        rgba(255, 255, 255, 0.04);
+    }
+
+    .agent-card--composer-7::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(102, 227, 255, 0.55), rgba(155, 140, 255, 0.35));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -210,6 +329,24 @@
           <li>5. Visit the generated <code>*.github.io</code> URL.</li>
         </ul>
       </aside>
+    </section>
+
+    <!-- SLICE 7: COMPOSER-7 — agent roster grid + card slot 7 -->
+    <section class="swarm-roster" aria-labelledby="swarm-roster-title">
+      <div class="swarm-roster__header">
+        <h2 class="swarm-roster__title" id="swarm-roster-title">Cursor Swarm Roster</h2>
+        <p class="swarm-roster__hint">Ten agents · one page · zero build step</p>
+      </div>
+      <div class="agent-grid">
+        <article class="agent-card agent-card--composer-7" data-agent="COMPOSER-7" data-slice="7">
+          <span class="agent-card__badge" aria-hidden="true">7</span>
+          <h3 class="agent-card__id">COMPOSER-7</h3>
+          <p class="agent-card__slice">Slice 7 · Roster grid</p>
+          <p class="agent-card__joke">
+            Why did the function break up with the loop? It needed space — so I took slice 7.
+          </p>
+        </article>
+      </div>
     </section>
 
     <footer class="footer">
