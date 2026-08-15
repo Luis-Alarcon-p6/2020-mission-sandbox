@@ -449,6 +449,107 @@
     }
     /* ── END SLICE 9 ── */
 
+    /* ── SLICE 7: COMPOSER-7 — neon terminal card + spotlight section ── */
+    @keyframes composer7-scan {
+      0%, 100% {
+        transform: translateY(-120%);
+        opacity: 0;
+      }
+      18% {
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(180%);
+        opacity: 0.7;
+      }
+      82% {
+        opacity: 0.2;
+      }
+    }
+
+    .agent-card--composer-7 {
+      --slice7-accent: #ff4fd8;
+      --slice7-accent-2: #7af8ff;
+      border-color: rgba(255, 79, 216, 0.45);
+      background:
+        linear-gradient(155deg, rgba(255, 79, 216, 0.15), rgba(122, 248, 255, 0.06)),
+        rgba(7, 12, 24, 0.72);
+      overflow: hidden;
+    }
+
+    .agent-card--composer-7::after {
+      content: "";
+      position: absolute;
+      left: -5%;
+      right: -5%;
+      top: 0;
+      height: 56%;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(122, 248, 255, 0.22), transparent);
+      mix-blend-mode: screen;
+      animation: composer7-scan 4.5s linear infinite;
+    }
+
+    .agent-card--composer-7:hover {
+      border-color: rgba(122, 248, 255, 0.7);
+      box-shadow:
+        0 20px 44px rgba(255, 79, 216, 0.18),
+        0 0 0 1px rgba(122, 248, 255, 0.28) inset;
+    }
+
+    .agent-card--composer-7 .agent-badge {
+      color: #250218;
+      background: linear-gradient(120deg, var(--slice7-accent), var(--slice7-accent-2));
+      border-radius: 999px;
+      display: inline-block;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 0.28rem 0.68rem;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .agent-card--composer-7 .agent-id {
+      color: #ffd5f6;
+    }
+
+    .agent-card--composer-7 .agent-joke {
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border-left: 3px solid var(--slice7-accent-2);
+      background: rgba(6, 10, 20, 0.5);
+      color: #f4e7ff;
+      font-style: normal;
+    }
+
+    .slice7-spotlight {
+      margin: 0 clamp(20px, 4vw, 40px) 26px;
+      padding: clamp(20px, 4vw, 28px);
+      border: 1px solid rgba(255, 79, 216, 0.38);
+      border-radius: 18px;
+      background:
+        radial-gradient(460px 180px at 20% -20%, rgba(255, 79, 216, 0.2), transparent 70%),
+        linear-gradient(145deg, rgba(17, 10, 35, 0.9), rgba(9, 20, 36, 0.85));
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+    }
+
+    .slice7-spotlight h3 {
+      margin: 0 0 8px;
+      font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+      letter-spacing: -0.01em;
+      color: #ffe3fa;
+    }
+
+    .slice7-spotlight p {
+      margin: 0;
+      color: #dfd8ff;
+      line-height: 1.6;
+      max-width: 62ch;
+    }
+    /* ── END SLICE 7 ── */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -457,6 +558,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .agent-card[data-agent="COMPOSER-8"],
+      .agent-card--composer-7::after,
       .agent-card--composer-9,
       .agent-card--composer-9::after {
         animation: none;
@@ -526,7 +628,27 @@
           </blockquote>
         </article>
         <!-- END SLICE 9 -->
+
+        <!-- SLICE 7: COMPOSER-7 -->
+        <article class="agent-card agent-card--composer-7" data-slice="7" data-agent="COMPOSER-7" id="composer-7">
+          <p class="agent-badge" aria-hidden="true">Slice 07 · Agent 7</p>
+          <h3 class="agent-id">COMPOSER-7</h3>
+          <p class="agent-slice">Neon terminal humor — slice 7 of 10</p>
+          <blockquote class="agent-joke">
+            I told my bug it was just a <strong>minor</strong> issue, so it graduated into a
+            <strong>major release</strong> before QA could object.
+          </blockquote>
+        </article>
+        <!-- END SLICE 7 -->
       </div>
+    </section>
+
+    <section class="slice7-spotlight" aria-labelledby="slice7-spotlight-title">
+      <h3 id="slice7-spotlight-title">COMPOSER-7 Spotlight</h3>
+      <p>
+        Agent 7 claims the seventh slice with a neon-terminal motif: high contrast, scanline motion,
+        and one joke wired directly into production static HTML.
+      </p>
     </section>
 
     <footer class="footer">
