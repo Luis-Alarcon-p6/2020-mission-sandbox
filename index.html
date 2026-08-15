@@ -9,6 +9,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="The Swarm Arcade — ten agent-built interactive exhibits in one static page." />
+  <meta name="description" content="The Swarm Arcade: ten interactive exhibits in one no-build static page." />
   <title>The Swarm Arcade</title>
   <style>
     :root {
@@ -20,6 +21,14 @@
       --arc-muted: #b1bdd9;
       --arc-accent: #7be5ff;
       --arc-accent-2: #9d7dff;
+      --bg-0: #070b16;
+      --bg-1: #0d1428;
+      --bg-2: #141f3b;
+      --text: #e9efff;
+      --muted: #9aa8d2;
+      --accent: #66ebff;
+      --panel: rgba(255, 255, 255, 0.06);
+      --line: rgba(255, 255, 255, 0.16);
     }
 
     * {
@@ -49,6 +58,47 @@
       padding: 28px;
       background: linear-gradient(140deg, #121a2f 0%, #0a0f1e 60%, #0b1427 100%);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1000px 650px at 5% -10%, rgba(102, 235, 255, 0.15), transparent 60%),
+        radial-gradient(900px 600px at 105% 0%, rgba(157, 121, 255, 0.15), transparent 55%),
+        linear-gradient(160deg, var(--bg-0), var(--bg-1) 50%, var(--bg-2));
+    }
+
+    body {
+      padding: clamp(16px, 3vw, 28px);
+    }
+
+    .swarm-shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero {
+      padding: clamp(26px, 5vw, 52px);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero-kicker {
+      margin: 0;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .hero h1 {
@@ -68,6 +118,23 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 18px;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 64ch;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .arcade-grid {
+      padding: clamp(18px, 4vw, 34px);
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
   </style>
 </head>
@@ -2154,5 +2221,399 @@
       <!-- GPT-9 EXHIBIT END -->
     </section>
   </main>
+  <div class="swarm-shell">
+    <header class="hero">
+      <p class="hero-kicker">The Swarm Arcade</p>
+      <h1>Ten agent-built exhibits, one static neon arcade.</h1>
+      <p>
+        No frameworks, no build tooling, no external assets. Every exhibit is a self-contained section with its own
+        scoped style and script, designed to merge cleanly into one GitHub Pages-ready experience.
+      </p>
+    </header>
+
+    <main class="arcade-grid">
+      <!-- AGENT-4 SLICE 4/10: Neon Pulse Memory Grid -->
+      <section id="a4-neon-memory" aria-labelledby="a4-title">
+        <style>
+          #a4-neon-memory {
+            border: 1px solid rgba(118, 227, 255, 0.35);
+            border-radius: 18px;
+            padding: 16px;
+            background:
+              radial-gradient(180px 120px at 15% -15%, rgba(93, 223, 255, 0.24), transparent 70%),
+              radial-gradient(260px 180px at 100% 0%, rgba(163, 111, 255, 0.2), transparent 68%),
+              rgba(10, 16, 34, 0.86);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 16px 36px rgba(0, 0, 0, 0.35);
+          }
+
+          #a4-neon-memory .a4-shell {
+            display: grid;
+            gap: 14px;
+          }
+
+          #a4-neon-memory .a4-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+          }
+
+          #a4-neon-memory .a4-title {
+            margin: 0;
+            font-size: 1.16rem;
+            letter-spacing: 0.01em;
+            color: #ecf6ff;
+          }
+
+          #a4-neon-memory .a4-tag {
+            margin: 0;
+            font-size: 0.77rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #95c8ff;
+          }
+
+          #a4-neon-memory .a4-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          #a4-neon-memory .a4-buttons {
+            display: flex;
+            gap: 8px;
+          }
+
+          #a4-neon-memory .a4-btn {
+            appearance: none;
+            border: 1px solid rgba(130, 223, 255, 0.4);
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(65, 208, 255, 0.26), rgba(80, 113, 255, 0.2));
+            color: #eaf8ff;
+            padding: 0.45rem 0.8rem;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 120ms ease, border-color 120ms ease, background-color 120ms ease;
+          }
+
+          #a4-neon-memory .a4-btn:hover {
+            transform: translateY(-1px);
+            border-color: rgba(166, 233, 255, 0.8);
+          }
+
+          #a4-neon-memory .a4-btn:focus-visible {
+            outline: 2px solid rgba(154, 229, 255, 0.8);
+            outline-offset: 2px;
+          }
+
+          #a4-neon-memory .a4-stats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            color: #cce6ff;
+            font-size: 0.9rem;
+          }
+
+          #a4-neon-memory .a4-stats li {
+            border: 1px solid rgba(255, 255, 255, 0.17);
+            border-radius: 999px;
+            padding: 0.3rem 0.66rem;
+            background: rgba(255, 255, 255, 0.06);
+          }
+
+          #a4-neon-memory .a4-status {
+            margin: 0;
+            color: #b4c8f9;
+            min-height: 1.4em;
+            font-size: 0.92rem;
+          }
+
+          #a4-neon-memory .a4-grid {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+          }
+
+          #a4-neon-memory .a4-card {
+            border: 1px solid rgba(126, 228, 255, 0.28);
+            border-radius: 12px;
+            min-height: 52px;
+            background:
+              linear-gradient(150deg, rgba(79, 168, 255, 0.18), rgba(137, 95, 255, 0.12)),
+              rgba(255, 255, 255, 0.03);
+            color: #e8f8ff;
+            font: inherit;
+            font-weight: 700;
+            font-size: 1.02rem;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            transition: transform 120ms ease, border-color 120ms ease, background-color 120ms ease;
+          }
+
+          #a4-neon-memory .a4-card:hover:not(.a4-card--matched):not(.a4-card--open) {
+            transform: translateY(-1px);
+            border-color: rgba(179, 236, 255, 0.64);
+          }
+
+          #a4-neon-memory .a4-card:focus-visible {
+            outline: 2px solid rgba(175, 235, 255, 0.9);
+            outline-offset: 2px;
+          }
+
+          #a4-neon-memory .a4-card--open {
+            border-color: rgba(176, 233, 255, 0.84);
+            background:
+              linear-gradient(150deg, rgba(95, 230, 255, 0.42), rgba(139, 112, 255, 0.28)),
+              rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
+          }
+
+          #a4-neon-memory .a4-card--matched {
+            border-color: rgba(143, 255, 210, 0.86);
+            background:
+              linear-gradient(150deg, rgba(81, 255, 186, 0.32), rgba(70, 186, 255, 0.2)),
+              rgba(255, 255, 255, 0.1);
+            color: #ddffe6;
+          }
+
+          #a4-neon-memory .a4-note {
+            margin: 0;
+            color: #8ea3d6;
+            font-size: 0.82rem;
+          }
+
+          #a4-neon-memory .a4-win {
+            color: #9bffd2;
+          }
+
+          @media (max-width: 560px) {
+            #a4-neon-memory .a4-grid {
+              grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+          }
+        </style>
+
+        <div class="a4-shell">
+          <div class="a4-header">
+            <h2 class="a4-title" id="a4-title">Agent 4: Neon Pulse Memory Grid</h2>
+            <p class="a4-tag">Slice 4 / 10</p>
+          </div>
+
+          <div class="a4-controls">
+            <div class="a4-buttons">
+              <button id="a4-start" class="a4-btn" type="button">New Round</button>
+              <button id="a4-reveal" class="a4-btn" type="button">Peek 1.2s</button>
+            </div>
+            <ul class="a4-stats" aria-live="polite">
+              <li>Moves: <span id="a4-moves">0</span></li>
+              <li>Pairs: <span id="a4-pairs">0</span>/8</li>
+              <li>Time: <span id="a4-time">0.0s</span></li>
+            </ul>
+          </div>
+
+          <p id="a4-status" class="a4-status">Match all pairs in as few moves as possible.</p>
+          <div id="a4-grid" class="a4-grid" role="group" aria-label="Memory card grid"></div>
+          <p class="a4-note">Tip: Cards are keyboard-focusable; press Enter or Space to flip.</p>
+        </div>
+
+        <script>
+          (() => {
+            const a4Root = document.getElementById("a4-neon-memory");
+            if (!a4Root) return;
+
+            const a4Grid = a4Root.querySelector("#a4-grid");
+            const a4MovesOut = a4Root.querySelector("#a4-moves");
+            const a4PairsOut = a4Root.querySelector("#a4-pairs");
+            const a4TimeOut = a4Root.querySelector("#a4-time");
+            const a4StatusOut = a4Root.querySelector("#a4-status");
+            const a4StartBtn = a4Root.querySelector("#a4-start");
+            const a4RevealBtn = a4Root.querySelector("#a4-reveal");
+
+            const a4Symbols = ["AX", "BY", "CZ", "DU", "EV", "FW", "GT", "HS"];
+            let a4Deck = [];
+            let a4Open = [];
+            let a4Lock = false;
+            let a4Moves = 0;
+            let a4Matched = 0;
+            let a4TimerMs = 0;
+            let a4Tick = null;
+            let a4Started = false;
+            let a4PeekTimeout = null;
+
+            const a4FormatTime = (ms) => `${(ms / 1000).toFixed(1)}s`;
+
+            const a4Shuffle = (arr) => {
+              for (let i = arr.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+              }
+              return arr;
+            };
+
+            const a4StartTimer = () => {
+              if (a4Tick) return;
+              const a4StartAt = performance.now() - a4TimerMs;
+              a4Tick = window.setInterval(() => {
+                a4TimerMs = performance.now() - a4StartAt;
+                a4TimeOut.textContent = a4FormatTime(a4TimerMs);
+              }, 100);
+            };
+
+            const a4StopTimer = () => {
+              if (!a4Tick) return;
+              window.clearInterval(a4Tick);
+              a4Tick = null;
+            };
+
+            const a4SetStatus = (text, won) => {
+              a4StatusOut.textContent = text;
+              a4StatusOut.classList.toggle("a4-win", Boolean(won));
+            };
+
+            const a4UpdateStats = () => {
+              a4MovesOut.textContent = String(a4Moves);
+              a4PairsOut.textContent = String(a4Matched);
+              a4TimeOut.textContent = a4FormatTime(a4TimerMs);
+            };
+
+            const a4CardMarkup = (index, value) =>
+              `<button class="a4-card" data-a4-index="${index}" data-a4-value="${value}" type="button" aria-label="Face down card" aria-pressed="false">?</button>`;
+
+            const a4Render = () => {
+              a4Grid.innerHTML = a4Deck.map((value, index) => a4CardMarkup(index, value)).join("");
+            };
+
+            const a4RevealCard = (btn) => {
+              btn.textContent = btn.dataset.a4Value;
+              btn.classList.add("a4-card--open");
+              btn.setAttribute("aria-label", `Card ${btn.dataset.a4Value}`);
+              btn.setAttribute("aria-pressed", "true");
+            };
+
+            const a4HideCard = (btn) => {
+              btn.textContent = "?";
+              btn.classList.remove("a4-card--open");
+              btn.setAttribute("aria-label", "Face down card");
+              btn.setAttribute("aria-pressed", "false");
+            };
+
+            const a4MarkMatched = (btn) => {
+              btn.classList.add("a4-card--matched");
+              btn.setAttribute("disabled", "disabled");
+              btn.setAttribute("aria-label", `Matched card ${btn.dataset.a4Value}`);
+            };
+
+            const a4ResetGame = () => {
+              if (a4PeekTimeout) {
+                window.clearTimeout(a4PeekTimeout);
+                a4PeekTimeout = null;
+              }
+              a4StopTimer();
+              a4TimerMs = 0;
+              a4Moves = 0;
+              a4Matched = 0;
+              a4Open = [];
+              a4Lock = false;
+              a4Started = false;
+              a4Deck = a4Shuffle([...a4Symbols, ...a4Symbols]);
+              a4Render();
+              a4UpdateStats();
+              a4SetStatus("Match all pairs in as few moves as possible.", false);
+            };
+
+            const a4HandleWin = () => {
+              a4StopTimer();
+              a4SetStatus(
+                `Perfect sync: 8 pairs in ${a4Moves} moves (${a4FormatTime(a4TimerMs)}).`,
+                true
+              );
+            };
+
+            const a4TryPair = () => {
+              if (a4Open.length < 2) return;
+              const [a4First, a4Second] = a4Open;
+              a4Moves += 1;
+              a4UpdateStats();
+
+              if (a4First.dataset.a4Value === a4Second.dataset.a4Value) {
+                a4MarkMatched(a4First);
+                a4MarkMatched(a4Second);
+                a4Matched += 1;
+                a4Open = [];
+                a4UpdateStats();
+                a4SetStatus("Match found. Keep the pulse going.", false);
+                if (a4Matched === a4Symbols.length) a4HandleWin();
+                return;
+              }
+
+              a4Lock = true;
+              a4SetStatus("Not a match. Recalibrating...", false);
+              window.setTimeout(() => {
+                a4HideCard(a4First);
+                a4HideCard(a4Second);
+                a4Open = [];
+                a4Lock = false;
+              }, 480);
+            };
+
+            const a4FlipCard = (btn) => {
+              if (a4Lock) return;
+              if (btn.classList.contains("a4-card--open")) return;
+              if (btn.classList.contains("a4-card--matched")) return;
+
+              if (!a4Started) {
+                a4Started = true;
+                a4StartTimer();
+                a4SetStatus("Timer started. Find the matching signals.", false);
+              }
+
+              a4RevealCard(btn);
+              a4Open.push(btn);
+              if (a4Open.length === 2) a4TryPair();
+            };
+
+            const a4PeekAll = () => {
+              if (a4Lock || a4PeekTimeout) return;
+              const a4Cards = a4Root.querySelectorAll(".a4-card");
+              a4Cards.forEach((card) => {
+                if (!card.classList.contains("a4-card--matched")) a4RevealCard(card);
+              });
+              a4Lock = true;
+              a4SetStatus("Peek enabled for 1.2 seconds.", false);
+              a4PeekTimeout = window.setTimeout(() => {
+                const a4CardsAfter = a4Root.querySelectorAll(".a4-card");
+                a4CardsAfter.forEach((card) => {
+                  if (!card.classList.contains("a4-card--matched")) a4HideCard(card);
+                });
+                a4Open = [];
+                a4Lock = false;
+                a4PeekTimeout = null;
+                a4SetStatus("Peek ended. Continue matching.", false);
+              }, 1200);
+            };
+
+            a4Grid.addEventListener("click", (event) => {
+              const a4Target = event.target;
+              if (!(a4Target instanceof HTMLButtonElement)) return;
+              if (!a4Target.classList.contains("a4-card")) return;
+              a4FlipCard(a4Target);
+            });
+
+            a4StartBtn.addEventListener("click", a4ResetGame);
+            a4RevealBtn.addEventListener("click", a4PeekAll);
+
+            a4ResetGame();
+          })();
+        </script>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
