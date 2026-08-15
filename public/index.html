@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      background: #f6f7f9;
+      color: #1a1a1a;
+    }
+    h1 { margin: 0 0 1rem; font-size: 1.5rem; }
+    .editor {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    input, textarea, button {
+      font: inherit;
+      width: 100%;
+    }
+    input {
+      border: none;
+      border-bottom: 1px solid #eee;
+      padding: 0.5rem 0;
+      margin-bottom: 0.75rem;
+      outline: none;
+    }
+    input:focus { border-bottom-color: #2563eb; }
+    textarea {
+      border: 1px solid #eee;
+      border-radius: 4px;
+      padding: 0.5rem;
+      min-height: 100px;
+      resize: vertical;
+      outline: none;
+    }
+    textarea:focus { border-color: #2563eb; }
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    button {
+      width: auto;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+    }
+    button.secondary { background: #e5e7eb; color: #374151; }
+    button.danger { background: #dc2626; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .notes-list { list-style: none; padding: 0; margin: 0; }
+    .note-item {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+    }
+    .note-item:hover { border-color: #2563eb; }
+    .note-item.active { border-color: #2563eb; box-shadow: 0 0 0 2px #bfdbfe; }
+    .note-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .note-preview {
+      color: #6b7280;
+      font-size: 0.875rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .empty { color: #6b7280; text-align: center; padding: 2rem; }
+    .error {
+      background: #fef2f2;
+      color: #b91c1c;
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .error.visible { display: block; }
+  </style>
+</head>
+<body>
+  <h1>Notes</h1>
+  <div id="error" class="error" role="alert"></div>
+
+  <div class="editor">
+    <input id="title" type="text" placeholder="Title" aria-label="Note title">
+    <textarea id="content" placeholder="Write your note…" aria-label="Note content"></textarea>
+    <div class="actions">
+      <button id="save" type="button">Save</button>
+      <button id="cancel" type="button" class="secondary" hidden>Cancel</button>
+      <button id="delete" type="button" class="danger" hidden>Delete</button>
+    </div>
+  </div>
+
+  <ul id="notes" class="notes-list" aria-label="Saved notes"></ul>
+
+  <script>
+    const titleInput = document.getElementById('title');
+    const contentInput = document.getElementById('content');
+    const saveBtn = document.getElementById('save');
+    const cancelBtn = document.getElementById('cancel');
+    const deleteBtn = document.getElementById('delete');
+    const notesList = document.getElementById('notes');
+    const errorEl = document.getElementById('error');
+
+    let selectedId = null;
+
+    function showError(msg) {
+      errorEl.textContent = msg;
+      errorEl.classList.add('visible');
+    }
+
+    function clearError() {
+      errorEl.textContent = '';
+      errorEl.classList.remove('visible');
+    }
+
+    async function api(path, options = {}) {
+      const res = await fetch('/api/notes' + path, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options,
+      });
+      if (res.status === 204) return null;
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed');
+      return data;
+    }
+
+    function clearEditor() {
+      selectedId = null;
+      titleInput.value = '';
+      contentInput.value = '';
+      cancelBtn.hidden = true;
+      deleteBtn.hidden = true;
+      saveBtn.textContent = 'Save';
+      document.querySelectorAll('.note-item.active').forEach((el) => el.classList.remove('active'));
+    }
+
+    function selectNote(note) {
+      selectedId = note.id;
+      titleInput.value = note.title;
+      contentInput.value = note.content;
+      cancelBtn.hidden = false;
+      deleteBtn.hidden = false;
+      saveBtn.textContent = 'Update';
+      document.querySelectorAll('.note-item').forEach((el) => {
+        el.classList.toggle('active', Number(el.dataset.id) === note.id);
+      });
+    }
+
+    function renderNotes(notes) {
+      if (notes.length === 0) {
+        notesList.innerHTML = '<li class="empty">No notes yet. Write one above.</li>';
+        return;
+      }
+      notesList.innerHTML = notes.map((n) => `
+        <li class="note-item${selectedId === n.id ? ' active' : ''}" data-id="${n.id}">
+          <div class="note-title">${escapeHtml(n.title || 'Untitled')}</div>
+          <div class="note-preview">${escapeHtml(n.content || '')}</div>
+        </li>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    async function loadNotes() {
+      try {
+        clearError();
+        const notes = await api('');
+        renderNotes(notes);
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    saveBtn.addEventListener('click', async () => {
+      const body = { title: titleInput.value, content: contentInput.value };
+      try {
+        clearError();
+        if (selectedId) {
+          await api('/' + selectedId, { method: 'PUT', body: JSON.stringify(body) });
+        } else {
+          await api('', { method: 'POST', body: JSON.stringify(body) });
+        }
+        clearEditor();
+        await loadNotes();
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+
+    cancelBtn.addEventListener('click', clearEditor);
+
+    deleteBtn.addEventListener('click', async () => {
+      if (!selectedId) return;
+      try {
+        clearError();
+        await api('/' + selectedId, { method: 'DELETE' });
+        clearEditor();
+        await loadNotes();
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+
+    notesList.addEventListener('click', async (e) => {
+      const item = e.target.closest('.note-item');
+      if (!item || !item.dataset.id) return;
+      try {
+        clearError();
+        const note = await api('/' + item.dataset.id);
+        selectNote(note);
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+
+    loadNotes();
+  </script>
+</body>
+</html>
