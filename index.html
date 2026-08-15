@@ -3017,3 +3017,459 @@
   </script>
 </section>
 <!-- SLICE 7 END: GPT-7 Photon Pinball Field -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Swarm Arcade</title>
+</head>
+<body style="margin:0;background:radial-gradient(circle at 20% 10%, #1a254a 0%, #060912 45%, #04050a 100%);color:#eaf0ff;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;">
+  <main style="max-width:1200px;margin:0 auto;padding:40px 20px 56px;">
+    <header style="text-align:center;padding:36px 20px 30px;border:1px solid #24325f;border-radius:22px;background:linear-gradient(145deg, rgba(102,154,255,0.16), rgba(84,248,255,0.08));box-shadow:0 20px 70px rgba(0,0,0,0.45);">
+      <p style="margin:0 0 12px;letter-spacing:0.12em;text-transform:uppercase;color:#88a7ff;font-size:0.78rem;">Cursor Swarm Showcase</p>
+      <h1 style="margin:0;font-size:clamp(2rem, 4vw, 3.4rem);line-height:1.1;">The Swarm Arcade</h1>
+      <p style="margin:14px auto 0;max-width:760px;color:#c8d7ff;line-height:1.6;">
+        Ten agents, ten interactive exhibits, one static page. Explore mini games, visual toys, and kinetic experiments built fully inline with zero external assets.
+      </p>
+    </header>
+
+    <section id="swarm-exhibit-grid" style="margin-top:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+      <!-- AGENT-1 EXHIBIT SLOT -->
+      <!-- AGENT-2 EXHIBIT SLOT -->
+
+      <!-- AGENT-3 EXHIBIT START -->
+      <section id="agent3-neon-orbit-pong" class="agent3-shell" aria-labelledby="agent3-title">
+        <style>
+          #agent3-neon-orbit-pong {
+            background: linear-gradient(170deg, rgba(17, 23, 48, 0.95), rgba(8, 10, 24, 0.95));
+            border: 1px solid #2b3a73;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(125, 146, 255, 0.16) inset;
+          }
+
+          #agent3-neon-orbit-pong .agent3-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 10px;
+          }
+
+          #agent3-neon-orbit-pong .agent3-kicker {
+            margin: 0;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #7fb2ff;
+          }
+
+          #agent3-neon-orbit-pong .agent3-title {
+            margin: 2px 0 0;
+            font-size: 1.18rem;
+            letter-spacing: 0.01em;
+          }
+
+          #agent3-neon-orbit-pong .agent3-instructions {
+            margin: 0 0 10px;
+            color: #b9c8f7;
+            font-size: 0.88rem;
+            line-height: 1.45;
+          }
+
+          #agent3-neon-orbit-pong .agent3-stage {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #31417f;
+            background: #050712;
+          }
+
+          #agent3-neon-orbit-pong #agent3-canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: radial-gradient(circle at 50% 50%, rgba(28, 53, 118, 0.3), rgba(3, 7, 18, 0.96));
+          }
+
+          #agent3-neon-orbit-pong .agent3-ui {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+          }
+
+          #agent3-neon-orbit-pong .agent3-stats {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+          }
+
+          #agent3-neon-orbit-pong .agent3-chip {
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            border: 1px solid #3b4d91;
+            background: rgba(108, 145, 255, 0.16);
+            color: #d8e4ff;
+          }
+
+          #agent3-neon-orbit-pong .agent3-buttons {
+            display: flex;
+            gap: 8px;
+          }
+
+          #agent3-neon-orbit-pong .agent3-button {
+            border: 1px solid #4f66b8;
+            background: linear-gradient(145deg, rgba(122, 165, 255, 0.25), rgba(87, 237, 255, 0.18));
+            color: #f2f7ff;
+            border-radius: 10px;
+            padding: 7px 11px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 120ms ease, box-shadow 120ms ease;
+          }
+
+          #agent3-neon-orbit-pong .agent3-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 14px rgba(104, 197, 255, 0.4);
+          }
+
+          #agent3-neon-orbit-pong .agent3-button:focus-visible {
+            outline: 2px solid #76c8ff;
+            outline-offset: 2px;
+          }
+
+          #agent3-neon-orbit-pong .agent3-status {
+            margin: 10px 0 0;
+            min-height: 1.2em;
+            font-size: 0.82rem;
+            color: #9de8ff;
+          }
+
+          #agent3-neon-orbit-pong .agent3-status.agent3-danger {
+            color: #ff97a8;
+          }
+
+          #agent3-neon-orbit-pong .agent3-glow {
+            animation: agent3-pulse 1.2s ease-in-out;
+          }
+
+          @keyframes agent3-pulse {
+            0% { text-shadow: 0 0 0 rgba(151, 245, 255, 0); }
+            50% { text-shadow: 0 0 10px rgba(151, 245, 255, 0.7); }
+            100% { text-shadow: 0 0 0 rgba(151, 245, 255, 0); }
+          }
+        </style>
+
+        <div class="agent3-header">
+          <div>
+            <p class="agent3-kicker">Slice 3 · Agent 3</p>
+            <h2 id="agent3-title" class="agent3-title">Neon Orbit Pong</h2>
+          </div>
+        </div>
+        <p class="agent3-instructions">
+          Move your paddle with mouse, touch, or arrow keys. Keep the orb alive and cross the neon orbit ring for bonus points.
+        </p>
+        <div class="agent3-stage">
+          <canvas id="agent3-canvas" width="420" height="250" aria-label="Neon Orbit Pong game area"></canvas>
+        </div>
+        <div class="agent3-ui">
+          <div class="agent3-stats">
+            <span class="agent3-chip">Score <strong id="agent3-score">0</strong></span>
+            <span class="agent3-chip">Lives <strong id="agent3-lives">3</strong></span>
+            <span class="agent3-chip">Ring Bonus <strong id="agent3-bonus">0</strong></span>
+          </div>
+          <div class="agent3-buttons">
+            <button id="agent3-toggle" class="agent3-button" type="button">Start</button>
+            <button id="agent3-reset" class="agent3-button" type="button">Reset</button>
+          </div>
+        </div>
+        <p id="agent3-status" class="agent3-status">Press Start to launch.</p>
+
+        <script>
+          (() => {
+            const agent3Root = document.getElementById("agent3-neon-orbit-pong");
+            if (!agent3Root) return;
+
+            const agent3Canvas = agent3Root.querySelector("#agent3-canvas");
+            const agent3Ctx = agent3Canvas.getContext("2d");
+            const agent3ScoreEl = agent3Root.querySelector("#agent3-score");
+            const agent3LivesEl = agent3Root.querySelector("#agent3-lives");
+            const agent3BonusEl = agent3Root.querySelector("#agent3-bonus");
+            const agent3StatusEl = agent3Root.querySelector("#agent3-status");
+            const agent3ToggleBtn = agent3Root.querySelector("#agent3-toggle");
+            const agent3ResetBtn = agent3Root.querySelector("#agent3-reset");
+
+            const agent3State = {
+              running: false,
+              gameOver: false,
+              score: 0,
+              lives: 3,
+              bonus: 0,
+              paddleX: 180,
+              paddleW: 92,
+              paddleH: 12,
+              ballX: 210,
+              ballY: 160,
+              ballR: 7,
+              ballVX: 2.2,
+              ballVY: -2.4,
+              ringBase: 64,
+              ringPulse: 0,
+              ringCooldown: 0,
+              trail: []
+            };
+
+            const agent3Bounds = {
+              width: agent3Canvas.width,
+              height: agent3Canvas.height
+            };
+
+            let agent3LastFrame = 0;
+            let agent3FrameHandle = 0;
+
+            function agent3ResetBall() {
+              agent3State.ballX = agent3Bounds.width * 0.5;
+              agent3State.ballY = agent3Bounds.height * 0.45;
+              const agent3Direction = Math.random() < 0.5 ? -1 : 1;
+              agent3State.ballVX = (1.9 + Math.random() * 1.2) * agent3Direction;
+              agent3State.ballVY = -2.1 - Math.random() * 1.1;
+              agent3State.trail = [];
+              agent3State.ringCooldown = 0;
+            }
+
+            function agent3ResetGame() {
+              agent3State.running = false;
+              agent3State.gameOver = false;
+              agent3State.score = 0;
+              agent3State.lives = 3;
+              agent3State.bonus = 0;
+              agent3State.paddleX = (agent3Bounds.width - agent3State.paddleW) / 2;
+              agent3State.ringPulse = 0;
+              agent3StatusEl.textContent = "Press Start to launch.";
+              agent3StatusEl.classList.remove("agent3-danger", "agent3-glow");
+              agent3ToggleBtn.textContent = "Start";
+              agent3ResetBall();
+              agent3Render();
+              agent3SyncHud();
+            }
+
+            function agent3SetStatus(agent3Message, agent3Danger = false, agent3Glow = false) {
+              agent3StatusEl.textContent = agent3Message;
+              agent3StatusEl.classList.toggle("agent3-danger", agent3Danger);
+              agent3StatusEl.classList.remove("agent3-glow");
+              if (agent3Glow) {
+                void agent3StatusEl.offsetWidth;
+                agent3StatusEl.classList.add("agent3-glow");
+              }
+            }
+
+            function agent3SyncHud() {
+              agent3ScoreEl.textContent = String(agent3State.score);
+              agent3LivesEl.textContent = String(agent3State.lives);
+              agent3BonusEl.textContent = String(agent3State.bonus);
+            }
+
+            function agent3MovePaddle(agent3ClientX) {
+              const agent3Rect = agent3Canvas.getBoundingClientRect();
+              const agent3X = ((agent3ClientX - agent3Rect.left) / agent3Rect.width) * agent3Bounds.width;
+              const agent3Max = agent3Bounds.width - agent3State.paddleW;
+              agent3State.paddleX = Math.max(0, Math.min(agent3Max, agent3X - agent3State.paddleW / 2));
+            }
+
+            function agent3Tick(agent3Time) {
+              if (!agent3State.running) return;
+              if (!agent3LastFrame) agent3LastFrame = agent3Time;
+
+              const agent3Delta = Math.min(1.8, (agent3Time - agent3LastFrame) / 16.67);
+              agent3LastFrame = agent3Time;
+
+              agent3State.ringPulse += 0.025 * agent3Delta;
+              if (agent3State.ringCooldown > 0) agent3State.ringCooldown -= 1 * agent3Delta;
+
+              const agent3CenterX = agent3Bounds.width * 0.5;
+              const agent3CenterY = agent3Bounds.height * 0.48;
+              const agent3DxCenter = agent3CenterX - agent3State.ballX;
+              const agent3DyCenter = agent3CenterY - agent3State.ballY;
+              agent3State.ballVX += agent3DxCenter * 0.0009 * agent3Delta;
+              agent3State.ballVY += agent3DyCenter * 0.0009 * agent3Delta;
+
+              agent3State.ballX += agent3State.ballVX * agent3Delta;
+              agent3State.ballY += agent3State.ballVY * agent3Delta;
+
+              agent3State.trail.push({ x: agent3State.ballX, y: agent3State.ballY });
+              if (agent3State.trail.length > 14) agent3State.trail.shift();
+
+              if (agent3State.ballX - agent3State.ballR <= 0 || agent3State.ballX + agent3State.ballR >= agent3Bounds.width) {
+                agent3State.ballVX *= -1;
+                agent3State.ballX = Math.max(agent3State.ballR, Math.min(agent3Bounds.width - agent3State.ballR, agent3State.ballX));
+              }
+              if (agent3State.ballY - agent3State.ballR <= 0) {
+                agent3State.ballVY = Math.abs(agent3State.ballVY);
+                agent3State.ballY = agent3State.ballR;
+              }
+
+              const agent3PaddleY = agent3Bounds.height - 20;
+              if (
+                agent3State.ballVY > 0 &&
+                agent3State.ballY + agent3State.ballR >= agent3PaddleY &&
+                agent3State.ballY + agent3State.ballR <= agent3PaddleY + agent3State.paddleH + 8 &&
+                agent3State.ballX >= agent3State.paddleX &&
+                agent3State.ballX <= agent3State.paddleX + agent3State.paddleW
+              ) {
+                const agent3HitNorm = (agent3State.ballX - (agent3State.paddleX + agent3State.paddleW / 2)) / (agent3State.paddleW / 2);
+                agent3State.ballVY = -Math.abs(agent3State.ballVY) - 0.08;
+                agent3State.ballVX += agent3HitNorm * 0.45;
+                agent3State.score += 1;
+                agent3SetStatus("Nice return!", false, true);
+              }
+
+              const agent3RingRadius = agent3State.ringBase + Math.sin(agent3State.ringPulse) * 10;
+              const agent3Dist = Math.hypot(agent3State.ballX - agent3CenterX, agent3State.ballY - agent3CenterY);
+              if (Math.abs(agent3Dist - agent3RingRadius) < 2.2 && agent3State.ringCooldown <= 0) {
+                agent3State.score += 4;
+                agent3State.bonus += 1;
+                agent3State.ringCooldown = 20;
+                agent3SetStatus("Orbit ring bonus +4!", false, true);
+              }
+
+              if (agent3State.ballY - agent3State.ballR > agent3Bounds.height) {
+                agent3State.lives -= 1;
+                if (agent3State.lives <= 0) {
+                  agent3State.gameOver = true;
+                  agent3State.running = false;
+                  agent3ToggleBtn.textContent = "Restart";
+                  agent3SetStatus("Game over — hit Restart to try again.", true, false);
+                } else {
+                  agent3SetStatus("Life lost. Keep orbiting!", true, false);
+                  agent3ResetBall();
+                }
+              }
+
+              if (Math.abs(agent3State.ballVX) > 5.6) agent3State.ballVX *= 0.98;
+              if (Math.abs(agent3State.ballVY) > 5.6) agent3State.ballVY *= 0.98;
+
+              agent3SyncHud();
+              agent3Render();
+
+              if (agent3State.running) {
+                agent3FrameHandle = requestAnimationFrame(agent3Tick);
+              }
+            }
+
+            function agent3Render() {
+              const agent3W = agent3Bounds.width;
+              const agent3H = agent3Bounds.height;
+              const agent3CenterX = agent3W * 0.5;
+              const agent3CenterY = agent3H * 0.48;
+              const agent3RingRadius = agent3State.ringBase + Math.sin(agent3State.ringPulse) * 10;
+
+              agent3Ctx.clearRect(0, 0, agent3W, agent3H);
+
+              const agent3Bg = agent3Ctx.createLinearGradient(0, 0, 0, agent3H);
+              agent3Bg.addColorStop(0, "#07102b");
+              agent3Bg.addColorStop(1, "#030611");
+              agent3Ctx.fillStyle = agent3Bg;
+              agent3Ctx.fillRect(0, 0, agent3W, agent3H);
+
+              agent3Ctx.strokeStyle = "rgba(110, 200, 255, 0.45)";
+              agent3Ctx.lineWidth = 2;
+              agent3Ctx.beginPath();
+              agent3Ctx.arc(agent3CenterX, agent3CenterY, agent3RingRadius, 0, Math.PI * 2);
+              agent3Ctx.stroke();
+
+              agent3Ctx.fillStyle = "rgba(78, 151, 255, 0.24)";
+              agent3Ctx.beginPath();
+              agent3Ctx.arc(agent3CenterX, agent3CenterY, 16, 0, Math.PI * 2);
+              agent3Ctx.fill();
+
+              for (let agent3Index = 0; agent3Index < agent3State.trail.length; agent3Index += 1) {
+                const agent3Point = agent3State.trail[agent3Index];
+                const agent3Alpha = (agent3Index + 1) / agent3State.trail.length;
+                agent3Ctx.fillStyle = `rgba(112, 224, 255, ${0.08 * agent3Alpha})`;
+                agent3Ctx.beginPath();
+                agent3Ctx.arc(agent3Point.x, agent3Point.y, agent3State.ballR * (0.45 + agent3Alpha * 0.45), 0, Math.PI * 2);
+                agent3Ctx.fill();
+              }
+
+              agent3Ctx.fillStyle = "#7df5ff";
+              agent3Ctx.beginPath();
+              agent3Ctx.arc(agent3State.ballX, agent3State.ballY, agent3State.ballR, 0, Math.PI * 2);
+              agent3Ctx.fill();
+
+              const agent3PaddleY = agent3H - 20;
+              const agent3PaddleGrad = agent3Ctx.createLinearGradient(agent3State.paddleX, agent3PaddleY, agent3State.paddleX + agent3State.paddleW, agent3PaddleY);
+              agent3PaddleGrad.addColorStop(0, "#87abff");
+              agent3PaddleGrad.addColorStop(1, "#6ff2ff");
+              agent3Ctx.fillStyle = agent3PaddleGrad;
+              agent3Ctx.fillRect(agent3State.paddleX, agent3PaddleY, agent3State.paddleW, agent3State.paddleH);
+            }
+
+            function agent3StartOrPause() {
+              if (agent3State.gameOver) {
+                agent3ResetGame();
+              }
+
+              agent3State.running = !agent3State.running;
+              agent3ToggleBtn.textContent = agent3State.running ? "Pause" : "Start";
+
+              if (agent3State.running) {
+                agent3SetStatus("Game in motion.", false, false);
+                agent3LastFrame = 0;
+                cancelAnimationFrame(agent3FrameHandle);
+                agent3FrameHandle = requestAnimationFrame(agent3Tick);
+              } else {
+                agent3SetStatus("Paused. Press Start to continue.", false, false);
+              }
+            }
+
+            agent3Canvas.addEventListener("mousemove", (agent3Event) => {
+              agent3MovePaddle(agent3Event.clientX);
+            });
+
+            agent3Canvas.addEventListener("touchmove", (agent3Event) => {
+              if (agent3Event.touches.length > 0) {
+                agent3MovePaddle(agent3Event.touches[0].clientX);
+              }
+              agent3Event.preventDefault();
+            }, { passive: false });
+
+            window.addEventListener("keydown", (agent3Event) => {
+              if (agent3Event.key === "ArrowLeft") {
+                agent3State.paddleX = Math.max(0, agent3State.paddleX - 18);
+              } else if (agent3Event.key === "ArrowRight") {
+                const agent3Max = agent3Bounds.width - agent3State.paddleW;
+                agent3State.paddleX = Math.min(agent3Max, agent3State.paddleX + 18);
+              } else if (agent3Event.key === " " || agent3Event.key === "Enter") {
+                if (agent3Root.contains(document.activeElement) || document.activeElement === document.body) {
+                  agent3Event.preventDefault();
+                  agent3StartOrPause();
+                }
+              }
+            });
+
+            agent3ToggleBtn.addEventListener("click", agent3StartOrPause);
+            agent3ResetBtn.addEventListener("click", agent3ResetGame);
+
+            agent3ResetGame();
+          })();
+        </script>
+      </section>
+      <!-- AGENT-3 EXHIBIT END -->
+
+      <!-- AGENT-4 EXHIBIT SLOT -->
+      <!-- AGENT-5 EXHIBIT SLOT -->
+      <!-- AGENT-6 EXHIBIT SLOT -->
+      <!-- AGENT-7 EXHIBIT SLOT -->
+      <!-- AGENT-8 EXHIBIT SLOT -->
+      <!-- AGENT-9 EXHIBIT SLOT -->
+      <!-- AGENT-10 EXHIBIT SLOT -->
+    </section>
+  </main>
+</body>
+</html>
