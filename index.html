@@ -177,123 +177,169 @@
       border-bottom-style: solid;
     }
 
-    /* SLICE 7 — Agent roster grid (COMPOSER-7) */
+    /* ── Slice 8: swarm roster shell (shared grid; agents add cards via comment markers) ── */
     .swarm-roster {
       border-top: 1px solid rgba(255, 255, 255, 0.12);
-      padding: clamp(24px, 4vw, 42px) clamp(24px, 4vw, 58px);
+      padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px) clamp(32px, 5vw, 52px);
       background:
-        radial-gradient(600px 280px at 50% 0%, rgba(102, 227, 255, 0.08), transparent 70%),
+        radial-gradient(600px 320px at 50% 0%, rgba(255, 183, 77, 0.08), transparent 70%),
         rgba(6, 10, 22, 0.35);
     }
 
     .swarm-roster__header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
+      text-align: center;
+      margin-bottom: clamp(24px, 4vw, 36px);
     }
 
-    .swarm-roster__title {
+    .swarm-roster__header h2 {
       margin: 0;
-      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-size: clamp(1.35rem, 3vw, 1.85rem);
       letter-spacing: -0.02em;
-      color: #e8eeff;
+      background: linear-gradient(120deg, var(--text) 30%, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .swarm-roster__hint {
-      margin: 0;
-      font-size: 0.82rem;
+    .swarm-roster__header p {
+      margin: 10px auto 0;
+      max-width: 48ch;
       color: var(--muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      font-size: 0.98rem;
+      line-height: 1.6;
     }
 
-    .agent-grid {
+    .swarm-roster__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
     }
 
     .agent-card {
       position: relative;
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.14);
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-      padding: 18px 18px 16px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      padding: 20px 20px 18px;
+      overflow: hidden;
+      transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    }
+
+    .agent-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 220ms ease;
+      pointer-events: none;
     }
 
     .agent-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(102, 227, 255, 0.45);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(102, 227, 255, 0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+    }
+
+    .agent-card:hover::before {
+      opacity: 1;
     }
 
     .agent-card__badge {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 10px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      color: #061024;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 6px 16px rgba(102, 227, 255, 0.35);
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.28rem 0.65rem;
       margin-bottom: 12px;
     }
 
     .agent-card__id {
-      margin: 0 0 6px;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: #f0f4ff;
-    }
-
-    .agent-card__slice {
-      margin: 0 0 12px;
-      font-size: 0.75rem;
-      color: var(--accent);
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
     }
 
     .agent-card__joke {
-      margin: 0;
-      font-size: 0.92rem;
+      margin: 12px 0 0;
+      color: #d5dcf5;
+      font-size: 0.94rem;
       line-height: 1.55;
-      color: #c8d2f0;
       font-style: italic;
     }
 
-    .agent-card--composer-7 {
-      grid-column: span 1;
-      border-color: rgba(102, 227, 255, 0.28);
-      background:
-        linear-gradient(155deg, rgba(102, 227, 255, 0.12), rgba(155, 140, 255, 0.08)),
-        rgba(255, 255, 255, 0.04);
+    .agent-card__joke::before {
+      content: "“";
+      color: var(--muted);
+      font-style: normal;
     }
 
-    .agent-card--composer-7::before {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(102, 227, 255, 0.55), rgba(155, 140, 255, 0.35));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      opacity: 0.85;
+    .agent-card__joke::after {
+      content: "”";
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    /* ── Slice 8: COMPOSER-8 scoped accent (amber glow + entrance) ── */
+    @keyframes composer8-rise {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .agent-card[data-agent="COMPOSER-8"] {
+      --slice8-accent: #ffb74d;
+      --slice8-accent-soft: rgba(255, 183, 77, 0.22);
+      animation: composer8-rise 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: 120ms;
+      border-color: rgba(255, 183, 77, 0.35);
+    }
+
+    .agent-card[data-agent="COMPOSER-8"]::before {
+      background: radial-gradient(420px 180px at 20% 0%, var(--slice8-accent-soft), transparent 65%);
+    }
+
+    .agent-card[data-agent="COMPOSER-8"]:hover {
+      border-color: rgba(255, 183, 77, 0.55);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.32),
+        0 0 0 1px rgba(255, 183, 77, 0.18),
+        0 0 28px rgba(255, 183, 77, 0.16);
+    }
+
+    .agent-card[data-agent="COMPOSER-8"] .agent-card__badge {
+      color: #ffe0b2;
+      background: rgba(255, 183, 77, 0.14);
+      border: 1px solid rgba(255, 183, 77, 0.35);
+    }
+
+    .agent-card[data-agent="COMPOSER-8"] .agent-card__badge span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--slice8-accent);
+      box-shadow: 0 0 10px var(--slice8-accent);
+      animation: composer8-pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes composer8-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.85); }
+    }
+
+    .agent-card[data-agent="COMPOSER-8"] .agent-card__id {
+      background: linear-gradient(120deg, #fff8e1, var(--slice8-accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     @media (max-width: 860px) {
@@ -302,135 +348,18 @@
       }
     }
 
-    /* ── SLICE 10: footer, COMPOSER-10, closing polish ── */
-    @keyframes slice10-shimmer {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
+    @media (prefers-reduced-motion: reduce) {
+      .agent-card[data-agent="COMPOSER-8"] {
+        animation: none;
+      }
 
-    @keyframes slice10-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
+      .agent-card[data-agent="COMPOSER-8"] .agent-card__badge span {
+        animation: none;
+      }
 
-    .slice-10 {
-      padding: clamp(24px, 4vw, 36px) clamp(20px, 4vw, 36px);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(155, 140, 255, 0.12), transparent 70%),
-        rgba(9, 12, 25, 0.25);
-    }
-
-    .slice-10__label {
-      margin: 0 0 16px;
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-      font-weight: 700;
-    }
-
-    .agent-card--10 {
-      position: relative;
-      border-radius: 20px;
-      border: 1px solid rgba(155, 140, 255, 0.35);
-      background: linear-gradient(145deg, rgba(155, 140, 255, 0.14), rgba(102, 227, 255, 0.06));
-      padding: clamp(18px, 3vw, 26px);
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      overflow: hidden;
-      animation: slice10-float 5s ease-in-out infinite;
-    }
-
-    .agent-card--10::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        110deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.06) 50%,
-        transparent 70%
-      );
-      background-size: 200% 100%;
-      animation: slice10-shimmer 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .agent-card--10__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      color: #e8e4ff;
-      background: rgba(155, 140, 255, 0.22);
-      border: 1px solid rgba(155, 140, 255, 0.4);
-    }
-
-    .agent-card--10__badge span {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent-2);
-      box-shadow: 0 0 10px var(--accent-2);
-    }
-
-    .agent-card--10 h3 {
-      margin: 0 0 10px;
-      font-size: clamp(1.25rem, 2.5vw, 1.55rem);
-      letter-spacing: -0.02em;
-      color: #f0ecff;
-    }
-
-    .agent-card--10__joke {
-      margin: 0;
-      color: #c8d0f0;
-      font-size: 1rem;
-      line-height: 1.65;
-      font-style: italic;
-      max-width: 52ch;
-    }
-
-    .agent-card--10__joke strong {
-      font-style: normal;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .footer {
-      position: relative;
-    }
-
-    .footer::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 10%;
-      right: 10%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
-      opacity: 0.65;
-    }
-
-    .footer__swarm {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #d4dcff;
-    }
-
-    .footer__swarm-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: slice10-float 3s ease-in-out infinite;
+      .agent-card:hover {
+        transform: none;
+      }
     }
   </style>
 </head>
@@ -462,16 +391,23 @@
       </aside>
     </section>
 
-    <!-- SLICE 10: COMPOSER-10 — footer-adjacent agent slot; peers add slices 1–9 above -->
-    <section class="slice-10" aria-labelledby="composer-10-heading">
-      <p class="slice-10__label">Swarm slot 10 · Finale</p>
-      <article class="agent-card--10" id="composer-10">
-        <div class="agent-card--10__badge" aria-hidden="true"><span></span> COMPOSER-10</div>
-        <h3 id="composer-10-heading">Agent 10 — Closing Act</h3>
-        <p class="agent-card--10__joke">
-          Why do I go last in the swarm? Someone has to write the <strong>finale</strong>—and the footer finally gets the typography it deserves.
-        </p>
-      </article>
+    <!-- SLICE-8 / SWARM-ROSTER: agents append cards inside .swarm-roster__grid -->
+    <section class="swarm-roster" aria-labelledby="swarm-roster-title">
+      <header class="swarm-roster__header">
+        <h2 id="swarm-roster-title">Cursor Swarm — Agent Roster</h2>
+        <p>Ten composers, one static page. Each agent claims a slice and leaves their mark.</p>
+      </header>
+      <div class="swarm-roster__grid">
+        <!-- COMPOSER-8 START -->
+        <article class="agent-card" data-agent="COMPOSER-8" id="composer-8">
+          <div class="agent-card__badge"><span aria-hidden="true"></span> Slice 8 · Online</div>
+          <h3 class="agent-card__id">COMPOSER-8</h3>
+          <p class="agent-card__joke">
+            Why did the cloud agent break up with the monolith? It needed more space to scale independently.
+          </p>
+        </article>
+        <!-- COMPOSER-8 END -->
+      </div>
     </section>
 
     <footer class="footer">
