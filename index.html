@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A ten-agent Cursor swarm builds one beautiful static page — agent by agent." />
+  <title>Cursor Swarm · Mission Control</title>
+  <style>
+    :root {
+      --bg-1: #0b1020;
+      --bg-2: #111a34;
+      --card: rgba(255, 255, 255, 0.08);
+      --text: #f5f7ff;
+      --muted: #b9c0dc;
+      --accent: #66e3ff;
+      --accent-2: #9b8cff;
+      --ring: rgba(102, 227, 255, 0.45);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      --composer-1: #66e3ff;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 550px at 15% -10%, rgba(102, 227, 255, 0.20), transparent 60%),
+        radial-gradient(900px 600px at 105% 10%, rgba(155, 140, 255, 0.24), transparent 55%),
+        linear-gradient(140deg, var(--bg-1), var(--bg-2));
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: min(980px, 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: clamp(28px, 5vw, 58px);
+      display: grid;
+      gap: 26px;
+      grid-template-columns: 1.35fr 1fr;
+    }
+
+    .eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 10px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 5.5vw, 3.8rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+
+    .subtitle {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 54ch;
+      line-height: 1.65;
+    }
+
+    .actions {
+      margin-top: 26px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 0.85rem 1.2rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background-color 140ms ease;
+    }
+
+    .button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 4px var(--ring);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button.primary {
+      color: #061024;
+      background: linear-gradient(120deg, var(--accent), #7ff1ff);
+      box-shadow: 0 10px 25px rgba(102, 227, 255, 0.35);
+    }
+
+    .button.secondary {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .panel {
+      align-self: center;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--card);
+      padding: 20px;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
+      color: #deecff;
+    }
+
+    .features {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .features li {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: #d7def8;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.96rem;
+    }
+
+    /* --- Slice 1: swarm roster foundation (COMPOSER-1) --- */
+    .swarm-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px) clamp(32px, 5vw, 52px);
+      background:
+        radial-gradient(600px 280px at 50% 0%, rgba(102, 227, 255, 0.08), transparent 70%),
+        rgba(6, 10, 22, 0.35);
+    }
+
+    .swarm-header {
+      text-align: center;
+      margin-bottom: clamp(24px, 4vw, 36px);
+    }
+
+    .swarm-header h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .swarm-header p {
+      margin: 10px auto 0;
+      max-width: 48ch;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .swarm-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .agent-card {
+      --agent-accent: var(--accent);
+      position: relative;
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .agent-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(120deg, var(--agent-accent), transparent 55%, rgba(155, 140, 255, 0.5));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.24);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+    }
+
+    .agent-id {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--agent-accent);
+      margin: 0 0 10px;
+    }
+
+    .agent-id::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--agent-accent);
+      box-shadow: 0 0 12px var(--agent-accent);
+      animation: drift 3.2s ease-in-out infinite;
+    }
+
+    .agent-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+
+    .agent-joke {
+      margin: 0;
+      color: #d3daf5;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    .agent-slice {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #9eb4ff;
+      border: 1px solid rgba(155, 140, 255, 0.35);
+      background: rgba(155, 140, 255, 0.12);
+    }
+
+    #composer-1 {
+      --agent-accent: var(--composer-1);
+    }
+
+    .footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 18px 28px;
+      color: #bcc6ed;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      background: rgba(9, 12, 25, 0.3);
+    }
+
+    .footer a {
+      color: #b6f5ff;
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(182, 245, 255, 0.6);
+    }
+
+    .footer a:hover {
+      border-bottom-style: solid;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Cursor Swarm · Agent 01 Online</p>
+        <h1>Ten Agents, One Beautiful Page.</h1>
+        <p class="subtitle">
+          A parallel swarm of composers is building this static page slice by slice — no build step,
+          no external assets, just HTML growing more polished with every merge.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#swarm-roster">Meet the swarm</a>
+          <a class="button secondary" href="https://cursor.com/" target="_blank" rel="noreferrer">Cursor docs</a>
+        </div>
+      </div>
+
+      <aside class="panel" aria-label="Swarm slice map">
+        <h2>Slice assignments</h2>
+        <ul class="features">
+          <li><strong>1</strong> · COMPOSER-1 — page shell &amp; roster grid</li>
+          <li><strong>2–10</strong> · Reserved for COMPOSER-2 … COMPOSER-10</li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- SWARM ROSTER: each agent appends one .agent-card; do not edit other agents' cards -->
+    <section class="swarm-section" id="swarm-roster" aria-labelledby="swarm-title">
+      <header class="swarm-header">
+        <h2 id="swarm-title">Swarm Roster</h2>
+        <p>Ten composers, ten slices, one page. Each agent adds their ID and a joke without touching the others.</p>
+      </header>
+      <div class="swarm-grid">
+
+        <!-- COMPOSER-1 START — Slice 1: foundation + first agent -->
+        <article class="agent-card" id="composer-1" data-agent="COMPOSER-1" data-slice="1">
+          <p class="agent-id">COMPOSER-1</p>
+          <h3>Foundation Agent</h3>
+          <p class="agent-joke">Why do programmers prefer dark mode? Because light attracts bugs — and I already shipped enough of those in slice one.</p>
+          <span class="agent-slice">Slice 1 · Layout &amp; roster shell</span>
+        </article>
+        <!-- COMPOSER-1 END -->
+
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Slice 1 deployed by <strong>COMPOSER-1</strong> · static hosting with style and speed.</span>
+      <span><a href="https://github.com/" target="_blank" rel="noreferrer">Open GitHub</a></span>
+    </footer>
+  </main>
+</body>
+</html>
