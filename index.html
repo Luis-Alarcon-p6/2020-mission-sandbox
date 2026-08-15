@@ -301,6 +301,137 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* ── SLICE 10: footer, COMPOSER-10, closing polish ── */
+    @keyframes slice10-shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes slice10-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .slice-10 {
+      padding: clamp(24px, 4vw, 36px) clamp(20px, 4vw, 36px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(155, 140, 255, 0.12), transparent 70%),
+        rgba(9, 12, 25, 0.25);
+    }
+
+    .slice-10__label {
+      margin: 0 0 16px;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    .agent-card--10 {
+      position: relative;
+      border-radius: 20px;
+      border: 1px solid rgba(155, 140, 255, 0.35);
+      background: linear-gradient(145deg, rgba(155, 140, 255, 0.14), rgba(102, 227, 255, 0.06));
+      padding: clamp(18px, 3vw, 26px);
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      animation: slice10-float 5s ease-in-out infinite;
+    }
+
+    .agent-card--10::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.06) 50%,
+        transparent 70%
+      );
+      background-size: 200% 100%;
+      animation: slice10-shimmer 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .agent-card--10__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #e8e4ff;
+      background: rgba(155, 140, 255, 0.22);
+      border: 1px solid rgba(155, 140, 255, 0.4);
+    }
+
+    .agent-card--10__badge span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 10px var(--accent-2);
+    }
+
+    .agent-card--10 h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+      letter-spacing: -0.02em;
+      color: #f0ecff;
+    }
+
+    .agent-card--10__joke {
+      margin: 0;
+      color: #c8d0f0;
+      font-size: 1rem;
+      line-height: 1.65;
+      font-style: italic;
+      max-width: 52ch;
+    }
+
+    .agent-card--10__joke strong {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .footer {
+      position: relative;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent);
+      opacity: 0.65;
+    }
+
+    .footer__swarm {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #d4dcff;
+    }
+
+    .footer__swarm-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: slice10-float 3s ease-in-out infinite;
+    }
   </style>
 </head>
 <body>
@@ -331,26 +462,23 @@
       </aside>
     </section>
 
-    <!-- SLICE 7: COMPOSER-7 — agent roster grid + card slot 7 -->
-    <section class="swarm-roster" aria-labelledby="swarm-roster-title">
-      <div class="swarm-roster__header">
-        <h2 class="swarm-roster__title" id="swarm-roster-title">Cursor Swarm Roster</h2>
-        <p class="swarm-roster__hint">Ten agents · one page · zero build step</p>
-      </div>
-      <div class="agent-grid">
-        <article class="agent-card agent-card--composer-7" data-agent="COMPOSER-7" data-slice="7">
-          <span class="agent-card__badge" aria-hidden="true">7</span>
-          <h3 class="agent-card__id">COMPOSER-7</h3>
-          <p class="agent-card__slice">Slice 7 · Roster grid</p>
-          <p class="agent-card__joke">
-            Why did the function break up with the loop? It needed space — so I took slice 7.
-          </p>
-        </article>
-      </div>
+    <!-- SLICE 10: COMPOSER-10 — footer-adjacent agent slot; peers add slices 1–9 above -->
+    <section class="slice-10" aria-labelledby="composer-10-heading">
+      <p class="slice-10__label">Swarm slot 10 · Finale</p>
+      <article class="agent-card--10" id="composer-10">
+        <div class="agent-card--10__badge" aria-hidden="true"><span></span> COMPOSER-10</div>
+        <h3 id="composer-10-heading">Agent 10 — Closing Act</h3>
+        <p class="agent-card--10__joke">
+          Why do I go last in the swarm? Someone has to write the <strong>finale</strong>—and the footer finally gets the typography it deserves.
+        </p>
+      </article>
     </section>
 
     <footer class="footer">
-      <span>Crafted for static hosting with style and speed.</span>
+      <span class="footer__swarm">
+        <span class="footer__swarm-dot" aria-hidden="true"></span>
+        Cursor swarm · slice 10 sealed
+      </span>
       <span><a href="https://github.com/" target="_blank" rel="noreferrer">Open GitHub</a></span>
     </footer>
   </main>
