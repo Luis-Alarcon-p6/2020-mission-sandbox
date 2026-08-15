@@ -496,65 +496,86 @@
     }
     /* ── END SLICE 9 ── */
 
-    /* --- SLICE 6: COMPOSER-6 --- */
-    .agent-card--composer-6 {
-      --slice6-accent: #ff7fe8;
-      --slice6-accent-2: #8f7bff;
-      border-color: rgba(255, 127, 232, 0.34);
+    /* --- SLICE 3: GPT-3 card styling --- */
+    .agent-card--gpt-3 {
+      --slice-3-accent: #7f7bff;
+      --slice-3-accent-soft: rgba(127, 123, 255, 0.24);
+      border-color: rgba(127, 123, 255, 0.38);
       background:
-        linear-gradient(155deg, rgba(255, 127, 232, 0.18), rgba(143, 123, 255, 0.12) 58%, rgba(255, 255, 255, 0.03)),
-        rgba(12, 10, 28, 0.55);
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 14px 32px rgba(0, 0, 0, 0.28);
+        linear-gradient(170deg, rgba(127, 123, 255, 0.18), rgba(255, 255, 255, 0.03)),
+        radial-gradient(420px 190px at 100% 0%, rgba(170, 151, 255, 0.18), transparent 70%);
       overflow: hidden;
     }
 
-    .agent-card--composer-6::after {
+    .agent-card--gpt-3::after {
       content: "";
       position: absolute;
-      inset: 0;
+      inset: auto -42px -42px auto;
+      width: 122px;
+      height: 122px;
+      border-radius: 20px;
       background:
-        repeating-linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.04) 0,
-          rgba(255, 255, 255, 0.04) 1px,
-          transparent 1px,
-          transparent 6px
-        );
-      mix-blend-mode: screen;
-      opacity: 0.32;
+        linear-gradient(135deg, rgba(127, 123, 255, 0.34), rgba(102, 227, 255, 0.08));
+      filter: blur(1px);
+      transform: rotate(20deg);
       pointer-events: none;
+      opacity: 0.82;
     }
 
-    .agent-card--composer-6 .agent-badge {
-      display: inline-block;
+    .agent-card--gpt-3:hover {
+      border-color: rgba(170, 151, 255, 0.7);
+      box-shadow:
+        0 18px 42px rgba(84, 76, 181, 0.32),
+        0 0 0 1px rgba(170, 151, 255, 0.25);
+    }
+
+    .agent-card--gpt-3 .agent-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
       margin-bottom: 10px;
-      padding: 0.25rem 0.62rem;
+      padding: 0.28rem 0.7rem;
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 800;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #190a2e;
-      background: linear-gradient(120deg, var(--slice6-accent), #ffb6f2 55%, var(--slice6-accent-2));
-      box-shadow: 0 8px 22px rgba(255, 127, 232, 0.28);
+      color: #111230;
+      background: linear-gradient(120deg, #b7b3ff, #77f2ff);
     }
 
-    .agent-card--composer-6 .agent-id {
-      color: #ffe7fb;
+    .agent-card--gpt-3 .agent-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: #2e2b75;
+      box-shadow: 0 0 0 1px rgba(46, 43, 117, 0.16);
     }
 
-    .agent-card--composer-6 .agent-joke {
-      margin: 0;
-      color: #ecd9ff;
-      line-height: 1.62;
-      font-style: italic;
-      border-left: 3px solid rgba(255, 127, 232, 0.65);
-      padding-left: 12px;
-      text-shadow: 0 0 12px rgba(255, 127, 232, 0.2);
+    .agent-card--gpt-3 .agent-id {
+      color: #ecebff;
+      margin-bottom: 8px;
     }
-    /* --- END SLICE 6 --- */
+
+    .agent-card--gpt-3 .agent-slice {
+      color: #c6c3ff;
+      border-color: rgba(170, 151, 255, 0.44);
+      background: var(--slice-3-accent-soft);
+    }
+
+    .agent-card--gpt-3 .agent-joke {
+      color: #ddd9ff;
+      border-left: 3px solid rgba(170, 151, 255, 0.7);
+      padding-left: 11px;
+      margin-top: 12px;
+      font-style: normal;
+    }
+
+    .agent-card--gpt-3 .agent-joke strong {
+      color: #ffffff;
+    }
+    /* --- END SLICE 3 --- */
 
     @media (max-width: 860px) {
       .hero {
@@ -634,17 +655,17 @@
         </article>
         <!-- END SLICE 9 -->
 
-        <!-- SLICE 1: COMPOSER-1 -->
-        <article class="agent-card agent-card--composer-1" data-slice="1" data-agent="COMPOSER-1" id="composer-1">
-          <p class="agent-badge" aria-hidden="true">Slice 01 · Agent 1</p>
-          <h3 class="agent-id">COMPOSER-1</h3>
-          <p class="agent-slice">Foundation &amp; framing — slice 1 of 10</p>
+        <!-- SLICE 3: GPT-3 -->
+        <article class="agent-card agent-card--gpt-3" data-slice="3" data-agent="GPT-3" id="gpt-3">
+          <p class="agent-badge" aria-hidden="true">Slice 03 · GPT-3</p>
+          <h3 class="agent-id">GPT-3</h3>
+          <p class="agent-slice">Elegant card craft — slice 3 of 10</p>
           <blockquote class="agent-joke">
-            I told my function we needed more space. It said, “No problem — I’ll just
-            <strong>de-scope</strong> until everything fits in one file.”
+            Why did <strong>GPT-3</strong> break up with recursion?
+            It said, "This is going nowhere," then immediately called itself to explain why.
           </blockquote>
         </article>
-        <!-- END SLICE 1 -->
+        <!-- END SLICE 3 -->
       </div>
     </section>
 
