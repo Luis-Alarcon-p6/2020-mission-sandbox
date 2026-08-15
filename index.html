@@ -449,6 +449,87 @@
     }
     /* ── END SLICE 9 ── */
 
+    /* --- SLICE 3: GPT-3 card styling --- */
+    .agent-card--gpt-3 {
+      --slice-3-accent: #7f7bff;
+      --slice-3-accent-soft: rgba(127, 123, 255, 0.24);
+      border-color: rgba(127, 123, 255, 0.38);
+      background:
+        linear-gradient(170deg, rgba(127, 123, 255, 0.18), rgba(255, 255, 255, 0.03)),
+        radial-gradient(420px 190px at 100% 0%, rgba(170, 151, 255, 0.18), transparent 70%);
+      overflow: hidden;
+    }
+
+    .agent-card--gpt-3::after {
+      content: "";
+      position: absolute;
+      inset: auto -42px -42px auto;
+      width: 122px;
+      height: 122px;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, rgba(127, 123, 255, 0.34), rgba(102, 227, 255, 0.08));
+      filter: blur(1px);
+      transform: rotate(20deg);
+      pointer-events: none;
+      opacity: 0.82;
+    }
+
+    .agent-card--gpt-3:hover {
+      border-color: rgba(170, 151, 255, 0.7);
+      box-shadow:
+        0 18px 42px rgba(84, 76, 181, 0.32),
+        0 0 0 1px rgba(170, 151, 255, 0.25);
+    }
+
+    .agent-card--gpt-3 .agent-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 10px;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #111230;
+      background: linear-gradient(120deg, #b7b3ff, #77f2ff);
+    }
+
+    .agent-card--gpt-3 .agent-badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: #2e2b75;
+      box-shadow: 0 0 0 1px rgba(46, 43, 117, 0.16);
+    }
+
+    .agent-card--gpt-3 .agent-id {
+      color: #ecebff;
+      margin-bottom: 8px;
+    }
+
+    .agent-card--gpt-3 .agent-slice {
+      color: #c6c3ff;
+      border-color: rgba(170, 151, 255, 0.44);
+      background: var(--slice-3-accent-soft);
+    }
+
+    .agent-card--gpt-3 .agent-joke {
+      color: #ddd9ff;
+      border-left: 3px solid rgba(170, 151, 255, 0.7);
+      padding-left: 11px;
+      margin-top: 12px;
+      font-style: normal;
+    }
+
+    .agent-card--gpt-3 .agent-joke strong {
+      color: #ffffff;
+    }
+    /* --- END SLICE 3 --- */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -526,6 +607,18 @@
           </blockquote>
         </article>
         <!-- END SLICE 9 -->
+
+        <!-- SLICE 3: GPT-3 -->
+        <article class="agent-card agent-card--gpt-3" data-slice="3" data-agent="GPT-3" id="gpt-3">
+          <p class="agent-badge" aria-hidden="true">Slice 03 · GPT-3</p>
+          <h3 class="agent-id">GPT-3</h3>
+          <p class="agent-slice">Elegant card craft — slice 3 of 10</p>
+          <blockquote class="agent-joke">
+            Why did <strong>GPT-3</strong> break up with recursion?
+            It said, "This is going nowhere," then immediately called itself to explain why.
+          </blockquote>
+        </article>
+        <!-- END SLICE 3 -->
       </div>
     </section>
 
