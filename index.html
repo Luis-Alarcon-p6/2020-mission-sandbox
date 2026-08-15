@@ -177,149 +177,113 @@
       border-bottom-style: solid;
     }
 
-    /* ── SLICE 3: COMPOSER-3 — swarm roster grid + ambient polish ── */
-    @keyframes drift-stars {
-      from { transform: translateY(0); }
-      to { transform: translateY(-120px); }
-    }
-
-    @keyframes card-in {
-      from {
-        opacity: 0;
-        transform: translateY(14px) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .swarm-roster {
-      position: relative;
+    /* ── Slice 5: Agent Swarm gallery (COMPOSER-5) ── */
+    .swarm-section {
+      padding: clamp(24px, 4vw, 42px) clamp(28px, 5vw, 58px);
       border-top: 1px solid rgba(255, 255, 255, 0.12);
-      padding: clamp(28px, 4vw, 42px) clamp(22px, 4vw, 36px) clamp(32px, 5vw, 48px);
-      background:
-        radial-gradient(600px 280px at 50% 0%, rgba(102, 227, 255, 0.10), transparent 70%),
-        rgba(6, 10, 22, 0.45);
-      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255, 183, 77, 0.04), transparent 40%);
     }
 
-    .swarm-roster::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image:
-        radial-gradient(1px 1px at 10% 20%, rgba(255, 255, 255, 0.55), transparent),
-        radial-gradient(1px 1px at 30% 65%, rgba(182, 245, 255, 0.45), transparent),
-        radial-gradient(1.5px 1.5px at 55% 15%, rgba(155, 140, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 72% 48%, rgba(255, 255, 255, 0.4), transparent),
-        radial-gradient(1px 1px at 88% 78%, rgba(102, 227, 255, 0.45), transparent),
-        radial-gradient(1px 1px at 18% 88%, rgba(255, 255, 255, 0.35), transparent),
-        radial-gradient(1px 1px at 94% 22%, rgba(182, 245, 255, 0.4), transparent);
-      background-size: 100% 240px;
-      animation: drift-stars 18s linear infinite;
-      opacity: 0.55;
-      pointer-events: none;
-    }
-
-    .swarm-roster__header {
-      position: relative;
+    .swarm-header {
       text-align: center;
-      margin-bottom: clamp(22px, 3vw, 32px);
+      margin-bottom: clamp(22px, 4vw, 36px);
     }
 
-    .swarm-roster__header h2 {
+    .swarm-header h2 {
       margin: 0;
-      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
       letter-spacing: -0.02em;
-      background: linear-gradient(95deg, var(--text), var(--accent));
+      background: linear-gradient(120deg, #ffb74d, var(--accent));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
-    .swarm-roster__header p {
-      margin: 10px auto 0;
-      max-width: 42ch;
+    .swarm-header p {
+      margin: 10px 0 0;
       color: var(--muted);
       font-size: 0.95rem;
-      line-height: 1.55;
     }
 
     .agent-grid {
-      position: relative;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 16px;
     }
 
     .agent-card {
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-      padding: 18px 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
-      backdrop-filter: blur(8px);
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 18px 20px;
+      transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+      animation: card-rise 600ms ease both;
     }
 
     .agent-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(102, 227, 255, 0.45);
-      box-shadow: 0 14px 32px rgba(102, 227, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
     }
 
-    .agent-card__badge {
+    .agent-card[data-agent="composer-5"] {
+      border-color: rgba(255, 183, 77, 0.45);
+      background: linear-gradient(145deg, rgba(255, 183, 77, 0.12), rgba(255, 255, 255, 0.04));
+      animation-delay: 250ms;
+    }
+
+    .agent-card[data-agent="composer-5"]:hover {
+      box-shadow: 0 14px 40px rgba(255, 183, 77, 0.22);
+    }
+
+    .agent-id {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.72rem;
+      gap: 8px;
+      font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: #ffb74d;
       margin-bottom: 10px;
     }
 
-    .agent-card__badge span {
-      width: 7px;
-      height: 7px;
+    .agent-id::before {
+      content: "";
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
+      background: #ffb74d;
+      box-shadow: 0 0 10px rgba(255, 183, 77, 0.7);
+      animation: pulse-dot 2s ease-in-out infinite;
     }
 
-    .agent-card__id {
-      margin: 0 0 8px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #eef3ff;
-    }
-
-    .agent-card__joke {
+    .agent-joke {
       margin: 0;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
       line-height: 1.55;
-      color: #c8d2f0;
-      font-style: italic;
+      color: #dce4ff;
     }
 
-    /* SLICE 3 card — COMPOSER-3 only */
-    #agent-composer-3 {
-      animation: card-in 520ms ease-out both;
-      border-color: rgba(155, 140, 255, 0.35);
-      background:
-        linear-gradient(155deg, rgba(155, 140, 255, 0.14), rgba(102, 227, 255, 0.06)),
-        rgba(255, 255, 255, 0.04);
+    .agent-joke em {
+      color: #ffd699;
+      font-style: normal;
     }
 
-    #agent-composer-3 .agent-card__badge {
-      color: var(--accent-2);
+    @keyframes card-rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    #agent-composer-3 .agent-card__badge span {
-      background: var(--accent-2);
-      box-shadow: 0 0 10px var(--accent-2);
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.85); }
     }
 
     @media (max-width: 860px) {
@@ -357,18 +321,30 @@
       </aside>
     </section>
 
-    <!-- SLICE 3: COMPOSER-3 — roster scaffold + agent card #3 -->
-    <section class="swarm-roster" aria-labelledby="swarm-title">
-      <header class="swarm-roster__header">
-        <h2 id="swarm-title">Cursor Swarm Roster</h2>
-        <p>Ten agents, one page — each adds an ID and a joke. This slice belongs to agent 3.</p>
+    <!-- Slice 5: Agent Swarm gallery — COMPOSER-5 owns grid + card styles -->
+    <section class="swarm-section" id="swarm" aria-label="Cursor Swarm agents">
+      <header class="swarm-header">
+        <h2>Cursor Swarm</h2>
+        <p>Ten agents, one page — each adds their mark.</p>
       </header>
-      <div class="agent-grid" role="list">
-        <article id="agent-composer-3" class="agent-card" role="listitem" aria-label="COMPOSER-3">
-          <div class="agent-card__badge"><span aria-hidden="true"></span> Slice 3</div>
-          <h3 class="agent-card__id">COMPOSER-3</h3>
-          <p class="agent-card__joke">Why do programmers prefer dark mode? Because light attracts bugs.</p>
+      <div class="agent-grid">
+        <!-- Slot 1: COMPOSER-1 -->
+        <!-- Slot 2: COMPOSER-2 -->
+        <!-- Slot 3: COMPOSER-3 -->
+        <!-- Slot 4: COMPOSER-4 -->
+        <!-- Slot 5: COMPOSER-5 -->
+        <article class="agent-card" data-agent="composer-5">
+          <div class="agent-id">COMPOSER-5</div>
+          <p class="agent-joke">
+            Why do programmers prefer dark mode?<br />
+            Because <em>light attracts bugs.</em> 🐛
+          </p>
         </article>
+        <!-- Slot 6: COMPOSER-6 -->
+        <!-- Slot 7: COMPOSER-7 -->
+        <!-- Slot 8: COMPOSER-8 -->
+        <!-- Slot 9: COMPOSER-9 -->
+        <!-- Slot 10: COMPOSER-10 -->
       </div>
     </section>
 
