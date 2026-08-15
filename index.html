@@ -640,6 +640,81 @@
     }
     /* ── END SLICE 9: GPT-9 ── */
 
+    /* --- SLICE 2: GPT-2 swarm architecture strip --- */
+    .swarm-architecture {
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      padding: clamp(24px, 4vw, 38px) clamp(20px, 4vw, 40px) clamp(30px, 4.5vw, 44px);
+      background:
+        radial-gradient(560px 230px at 18% 0%, rgba(102, 227, 255, 0.11), transparent 70%),
+        radial-gradient(520px 240px at 92% 0%, rgba(155, 140, 255, 0.13), transparent 70%),
+        rgba(8, 12, 26, 0.5);
+    }
+
+    .swarm-architecture h3 {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+      letter-spacing: -0.015em;
+      color: #e8f0ff;
+    }
+
+    .swarm-architecture-intro {
+      margin: 10px 0 0;
+      max-width: 60ch;
+      color: #c8d4f3;
+      line-height: 1.58;
+      font-size: 0.97rem;
+    }
+
+    .swarm-role-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .swarm-role-card {
+      margin: 0;
+      padding: 12px 12px 11px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.05);
+      color: #e6eeff;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .swarm-role-card strong {
+      color: #8feeff;
+      letter-spacing: 0.02em;
+    }
+
+    .swarm-handoff {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(155, 140, 255, 0.35);
+      background: rgba(155, 140, 255, 0.11);
+    }
+
+    .swarm-handoff-title {
+      margin: 0;
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #d9d4ff;
+      font-weight: 800;
+    }
+
+    .swarm-handoff-path {
+      margin: 0;
+      color: #e8e4ff;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    /* --- END SLICE 2 --- */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -734,6 +809,29 @@
         <!-- END SLICE 9: GPT-9 -->
       </div>
     </section>
+
+    <!-- SLICE 2: GPT-2 -->
+    <section class="swarm-architecture" aria-labelledby="swarm-architecture-title">
+      <h3 id="swarm-architecture-title">Five-Agent Swarm Architecture</h3>
+      <p class="swarm-architecture-intro">
+        This mission is split into five parallel slices so each GPT agent can ship independently,
+        then merge cleanly into one static page without stepping on the same lines.
+      </p>
+      <div class="swarm-role-grid">
+        <p class="swarm-role-card"><strong>GPT-1</strong><br />Builds the foundation and visual frame.</p>
+        <p class="swarm-role-card"><strong>GPT-2</strong><br />Defines architecture, roles, and handoff flow.</p>
+        <p class="swarm-role-card"><strong>GPT-3</strong><br />Adds interaction polish and supporting content.</p>
+        <p class="swarm-role-card"><strong>GPT-4</strong><br />Introduces narrative tone and section styling.</p>
+        <p class="swarm-role-card"><strong>GPT-5</strong><br />Wraps final presentation details and consistency pass.</p>
+      </div>
+      <div class="swarm-handoff" role="note" aria-label="Swarm handoff model">
+        <p class="swarm-handoff-title">Handoff pattern</p>
+        <p class="swarm-handoff-path">
+          claim slice → add clearly marked section → commit independently → merge sequentially.
+        </p>
+      </div>
+    </section>
+    <!-- END SLICE 2: GPT-2 -->
 
     <section class="slice7-spotlight" aria-labelledby="slice7-spotlight-title">
       <h3 id="slice7-spotlight-title">COMPOSER-7 Spotlight</h3>
