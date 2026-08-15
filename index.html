@@ -177,6 +177,135 @@
       border-bottom-style: solid;
     }
 
+    /* ── SLICE 4: COMPOSER-4 — swarm grid + card styling ── */
+    .swarm {
+      padding: clamp(24px, 4vw, 42px) clamp(28px, 5vw, 58px);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        radial-gradient(600px 320px at 50% 0%, rgba(255, 110, 180, 0.10), transparent 70%),
+        rgba(9, 12, 25, 0.22);
+    }
+
+    .swarm-header {
+      text-align: center;
+      margin-bottom: clamp(22px, 4vw, 36px);
+    }
+
+    .swarm-header h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 3.5vw, 2rem);
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, var(--text), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .swarm-header p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .swarm-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .agent-card {
+      position: relative;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      padding: 22px 20px 20px;
+      overflow: hidden;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .agent-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 55%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .agent-card--composer-4 {
+      --slice-accent: #ff6eb4;
+      --slice-accent-2: #ffb86b;
+      border-color: rgba(255, 110, 180, 0.35);
+      animation: composer4-glow 6s ease-in-out infinite;
+    }
+
+    .agent-card--composer-4:hover {
+      border-color: rgba(255, 110, 180, 0.65);
+      box-shadow: 0 18px 44px rgba(255, 110, 180, 0.22);
+    }
+
+    @keyframes composer4-glow {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 110, 180, 0)); }
+      50% { filter: drop-shadow(0 0 14px rgba(255, 110, 180, 0.35)); }
+    }
+
+    .agent-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a0f18;
+      background: linear-gradient(120deg, var(--slice-accent, var(--accent)), var(--slice-accent-2, #7ff1ff));
+    }
+
+    .agent-id {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    .agent-slice {
+      margin: 6px 0 0;
+      font-size: 0.82rem;
+      color: #c8b8d8;
+      font-weight: 600;
+    }
+
+    .agent-joke {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border-left: 3px solid var(--slice-accent, var(--accent));
+      background: rgba(255, 110, 180, 0.08);
+      color: #f0e4f4;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    .agent-joke strong {
+      font-style: normal;
+      color: var(--slice-accent, var(--accent));
+    }
+    /* ── END SLICE 4 ── */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -210,6 +339,26 @@
           <li>5. Visit the generated <code>*.github.io</code> URL.</li>
         </ul>
       </aside>
+    </section>
+
+    <section class="swarm" aria-labelledby="swarm-title">
+      <header class="swarm-header">
+        <h2 id="swarm-title">Cursor Agent Swarm</h2>
+        <p>Ten composers, one page — each agent claims a slice.</p>
+      </header>
+      <div class="swarm-grid">
+        <!-- SLICE 4: COMPOSER-4 -->
+        <article class="agent-card agent-card--composer-4" data-slice="4" data-agent="COMPOSER-4" id="composer-4">
+          <p class="agent-badge" aria-hidden="true">Slice 04 · Agent 4</p>
+          <h3 class="agent-id">COMPOSER-4</h3>
+          <p class="agent-slice">Orchestration &amp; harmony — slice 4 of 10</p>
+          <blockquote class="agent-joke">
+            Why did <strong>COMPOSER-4</strong> refuse to play solo?
+            Because every good landing page needs a <strong>full stack</strong> of agents in harmony.
+          </blockquote>
+        </article>
+        <!-- END SLICE 4 -->
+      </div>
     </section>
 
     <footer class="footer">
