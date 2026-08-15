@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Swarm Arcade</title>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px circle at 15% -10%, #2b1f4a 0%, transparent 55%),
+        radial-gradient(900px circle at 90% 0%, #0f3550 0%, transparent 55%),
+        #05070d;
+      color: #eef3ff;
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      width: min(1100px, 94vw);
+      margin: 0 auto;
+      padding: 48px 0 64px;
+    }
+
+    .hero {
+      border: 1px solid #26314d;
+      border-radius: 24px;
+      padding: 28px;
+      background: linear-gradient(140deg, #121a2f 0%, #0a0f1e 60%, #0b1427 100%);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: 0.02em;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      color: #a8b4d8;
+      max-width: 70ch;
+    }
+
+    .exhibit-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <h1>The Swarm Arcade</h1>
+      <p>Ten AI-crafted interactive exhibits in one dark, polished playground.</p>
+    </header>
+
+    <main class="exhibit-grid">
+      <!-- AGENT-6 EXHIBIT START: Neon Pulse Rings -->
+      <section id="a6-neon-pulse-rings" class="a6-exhibit">
+        <h2>A6 · Neon Pulse Rings</h2>
+        <p class="a6-subtitle">
+          Move your cursor to steer the emitter. Click to launch pulse rings. Press <kbd>M</kbd> to toggle blend mode, <kbd>C</kbd> to clear, and <kbd>Space</kbd> for a burst.
+        </p>
+
+        <div class="a6-stage-wrap">
+          <canvas id="a6-canvas" width="700" height="420" aria-label="Interactive pulse rings canvas"></canvas>
+          <div class="a6-hud">
+            <span id="a6-mode-label">Mode: additive</span>
+            <span id="a6-ring-count">Rings: 0</span>
+          </div>
+        </div>
+
+        <style>
+          .a6-exhibit {
+            border: 1px solid #2b3655;
+            border-radius: 20px;
+            padding: 18px;
+            background: linear-gradient(170deg, #121a2a 0%, #0d1324 65%, #0a1121 100%);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03), 0 14px 36px rgba(0, 0, 0, 0.35);
+          }
+
+          .a6-exhibit h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 0.01em;
+          }
+
+          .a6-subtitle {
+            margin: 8px 0 14px;
+            color: #a4b3d6;
+            line-height: 1.4;
+            font-size: 0.94rem;
+          }
+
+          .a6-exhibit kbd {
+            display: inline-block;
+            min-width: 1.4em;
+            text-align: center;
+            border: 1px solid #44557f;
+            border-radius: 5px;
+            background: #10192f;
+            padding: 1px 6px;
+            color: #dce6ff;
+            font-size: 0.85em;
+          }
+
+          .a6-stage-wrap {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #27334f;
+            background: radial-gradient(circle at center, #11172c 0%, #0a0f1c 70%, #060910 100%);
+          }
+
+          #a6-canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 5 / 3;
+            cursor: crosshair;
+          }
+
+          .a6-hud {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.82rem;
+            color: #e7edff;
+            text-shadow: 0 0 8px rgba(52, 208, 255, 0.65);
+            pointer-events: none;
+          }
+
+          .a6-hud span {
+            border: 1px solid rgba(107, 136, 191, 0.45);
+            border-radius: 999px;
+            padding: 4px 9px;
+            background: rgba(12, 18, 32, 0.62);
+            backdrop-filter: blur(2px);
+          }
+        </style>
+
+        <script>
+          (function () {
+            const a6Root = document.getElementById("a6-neon-pulse-rings");
+            if (!a6Root) {
+              return;
+            }
+
+            const a6Canvas = document.getElementById("a6-canvas");
+            const a6ModeLabel = document.getElementById("a6-mode-label");
+            const a6RingCount = document.getElementById("a6-ring-count");
+            if (!a6Canvas || !a6ModeLabel || !a6RingCount) {
+              return;
+            }
+
+            const a6Ctx = a6Canvas.getContext("2d");
+            if (!a6Ctx) {
+              return;
+            }
+
+            const a6Rings = [];
+            let a6Additive = true;
+            let a6Pointer = { x: a6Canvas.width * 0.5, y: a6Canvas.height * 0.5 };
+            let a6Emitter = { x: a6Pointer.x, y: a6Pointer.y };
+            let a6GlowPhase = 0;
+
+            function a6Rand(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            function a6PointerPos(event) {
+              const rect = a6Canvas.getBoundingClientRect();
+              const px = (event.clientX - rect.left) * (a6Canvas.width / rect.width);
+              const py = (event.clientY - rect.top) * (a6Canvas.height / rect.height);
+              return { x: px, y: py };
+            }
+
+            function a6Spawn(x, y, count) {
+              for (let i = 0; i < count; i += 1) {
+                a6Rings.push({
+                  x,
+                  y,
+                  radius: a6Rand(2, 12),
+                  speed: a6Rand(0.8, 2.6),
+                  thickness: a6Rand(1.2, 3.8),
+                  hue: a6Rand(180, 330),
+                  alpha: a6Rand(0.45, 0.95),
+                  fade: a6Rand(0.003, 0.011)
+                });
+              }
+            }
+
+            function a6UpdateHud() {
+              a6ModeLabel.textContent = a6Additive ? "Mode: additive" : "Mode: normal";
+              a6RingCount.textContent = "Rings: " + a6Rings.length;
+            }
+
+            function a6DrawBackground() {
+              a6Ctx.globalCompositeOperation = "source-over";
+              a6Ctx.fillStyle = "rgba(5, 10, 20, 0.24)";
+              a6Ctx.fillRect(0, 0, a6Canvas.width, a6Canvas.height);
+
+              const gradient = a6Ctx.createRadialGradient(
+                a6Emitter.x,
+                a6Emitter.y,
+                4,
+                a6Emitter.x,
+                a6Emitter.y,
+                120
+              );
+              gradient.addColorStop(0, "rgba(134, 245, 255, 0.22)");
+              gradient.addColorStop(1, "rgba(134, 245, 255, 0)");
+              a6Ctx.fillStyle = gradient;
+              a6Ctx.fillRect(0, 0, a6Canvas.width, a6Canvas.height);
+            }
+
+            function a6DrawEmitter() {
+              a6GlowPhase += 0.05;
+              const pulse = 7 + Math.sin(a6GlowPhase) * 2.2;
+              a6Ctx.globalCompositeOperation = "source-over";
+              a6Ctx.beginPath();
+              a6Ctx.fillStyle = "rgba(203, 246, 255, 0.95)";
+              a6Ctx.arc(a6Emitter.x, a6Emitter.y, 2.2, 0, Math.PI * 2);
+              a6Ctx.fill();
+
+              a6Ctx.beginPath();
+              a6Ctx.strokeStyle = "rgba(121, 231, 255, 0.75)";
+              a6Ctx.lineWidth = 1.4;
+              a6Ctx.arc(a6Emitter.x, a6Emitter.y, pulse, 0, Math.PI * 2);
+              a6Ctx.stroke();
+            }
+
+            function a6Step() {
+              a6Emitter.x += (a6Pointer.x - a6Emitter.x) * 0.15;
+              a6Emitter.y += (a6Pointer.y - a6Emitter.y) * 0.15;
+
+              a6DrawBackground();
+              a6Ctx.globalCompositeOperation = a6Additive ? "lighter" : "source-over";
+
+              for (let i = a6Rings.length - 1; i >= 0; i -= 1) {
+                const ring = a6Rings[i];
+                ring.radius += ring.speed;
+                ring.alpha -= ring.fade;
+                ring.thickness *= 0.995;
+
+                if (ring.alpha <= 0 || ring.radius > 450) {
+                  a6Rings.splice(i, 1);
+                  continue;
+                }
+
+                a6Ctx.beginPath();
+                a6Ctx.strokeStyle = "hsla(" + ring.hue + ", 100%, 68%, " + ring.alpha.toFixed(3) + ")";
+                a6Ctx.lineWidth = ring.thickness;
+                a6Ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2);
+                a6Ctx.stroke();
+              }
+
+              a6DrawEmitter();
+              a6UpdateHud();
+              requestAnimationFrame(a6Step);
+            }
+
+            a6Canvas.addEventListener("pointermove", function (event) {
+              const pos = a6PointerPos(event);
+              a6Pointer = pos;
+            });
+
+            a6Canvas.addEventListener("pointerdown", function (event) {
+              const pos = a6PointerPos(event);
+              a6Pointer = pos;
+              a6Spawn(pos.x, pos.y, 6);
+            });
+
+            window.addEventListener("keydown", function (event) {
+              if (event.key === "m" || event.key === "M") {
+                a6Additive = !a6Additive;
+              } else if (event.key === "c" || event.key === "C") {
+                a6Rings.length = 0;
+              } else if (event.code === "Space") {
+                event.preventDefault();
+                a6Spawn(a6Emitter.x, a6Emitter.y, 12);
+              }
+            });
+
+            a6Spawn(a6Canvas.width * 0.5, a6Canvas.height * 0.5, 10);
+            a6UpdateHud();
+            a6Step();
+          })();
+        </script>
+      </section>
+      <!-- AGENT-6 EXHIBIT END: Neon Pulse Rings -->
+    </main>
+  </div>
+</body>
+</html>
