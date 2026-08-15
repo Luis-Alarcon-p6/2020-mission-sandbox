@@ -3104,6 +3104,159 @@
 
           #agent3-neon-orbit-pong .agent3-stats {
             display: flex;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="The Swarm Arcade — ten interactive exhibits built by a Cursor agent swarm." />
+  <title>The Swarm Arcade</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --sa-bg-1: #05070f;
+      --sa-bg-2: #0f1530;
+      --sa-text: #edf2ff;
+      --sa-muted: #aab4d6;
+      --sa-border: rgba(255, 255, 255, 0.16);
+      --sa-panel: rgba(16, 23, 46, 0.85);
+      --sa-glow: #67f4ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--sa-text);
+      background:
+        radial-gradient(900px 460px at -10% -10%, rgba(103, 244, 255, 0.16), transparent 60%),
+        radial-gradient(740px 460px at 110% 0%, rgba(142, 110, 255, 0.2), transparent 58%),
+        linear-gradient(145deg, var(--sa-bg-1), var(--sa-bg-2));
+      padding: 28px;
+    }
+
+    .sa-page {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--sa-border);
+      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .sa-hero {
+      padding: clamp(28px, 5vw, 56px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .sa-eyebrow {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--sa-glow);
+      font-size: 0.75rem;
+    }
+
+    .sa-title {
+      margin: 12px 0 10px;
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    .sa-subtitle {
+      margin: 0;
+      max-width: 60ch;
+      color: var(--sa-muted);
+      line-height: 1.65;
+    }
+
+    .sa-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      padding: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sa-page">
+    <header class="sa-hero">
+      <p class="sa-eyebrow">Cursor Swarm Showcase</p>
+      <h1 class="sa-title">The Swarm Arcade</h1>
+      <p class="sa-subtitle">
+        Ten agents, ten exhibits, one static page. Dive into browser-native toys, visualizers, and mini-games built entirely inline.
+      </p>
+    </header>
+
+    <main class="sa-grid" id="swarm-exhibits">
+      <!-- Agent 10 Exhibit: Neon Pulse Lab -->
+      <section id="g10-neon-pulse-lab" aria-labelledby="g10-neon-pulse-lab-title">
+        <style>
+          #g10-neon-pulse-lab {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            background:
+              radial-gradient(120% 120% at 10% 0%, rgba(84, 255, 255, 0.12), transparent 58%),
+              radial-gradient(130% 120% at 95% 100%, rgba(152, 110, 255, 0.14), transparent 60%),
+              rgba(8, 13, 28, 0.9);
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+            min-height: 340px;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 40px rgba(0, 0, 0, 0.28);
+          }
+
+          #g10-neon-pulse-lab .g10-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+          }
+
+          #g10-neon-pulse-lab .g10-title {
+            margin: 0;
+            font-size: 1.16rem;
+            letter-spacing: 0.01em;
+          }
+
+          #g10-neon-pulse-lab .g10-caption {
+            margin: 4px 0 0;
+            color: #a9b2d8;
+            font-size: 0.9rem;
+            line-height: 1.4;
+          }
+
+          #g10-neon-pulse-lab .g10-score {
+            font-weight: 700;
+            color: #7dfdff;
+            font-size: 0.92rem;
+          }
+
+          #g10-neon-pulse-lab #g10-canvas {
+            width: 100%;
+            height: 210px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: radial-gradient(circle at center, #151b3d, #060914 70%);
+            display: block;
+          }
+
+          #g10-neon-pulse-lab .g10-controls {
+            display: grid;
+            gap: 10px;
+          }
+
+          #g10-neon-pulse-lab .g10-row {
+            display: flex;
+            align-items: center;
             gap: 8px;
             flex-wrap: wrap;
           }
@@ -3471,5 +3624,212 @@
       <!-- AGENT-10 EXHIBIT SLOT -->
     </section>
   </main>
+          #g10-neon-pulse-lab .g10-label {
+            font-size: 0.82rem;
+            color: #b2bcdf;
+            min-width: 82px;
+          }
+
+          #g10-neon-pulse-lab #g10-speed {
+            flex: 1;
+            accent-color: #7efcff;
+          }
+
+          #g10-neon-pulse-lab .g10-btn {
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            background: linear-gradient(150deg, rgba(118, 255, 255, 0.24), rgba(102, 89, 255, 0.24));
+            color: #eef5ff;
+            border-radius: 999px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.55rem 0.95rem;
+            transition: transform 120ms ease, box-shadow 120ms ease;
+          }
+
+          #g10-neon-pulse-lab .g10-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(114, 234, 255, 0.28);
+          }
+
+          #g10-neon-pulse-lab .g10-btn:active {
+            transform: translateY(0);
+          }
+
+          #g10-neon-pulse-lab .g10-help {
+            margin: 0;
+            color: #97a4d0;
+            font-size: 0.82rem;
+            line-height: 1.35;
+          }
+        </style>
+
+        <div class="g10-header">
+          <div>
+            <h2 class="g10-title" id="g10-neon-pulse-lab-title">Neon Pulse Lab</h2>
+            <p class="g10-caption">Time your tap as expanding rings cross the cyan target.</p>
+          </div>
+          <div class="g10-score" id="g10-score">Score 0 · Combo x0</div>
+        </div>
+
+        <canvas id="g10-canvas" width="360" height="210" aria-label="Neon pulse timing canvas"></canvas>
+
+        <div class="g10-controls">
+          <div class="g10-row">
+            <label class="g10-label" for="g10-speed">Pulse Speed</label>
+            <input id="g10-speed" type="range" min="0.7" max="1.6" value="1.0" step="0.1" />
+            <button class="g10-btn" id="g10-hit-btn" type="button">Tap Beat</button>
+            <button class="g10-btn" id="g10-reset-btn" type="button">Reset</button>
+          </div>
+          <p class="g10-help">Hit inside the target ring for points. Perfect timing stacks combo and boosts score.</p>
+        </div>
+
+        <script>
+          (() => {
+            const section = document.getElementById("g10-neon-pulse-lab");
+            if (!section) {
+              return;
+            }
+
+            const canvas = document.getElementById("g10-canvas");
+            const ctx = canvas.getContext("2d");
+            const scoreEl = document.getElementById("g10-score");
+            const speedInput = document.getElementById("g10-speed");
+            const hitBtn = document.getElementById("g10-hit-btn");
+            const resetBtn = document.getElementById("g10-reset-btn");
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const targetRadius = 66;
+            const hitWindow = 8;
+            const pulses = [];
+
+            let score = 0;
+            let combo = 0;
+            let spawnTimer = 0;
+            let speedFactor = Number(speedInput.value);
+            let lastTime = performance.now();
+
+            function updateScore() {
+              scoreEl.textContent = `Score ${score} · Combo x${combo}`;
+            }
+
+            function spawnPulse() {
+              const hue = Math.floor(Math.random() * 140) + 170;
+              pulses.push({
+                radius: 2,
+                speed: (0.045 + Math.random() * 0.03) * speedFactor,
+                hue,
+                alpha: 0.95
+              });
+            }
+
+            function drawBackground() {
+              const grad = ctx.createRadialGradient(centerX, centerY, 6, centerX, centerY, 190);
+              grad.addColorStop(0, "rgba(34, 49, 96, 0.22)");
+              grad.addColorStop(1, "rgba(4, 8, 20, 0.96)");
+              ctx.fillStyle = grad;
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+              ctx.beginPath();
+              ctx.arc(centerX, centerY, targetRadius, 0, Math.PI * 2);
+              ctx.strokeStyle = "rgba(110, 250, 255, 0.85)";
+              ctx.lineWidth = 2;
+              ctx.shadowColor = "rgba(107, 242, 255, 0.8)";
+              ctx.shadowBlur = 12;
+              ctx.stroke();
+              ctx.shadowBlur = 0;
+            }
+
+            function drawPulse(pulse) {
+              const alpha = Math.max(0, pulse.alpha);
+              ctx.beginPath();
+              ctx.arc(centerX, centerY, pulse.radius, 0, Math.PI * 2);
+              ctx.strokeStyle = `hsla(${pulse.hue}, 95%, 68%, ${alpha})`;
+              ctx.lineWidth = 2.4;
+              ctx.stroke();
+            }
+
+            function animate(now) {
+              const dt = Math.min(48, now - lastTime);
+              lastTime = now;
+
+              drawBackground();
+
+              spawnTimer += dt;
+              if (spawnTimer > 760 / speedFactor) {
+                spawnPulse();
+                spawnTimer = 0;
+              }
+
+              for (let i = pulses.length - 1; i >= 0; i -= 1) {
+                const pulse = pulses[i];
+                pulse.radius += pulse.speed * dt;
+                pulse.alpha -= 0.0015 * dt;
+                drawPulse(pulse);
+
+                if (pulse.alpha <= 0 || pulse.radius > 164) {
+                  pulses.splice(i, 1);
+                }
+              }
+
+              requestAnimationFrame(animate);
+            }
+
+            function registerHit() {
+              let bestIndex = -1;
+              let bestDiff = Infinity;
+
+              for (let i = 0; i < pulses.length; i += 1) {
+                const diff = Math.abs(pulses[i].radius - targetRadius);
+                if (diff < bestDiff) {
+                  bestDiff = diff;
+                  bestIndex = i;
+                }
+              }
+
+              if (bestIndex >= 0 && bestDiff <= hitWindow) {
+                combo += 1;
+                const bonus = Math.max(0, hitWindow - bestDiff);
+                score += 12 + combo * 2 + Math.round(bonus);
+                pulses.splice(bestIndex, 1);
+              } else {
+                combo = 0;
+                score = Math.max(0, score - 6);
+              }
+
+              updateScore();
+            }
+
+            function resetGame() {
+              pulses.length = 0;
+              score = 0;
+              combo = 0;
+              spawnTimer = 0;
+              updateScore();
+            }
+
+            speedInput.addEventListener("input", () => {
+              speedFactor = Number(speedInput.value);
+            });
+
+            hitBtn.addEventListener("click", registerHit);
+            resetBtn.addEventListener("click", resetGame);
+
+            section.addEventListener("keydown", (event) => {
+              if (event.code === "Space") {
+                event.preventDefault();
+                registerHit();
+              }
+            });
+
+            section.tabIndex = 0;
+            updateScore();
+            spawnPulse();
+            requestAnimationFrame(animate);
+          })();
+        </script>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
