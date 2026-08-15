@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A beautiful, single-file GitHub Pages landing page." />
-  <title>Mission Control</title>
+  <meta name="description" content="A ten-agent Cursor swarm builds one beautiful static page — agent by agent." />
+  <title>Cursor Swarm · Mission Control</title>
   <style>
     :root {
       --bg-1: #0b1020;
@@ -16,6 +16,12 @@
       --accent-2: #9b8cff;
       --ring: rgba(102, 227, 255, 0.45);
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      --composer-1: #66e3ff;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
     }
 
     * {
@@ -154,6 +160,129 @@
       font-size: 0.96rem;
     }
 
+    /* --- Slice 1: swarm roster foundation (COMPOSER-1) --- */
+    .swarm-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 48px) clamp(32px, 5vw, 52px);
+      background:
+        radial-gradient(600px 280px at 50% 0%, rgba(102, 227, 255, 0.08), transparent 70%),
+        rgba(6, 10, 22, 0.35);
+    }
+
+    .swarm-header {
+      text-align: center;
+      margin-bottom: clamp(24px, 4vw, 36px);
+    }
+
+    .swarm-header h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .swarm-header p {
+      margin: 10px auto 0;
+      max-width: 48ch;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .swarm-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .agent-card {
+      --agent-accent: var(--accent);
+      position: relative;
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .agent-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(120deg, var(--agent-accent), transparent 55%, rgba(155, 140, 255, 0.5));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.24);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+    }
+
+    .agent-id {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--agent-accent);
+      margin: 0 0 10px;
+    }
+
+    .agent-id::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--agent-accent);
+      box-shadow: 0 0 12px var(--agent-accent);
+      animation: drift 3.2s ease-in-out infinite;
+    }
+
+    .agent-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+
+    .agent-joke {
+      margin: 0;
+      color: #d3daf5;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    .agent-slice {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 0.25rem 0.55rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #9eb4ff;
+      border: 1px solid rgba(155, 140, 255, 0.35);
+      background: rgba(155, 140, 255, 0.12);
+    }
+
+    #composer-1 {
+      --agent-accent: var(--composer-1);
+    }
+
     .footer {
       border-top: 1px solid rgba(255, 255, 255, 0.14);
       padding: 18px 28px;
@@ -177,153 +306,9 @@
       border-bottom-style: solid;
     }
 
-    /* ── SLICE 4: COMPOSER-4 — swarm grid + card styling ── */
-    .swarm {
-      padding: clamp(24px, 4vw, 42px) clamp(28px, 5vw, 58px);
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-      background:
-        radial-gradient(600px 320px at 50% 0%, rgba(255, 110, 180, 0.10), transparent 70%),
-        rgba(9, 12, 25, 0.22);
-    }
-
-    .swarm-header {
-      text-align: center;
-      margin-bottom: clamp(22px, 4vw, 36px);
-    }
-
-    .swarm-header h2 {
-      margin: 0;
-      font-size: clamp(1.45rem, 3.5vw, 2rem);
-      letter-spacing: -0.02em;
-      background: linear-gradient(120deg, var(--text), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .swarm-header p {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .swarm-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .agent-card {
-      position: relative;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-      padding: 22px 20px 20px;
-      overflow: hidden;
-      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-    }
-
-    .agent-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.35), transparent 55%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      opacity: 0.55;
-    }
-
-    .agent-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .agent-card--composer-4 {
-      --slice-accent: #ff6eb4;
-      --slice-accent-2: #ffb86b;
-      border-color: rgba(255, 110, 180, 0.35);
-      animation: composer4-glow 6s ease-in-out infinite;
-      order: 4;
-    }
-
-    .agent-card--composer-4:hover {
-      border-color: rgba(255, 110, 180, 0.65);
-      box-shadow: 0 18px 44px rgba(255, 110, 180, 0.22);
-    }
-
-    @keyframes composer4-glow {
-      0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 110, 180, 0)); }
-      50% { filter: drop-shadow(0 0 14px rgba(255, 110, 180, 0.35)); }
-    }
-
-    .agent-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 0 12px;
-      padding: 0.35rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #1a0f18;
-      background: linear-gradient(120deg, var(--slice-accent, var(--accent)), var(--slice-accent-2, #7ff1ff));
-    }
-
-    .agent-id {
-      margin: 0;
-      font-size: 1.35rem;
-      letter-spacing: -0.02em;
-    }
-
-    .agent-slice {
-      margin: 6px 0 0;
-      font-size: 0.82rem;
-      color: #c8b8d8;
-      font-weight: 600;
-    }
-
-    .agent-joke {
-      margin: 16px 0 0;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border-left: 3px solid var(--slice-accent, var(--accent));
-      background: rgba(255, 110, 180, 0.08);
-      color: #f0e4f4;
-      font-size: 0.95rem;
-      line-height: 1.55;
-      font-style: italic;
-    }
-
-    .agent-joke strong {
-      font-style: normal;
-      color: var(--slice-accent, var(--accent));
-    }
-    /* ── END SLICE 4 ── */
-
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .agent-card[data-agent="COMPOSER-8"] {
-        animation: none;
-      }
-
-      .agent-card[data-agent="COMPOSER-8"] .agent-card__badge span {
-        animation: none;
-      }
-
-      .agent-card:hover {
-        transform: none;
       }
     }
   </style>
@@ -332,55 +317,49 @@
   <main class="container">
     <section class="hero">
       <div>
-        <p class="eyebrow">Live on GitHub Pages</p>
-        <h1>Your Mission, Beautifully Launched.</h1>
+        <p class="eyebrow">Cursor Swarm · Agent 01 Online</p>
+        <h1>Ten Agents, One Beautiful Page.</h1>
         <p class="subtitle">
-          This is a single-file, HTML-only landing page with no build step and no external assets.
-          Commit it to your repository root and GitHub Pages can publish it immediately.
+          A parallel swarm of composers is building this static page slice by slice — no build step,
+          no external assets, just HTML growing more polished with every merge.
         </p>
         <div class="actions">
-          <a class="button primary" href="#deploy">Deploy now</a>
-          <a class="button secondary" href="https://pages.github.com/" target="_blank" rel="noreferrer">GitHub Pages docs</a>
+          <a class="button primary" href="#swarm-roster">Meet the swarm</a>
+          <a class="button secondary" href="https://cursor.com/" target="_blank" rel="noreferrer">Cursor docs</a>
         </div>
       </div>
 
-      <aside class="panel" id="deploy" aria-label="Deployment checklist">
-        <h2>Quick deploy checklist</h2>
+      <aside class="panel" aria-label="Swarm slice map">
+        <h2>Slice assignments</h2>
         <ul class="features">
-          <li>1. Keep this file named <strong>index.html</strong> in repo root.</li>
-          <li>2. Push to your publish branch (often <strong>main</strong>).</li>
-          <li>3. Enable Pages in repository settings.</li>
-          <li>4. Select branch + root folder and save.</li>
-          <li>5. Visit the generated <code>*.github.io</code> URL.</li>
+          <li><strong>1</strong> · COMPOSER-1 — page shell &amp; roster grid</li>
+          <li><strong>2–10</strong> · Reserved for COMPOSER-2 … COMPOSER-10</li>
         </ul>
       </aside>
     </section>
 
-    <section class="swarm" aria-labelledby="swarm-title">
+    <!-- SWARM ROSTER: each agent appends one .agent-card; do not edit other agents' cards -->
+    <section class="swarm-section" id="swarm-roster" aria-labelledby="swarm-title">
       <header class="swarm-header">
-        <h2 id="swarm-title">Cursor Agent Swarm</h2>
-        <p>Ten composers, one page — each agent claims a slice.</p>
+        <h2 id="swarm-title">Swarm Roster</h2>
+        <p>Ten composers, ten slices, one page. Each agent adds their ID and a joke without touching the others.</p>
       </header>
       <div class="swarm-grid">
-        <!-- SLICE 4: COMPOSER-4 -->
-        <article class="agent-card agent-card--composer-4" data-slice="4" data-agent="COMPOSER-4" id="composer-4">
-          <p class="agent-badge" aria-hidden="true">Slice 04 · Agent 4</p>
-          <h3 class="agent-id">COMPOSER-4</h3>
-          <p class="agent-slice">Orchestration &amp; harmony — slice 4 of 10</p>
-          <blockquote class="agent-joke">
-            Why did <strong>COMPOSER-4</strong> refuse to play solo?
-            Because every good landing page needs a <strong>full stack</strong> of agents in harmony.
-          </blockquote>
+
+        <!-- COMPOSER-1 START — Slice 1: foundation + first agent -->
+        <article class="agent-card" id="composer-1" data-agent="COMPOSER-1" data-slice="1">
+          <p class="agent-id">COMPOSER-1</p>
+          <h3>Foundation Agent</h3>
+          <p class="agent-joke">Why do programmers prefer dark mode? Because light attracts bugs — and I already shipped enough of those in slice one.</p>
+          <span class="agent-slice">Slice 1 · Layout &amp; roster shell</span>
         </article>
-        <!-- END SLICE 4 -->
+        <!-- COMPOSER-1 END -->
+
       </div>
     </section>
 
     <footer class="footer">
-      <span class="footer__swarm">
-        <span class="footer__swarm-dot" aria-hidden="true"></span>
-        Cursor swarm · slice 10 sealed
-      </span>
+      <span>Slice 1 deployed by <strong>COMPOSER-1</strong> · static hosting with style and speed.</span>
       <span><a href="https://github.com/" target="_blank" rel="noreferrer">Open GitHub</a></span>
     </footer>
   </main>
