@@ -1,0 +1,400 @@
+<!-- SLICE 7 START: GPT-7 Photon Pinball Field -->
+<section id="g7-exhibit" class="g7-exhibit" aria-labelledby="g7-title">
+  <h3 id="g7-title" class="g7-title">Photon Pinball Field</h3>
+  <p class="g7-subtitle">
+    Launch a photon, bounce it off neon bumpers, and keep it alive with your paddle.
+  </p>
+
+  <style>
+    #g7-exhibit {
+      --g7-bg: linear-gradient(165deg, #0d1025, #111a38 55%, #131026);
+      --g7-card: rgba(255, 255, 255, 0.06);
+      --g7-border: rgba(121, 236, 255, 0.3);
+      --g7-text: #eef4ff;
+      --g7-muted: #b9c6e8;
+      --g7-accent: #6cf6ff;
+      --g7-accent-2: #b78cff;
+      --g7-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--g7-border);
+      border-radius: 18px;
+      padding: 1rem;
+      background: var(--g7-bg);
+      color: var(--g7-text);
+      box-shadow: var(--g7-shadow);
+      display: grid;
+      gap: 0.85rem;
+      font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #g7-exhibit .g7-title {
+      margin: 0;
+      font-size: clamp(1.15rem, 2.3vw, 1.45rem);
+      letter-spacing: 0.01em;
+    }
+
+    #g7-exhibit .g7-subtitle {
+      margin: 0;
+      color: var(--g7-muted);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    #g7-exhibit .g7-hud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--g7-card);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      padding: 0.55rem 0.7rem;
+    }
+
+    #g7-exhibit .g7-hud-metrics {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      font-size: 0.92rem;
+    }
+
+    #g7-exhibit .g7-metric {
+      color: #e9f2ff;
+    }
+
+    #g7-exhibit .g7-metric strong {
+      color: var(--g7-accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #g7-exhibit .g7-controls {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    #g7-exhibit .g7-button {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--g7-text);
+      border-radius: 999px;
+      padding: 0.42rem 0.85rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    #g7-exhibit .g7-button:hover {
+      transform: translateY(-1px);
+      border-color: rgba(108, 246, 255, 0.6);
+      box-shadow: 0 0 0 3px rgba(108, 246, 255, 0.2);
+    }
+
+    #g7-exhibit .g7-button:focus-visible {
+      outline: 2px solid var(--g7-accent);
+      outline-offset: 2px;
+    }
+
+    #g7-exhibit .g7-canvas-wrap {
+      border: 1px solid rgba(183, 140, 255, 0.35);
+      border-radius: 14px;
+      background: radial-gradient(120% 90% at 50% 5%, rgba(108, 246, 255, 0.09), rgba(0, 0, 0, 0.32));
+      overflow: hidden;
+    }
+
+    #g7-exhibit #g7-canvas {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    #g7-exhibit .g7-instructions {
+      margin: 0;
+      font-size: 0.83rem;
+      color: var(--g7-muted);
+    }
+  </style>
+
+  <div class="g7-hud" role="status" aria-live="polite">
+    <div class="g7-hud-metrics">
+      <span class="g7-metric">Score: <strong id="g7-score">0</strong></span>
+      <span class="g7-metric">Best: <strong id="g7-best">0</strong></span>
+      <span class="g7-metric">Lives: <strong id="g7-lives">3</strong></span>
+    </div>
+    <div class="g7-controls">
+      <button id="g7-launch" class="g7-button" type="button">Launch Photon</button>
+      <button id="g7-reset" class="g7-button" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="g7-canvas-wrap">
+    <canvas id="g7-canvas" width="640" height="360" aria-label="Photon pinball playfield"></canvas>
+  </div>
+  <p class="g7-instructions">
+    Move your pointer to steer the paddle. Press <kbd>Space</kbd> or Launch to fire.
+  </p>
+
+  <script>
+    (() => {
+      const g7Canvas = document.getElementById("g7-canvas");
+      if (!g7Canvas) {
+        return;
+      }
+      const g7Ctx = g7Canvas.getContext("2d");
+      const g7ScoreEl = document.getElementById("g7-score");
+      const g7BestEl = document.getElementById("g7-best");
+      const g7LivesEl = document.getElementById("g7-lives");
+      const g7LaunchBtn = document.getElementById("g7-launch");
+      const g7ResetBtn = document.getElementById("g7-reset");
+
+      const g7State = {
+        score: 0,
+        best: 0,
+        lives: 3,
+        launched: false,
+        lastTs: performance.now(),
+      };
+
+      const g7Paddle = {
+        x: g7Canvas.width / 2,
+        y: g7Canvas.height - 26,
+        w: 120,
+        h: 12,
+      };
+
+      const g7Ball = {
+        x: g7Canvas.width / 2,
+        y: g7Paddle.y - 12,
+        r: 8,
+        vx: 0,
+        vy: 0,
+      };
+
+      const g7Bumpers = [
+        { x: 170, y: 104, r: 24, glow: "#6cf6ff" },
+        { x: 320, y: 148, r: 28, glow: "#b78cff" },
+        { x: 470, y: 104, r: 24, glow: "#7affb4" },
+      ];
+
+      const g7Clamp = (g7Value, g7Min, g7Max) => Math.min(g7Max, Math.max(g7Min, g7Value));
+
+      const g7SyncHud = () => {
+        g7ScoreEl.textContent = String(g7State.score);
+        g7BestEl.textContent = String(g7State.best);
+        g7LivesEl.textContent = String(g7State.lives);
+      };
+
+      const g7AttachBall = () => {
+        g7Ball.x = g7Paddle.x;
+        g7Ball.y = g7Paddle.y - g7Ball.r - 2;
+        g7Ball.vx = 0;
+        g7Ball.vy = 0;
+        g7State.launched = false;
+      };
+
+      const g7ResetRound = () => {
+        g7State.score = 0;
+        g7State.lives = 3;
+        g7AttachBall();
+        g7SyncHud();
+      };
+
+      const g7Launch = () => {
+        if (g7State.launched || g7State.lives <= 0) {
+          return;
+        }
+        g7State.launched = true;
+        g7Ball.vx = (Math.random() * 2 - 1) * 140;
+        g7Ball.vy = -245;
+      };
+
+      const g7LoseLife = () => {
+        g7State.lives -= 1;
+        if (g7State.lives <= 0) {
+          g7State.launched = false;
+        } else {
+          g7AttachBall();
+        }
+        g7SyncHud();
+      };
+
+      const g7HandlePointer = (g7ClientX) => {
+        const g7Rect = g7Canvas.getBoundingClientRect();
+        const g7X = ((g7ClientX - g7Rect.left) / g7Rect.width) * g7Canvas.width;
+        g7Paddle.x = g7Clamp(g7X, g7Paddle.w / 2 + 6, g7Canvas.width - g7Paddle.w / 2 - 6);
+        if (!g7State.launched) {
+          g7AttachBall();
+        }
+      };
+
+      g7Canvas.addEventListener("pointermove", (g7Event) => {
+        g7HandlePointer(g7Event.clientX);
+      });
+
+      g7Canvas.addEventListener("pointerdown", (g7Event) => {
+        g7HandlePointer(g7Event.clientX);
+        g7Launch();
+      });
+
+      document.addEventListener("keydown", (g7Event) => {
+        if (g7Event.code === "Space") {
+          g7Event.preventDefault();
+          g7Launch();
+        }
+      });
+
+      g7LaunchBtn.addEventListener("click", g7Launch);
+      g7ResetBtn.addEventListener("click", g7ResetRound);
+
+      const g7Update = (g7Dt) => {
+        if (!g7State.launched) {
+          return;
+        }
+
+        g7Ball.x += g7Ball.vx * g7Dt;
+        g7Ball.y += g7Ball.vy * g7Dt;
+
+        if (g7Ball.x - g7Ball.r < 0) {
+          g7Ball.x = g7Ball.r;
+          g7Ball.vx = Math.abs(g7Ball.vx);
+        } else if (g7Ball.x + g7Ball.r > g7Canvas.width) {
+          g7Ball.x = g7Canvas.width - g7Ball.r;
+          g7Ball.vx = -Math.abs(g7Ball.vx);
+        }
+
+        if (g7Ball.y - g7Ball.r < 0) {
+          g7Ball.y = g7Ball.r;
+          g7Ball.vy = Math.abs(g7Ball.vy);
+        }
+
+        for (const g7Bumper of g7Bumpers) {
+          const g7Dx = g7Ball.x - g7Bumper.x;
+          const g7Dy = g7Ball.y - g7Bumper.y;
+          const g7Dist = Math.hypot(g7Dx, g7Dy);
+          const g7HitDist = g7Ball.r + g7Bumper.r;
+          if (g7Dist <= g7HitDist) {
+            const g7Nx = g7Dx / (g7Dist || 1);
+            const g7Ny = g7Dy / (g7Dist || 1);
+            const g7Dot = g7Ball.vx * g7Nx + g7Ball.vy * g7Ny;
+            g7Ball.vx -= 2 * g7Dot * g7Nx;
+            g7Ball.vy -= 2 * g7Dot * g7Ny;
+            g7Ball.vx *= 1.05;
+            g7Ball.vy *= 1.05;
+            g7Ball.x = g7Bumper.x + g7Nx * (g7HitDist + 0.5);
+            g7Ball.y = g7Bumper.y + g7Ny * (g7HitDist + 0.5);
+
+            g7State.score += 10;
+            g7State.best = Math.max(g7State.best, g7State.score);
+            g7SyncHud();
+          }
+        }
+
+        const g7PaddleLeft = g7Paddle.x - g7Paddle.w / 2;
+        const g7PaddleRight = g7Paddle.x + g7Paddle.w / 2;
+        const g7PaddleTop = g7Paddle.y - g7Paddle.h / 2;
+        const g7PaddleBottom = g7Paddle.y + g7Paddle.h / 2;
+        if (
+          g7Ball.y + g7Ball.r >= g7PaddleTop &&
+          g7Ball.y - g7Ball.r <= g7PaddleBottom &&
+          g7Ball.x >= g7PaddleLeft &&
+          g7Ball.x <= g7PaddleRight &&
+          g7Ball.vy > 0
+        ) {
+          const g7Offset = (g7Ball.x - g7Paddle.x) / (g7Paddle.w / 2);
+          g7Ball.vx += g7Offset * 120;
+          g7Ball.vy = -Math.abs(g7Ball.vy) * 1.02;
+          g7Ball.y = g7PaddleTop - g7Ball.r - 0.5;
+        }
+
+        if (g7Ball.y - g7Ball.r > g7Canvas.height) {
+          g7LoseLife();
+        }
+      };
+
+      const g7Draw = (g7Ts) => {
+        const g7Dt = Math.min((g7Ts - g7State.lastTs) / 1000, 0.033);
+        g7State.lastTs = g7Ts;
+        g7Update(g7Dt);
+
+        g7Ctx.clearRect(0, 0, g7Canvas.width, g7Canvas.height);
+
+        const g7Bg = g7Ctx.createLinearGradient(0, 0, 0, g7Canvas.height);
+        g7Bg.addColorStop(0, "#0a1130");
+        g7Bg.addColorStop(1, "#070a16");
+        g7Ctx.fillStyle = g7Bg;
+        g7Ctx.fillRect(0, 0, g7Canvas.width, g7Canvas.height);
+
+        g7Ctx.strokeStyle = "rgba(114, 248, 255, 0.18)";
+        g7Ctx.lineWidth = 1;
+        for (let g7X = 0; g7X < g7Canvas.width; g7X += 40) {
+          g7Ctx.beginPath();
+          g7Ctx.moveTo(g7X, 0);
+          g7Ctx.lineTo(g7X, g7Canvas.height);
+          g7Ctx.stroke();
+        }
+        for (let g7Y = 0; g7Y < g7Canvas.height; g7Y += 40) {
+          g7Ctx.beginPath();
+          g7Ctx.moveTo(0, g7Y);
+          g7Ctx.lineTo(g7Canvas.width, g7Y);
+          g7Ctx.stroke();
+        }
+
+        for (const g7Bumper of g7Bumpers) {
+          const g7Radial = g7Ctx.createRadialGradient(
+            g7Bumper.x,
+            g7Bumper.y,
+            4,
+            g7Bumper.x,
+            g7Bumper.y,
+            g7Bumper.r
+          );
+          g7Radial.addColorStop(0, "#ffffff");
+          g7Radial.addColorStop(0.22, g7Bumper.glow);
+          g7Radial.addColorStop(1, "rgba(0, 0, 0, 0.25)");
+          g7Ctx.fillStyle = g7Radial;
+          g7Ctx.beginPath();
+          g7Ctx.arc(g7Bumper.x, g7Bumper.y, g7Bumper.r, 0, Math.PI * 2);
+          g7Ctx.fill();
+        }
+
+        g7Ctx.fillStyle = "#c8f7ff";
+        g7Ctx.shadowColor = "rgba(108, 246, 255, 0.95)";
+        g7Ctx.shadowBlur = 20;
+        g7Ctx.beginPath();
+        g7Ctx.arc(g7Ball.x, g7Ball.y, g7Ball.r, 0, Math.PI * 2);
+        g7Ctx.fill();
+        g7Ctx.shadowBlur = 0;
+
+        const g7PaddleGrad = g7Ctx.createLinearGradient(
+          g7Paddle.x - g7Paddle.w / 2,
+          g7Paddle.y,
+          g7Paddle.x + g7Paddle.w / 2,
+          g7Paddle.y
+        );
+        g7PaddleGrad.addColorStop(0, "#6cf6ff");
+        g7PaddleGrad.addColorStop(1, "#b78cff");
+        g7Ctx.fillStyle = g7PaddleGrad;
+        g7Ctx.fillRect(g7Paddle.x - g7Paddle.w / 2, g7Paddle.y - g7Paddle.h / 2, g7Paddle.w, g7Paddle.h);
+
+        if (g7State.lives <= 0) {
+          g7Ctx.fillStyle = "rgba(4, 7, 20, 0.65)";
+          g7Ctx.fillRect(0, 0, g7Canvas.width, g7Canvas.height);
+          g7Ctx.fillStyle = "#ffffff";
+          g7Ctx.textAlign = "center";
+          g7Ctx.font = "700 30px Inter, sans-serif";
+          g7Ctx.fillText("Photon Lost", g7Canvas.width / 2, g7Canvas.height / 2 - 4);
+          g7Ctx.font = "400 16px Inter, sans-serif";
+          g7Ctx.fillText("Press Reset to try another run.", g7Canvas.width / 2, g7Canvas.height / 2 + 24);
+        }
+
+        requestAnimationFrame(g7Draw);
+      };
+
+      g7ResetRound();
+      requestAnimationFrame(g7Draw);
+    })();
+  </script>
+</section>
+<!-- SLICE 7 END: GPT-7 Photon Pinball Field -->
