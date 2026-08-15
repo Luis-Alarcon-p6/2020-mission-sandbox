@@ -1,0 +1,12 @@
+{
+  "name": "2020-mission-sandbox",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Acceptance tests for the HTML-only GitHub Pages site",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
