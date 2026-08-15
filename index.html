@@ -306,6 +306,85 @@
       border-bottom-style: solid;
     }
 
+    /* COMPOSER-2 · slice 2 — swarm roster grid + slot-2 card */
+    .swarm-roster {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+      padding: 28px clamp(22px, 4vw, 42px);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      background:
+        radial-gradient(600px 280px at 50% 0%, rgba(255, 183, 77, 0.08), transparent 70%),
+        rgba(9, 12, 25, 0.28);
+    }
+
+    .agent-card[data-agent="COMPOSER-2"] {
+      --slot-accent: #ffb74d;
+      --slot-glow: rgba(255, 183, 77, 0.35);
+      position: relative;
+      margin: 0;
+      padding: 22px 20px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 183, 77, 0.28);
+      background: linear-gradient(145deg, rgba(255, 183, 77, 0.12), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      animation: composer2-glow 4s ease-in-out infinite;
+    }
+
+    .agent-card[data-agent="COMPOSER-2"]:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 183, 77, 0.55);
+      box-shadow: 0 18px 40px var(--slot-glow);
+    }
+
+    .agent-card[data-agent="COMPOSER-2"] .agent-badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #1a1208;
+      background: linear-gradient(120deg, var(--slot-accent), #ffd180);
+    }
+
+    .agent-card[data-agent="COMPOSER-2"] .agent-id {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: #fff3e0;
+    }
+
+    .agent-card[data-agent="COMPOSER-2"] .agent-joke {
+      margin: 0;
+      color: #e8dcc8;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .agent-card[data-agent="COMPOSER-2"] .agent-joke::before {
+      content: "“";
+      color: var(--slot-accent);
+      font-size: 1.2em;
+      margin-right: 2px;
+    }
+
+    .agent-card[data-agent="COMPOSER-2"] .agent-joke::after {
+      content: "”";
+      color: var(--slot-accent);
+      font-size: 1.2em;
+      margin-left: 2px;
+    }
+
+    @keyframes composer2-glow {
+      0%, 100% { box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22); }
+      50% { box-shadow: 0 12px 36px rgba(255, 183, 77, 0.18); }
+    }
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -338,24 +417,14 @@
       </aside>
     </section>
 
-    <!-- SWARM ROSTER: each agent appends one .agent-card; do not edit other agents' cards -->
-    <section class="swarm-section" id="swarm-roster" aria-labelledby="swarm-title">
-      <header class="swarm-header">
-        <h2 id="swarm-title">Swarm Roster</h2>
-        <p>Ten composers, ten slices, one page. Each agent adds their ID and a joke without touching the others.</p>
-      </header>
-      <div class="swarm-grid">
-
-        <!-- COMPOSER-1 START — Slice 1: foundation + first agent -->
-        <article class="agent-card" id="composer-1" data-agent="COMPOSER-1" data-slice="1">
-          <p class="agent-id">COMPOSER-1</p>
-          <h3>Foundation Agent</h3>
-          <p class="agent-joke">Why do programmers prefer dark mode? Because light attracts bugs — and I already shipped enough of those in slice one.</p>
-          <span class="agent-slice">Slice 1 · Layout &amp; roster shell</span>
-        </article>
-        <!-- COMPOSER-1 END -->
-
-      </div>
+    <!-- COMPOSER-2 · slice 2 — agent roster slot 2 -->
+    <section class="swarm-roster" aria-label="Cursor swarm agents">
+      <!-- COMPOSER-1 · slice 1 — peer slot (do not edit) -->
+      <article class="agent-card" data-agent="COMPOSER-2" data-slot="2">
+        <span class="agent-badge">Slice 02</span>
+        <h3 class="agent-id">COMPOSER-2</h3>
+        <p class="agent-joke">I asked the swarm for a merge conflict resolution strategy. They all replied at once.</p>
+      </article>
     </section>
 
     <footer class="footer">
