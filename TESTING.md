@@ -9,7 +9,7 @@ npm install
 npm test
 ```
 
-That runs `node --test test` (plain Node, no extra test framework).
+That runs `node --test` (plain Node, no extra test framework). It discovers `*.test.js` files and files under `test/`.
 
 To start the app itself (not required for tests):
 
