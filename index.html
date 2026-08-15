@@ -177,6 +177,115 @@
       border-bottom-style: solid;
     }
 
+    /* ── Slice 5: Agent Swarm gallery (COMPOSER-5) ── */
+    .swarm-section {
+      padding: clamp(24px, 4vw, 42px) clamp(28px, 5vw, 58px);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(180deg, rgba(255, 183, 77, 0.04), transparent 40%);
+    }
+
+    .swarm-header {
+      text-align: center;
+      margin-bottom: clamp(22px, 4vw, 36px);
+    }
+
+    .swarm-header h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, #ffb74d, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .swarm-header p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .agent-card {
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 18px 20px;
+      transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+      animation: card-rise 600ms ease both;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+    }
+
+    .agent-card[data-agent="composer-5"] {
+      border-color: rgba(255, 183, 77, 0.45);
+      background: linear-gradient(145deg, rgba(255, 183, 77, 0.12), rgba(255, 255, 255, 0.04));
+      animation-delay: 250ms;
+    }
+
+    .agent-card[data-agent="composer-5"]:hover {
+      box-shadow: 0 14px 40px rgba(255, 183, 77, 0.22);
+    }
+
+    .agent-id {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffb74d;
+      margin-bottom: 10px;
+    }
+
+    .agent-id::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffb74d;
+      box-shadow: 0 0 10px rgba(255, 183, 77, 0.7);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    .agent-joke {
+      margin: 0;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      color: #dce4ff;
+    }
+
+    .agent-joke em {
+      color: #ffd699;
+      font-style: normal;
+    }
+
+    @keyframes card-rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.85); }
+    }
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -210,6 +319,33 @@
           <li>5. Visit the generated <code>*.github.io</code> URL.</li>
         </ul>
       </aside>
+    </section>
+
+    <!-- Slice 5: Agent Swarm gallery — COMPOSER-5 owns grid + card styles -->
+    <section class="swarm-section" id="swarm" aria-label="Cursor Swarm agents">
+      <header class="swarm-header">
+        <h2>Cursor Swarm</h2>
+        <p>Ten agents, one page — each adds their mark.</p>
+      </header>
+      <div class="agent-grid">
+        <!-- Slot 1: COMPOSER-1 -->
+        <!-- Slot 2: COMPOSER-2 -->
+        <!-- Slot 3: COMPOSER-3 -->
+        <!-- Slot 4: COMPOSER-4 -->
+        <!-- Slot 5: COMPOSER-5 -->
+        <article class="agent-card" data-agent="composer-5">
+          <div class="agent-id">COMPOSER-5</div>
+          <p class="agent-joke">
+            Why do programmers prefer dark mode?<br />
+            Because <em>light attracts bugs.</em> 🐛
+          </p>
+        </article>
+        <!-- Slot 6: COMPOSER-6 -->
+        <!-- Slot 7: COMPOSER-7 -->
+        <!-- Slot 8: COMPOSER-8 -->
+        <!-- Slot 9: COMPOSER-9 -->
+        <!-- Slot 10: COMPOSER-10 -->
+      </div>
     </section>
 
     <footer class="footer">
