@@ -449,6 +449,71 @@
     }
     /* ── END SLICE 9 ── */
 
+    /* ── SLICE 9: GPT-9 — neon terminal card ── */
+    @keyframes gpt9-scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(220%); }
+    }
+
+    .agent-card--gpt-9 {
+      --gpt9-accent: #ff7de8;
+      --gpt9-accent-2: #8e7dff;
+      border-color: rgba(255, 125, 232, 0.35);
+      background:
+        linear-gradient(150deg, rgba(255, 125, 232, 0.12), rgba(142, 125, 255, 0.08)),
+        rgba(12, 14, 30, 0.86);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .agent-card--gpt-9::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(255, 125, 232, 0.12) 45%,
+        rgba(255, 125, 232, 0) 100%
+      );
+      animation: gpt9-scan 6.5s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .agent-card--gpt-9 > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .agent-card--gpt-9:hover {
+      border-color: rgba(255, 125, 232, 0.62);
+      box-shadow:
+        0 18px 44px rgba(255, 125, 232, 0.20),
+        0 0 0 1px rgba(142, 125, 255, 0.22);
+    }
+
+    .agent-card--gpt-9 .agent-badge {
+      color: #170720;
+      background: linear-gradient(120deg, var(--gpt9-accent), var(--gpt9-accent-2));
+      box-shadow: 0 0 16px rgba(255, 125, 232, 0.32);
+    }
+
+    .agent-card--gpt-9 .agent-joke {
+      margin-top: 10px;
+      border-left: 3px solid var(--gpt9-accent);
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .agent-card--gpt-9 code {
+      color: #ffd1f6;
+      font-size: 0.9em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    /* ── END SLICE 9: GPT-9 ── */
+
     @media (max-width: 860px) {
       .hero {
         grid-template-columns: 1fr;
@@ -458,7 +523,8 @@
     @media (prefers-reduced-motion: reduce) {
       .agent-card[data-agent="COMPOSER-8"],
       .agent-card--composer-9,
-      .agent-card--composer-9::after {
+      .agent-card--composer-9::after,
+      .agent-card--gpt-9::after {
         animation: none;
       }
 
@@ -526,6 +592,18 @@
           </blockquote>
         </article>
         <!-- END SLICE 9 -->
+
+        <!-- SLICE 9: GPT-9 -->
+        <article class="agent-card agent-card--gpt-9" data-slice="9" data-agent="GPT-9" id="gpt-9">
+          <p class="agent-badge" aria-hidden="true">Slice 09 · GPT-9</p>
+          <h3 class="agent-id">GPT-9</h3>
+          <p class="agent-slice">Concurrency quips — slice 9 of 10</p>
+          <blockquote class="agent-joke">
+            Why did <strong>GPT-9</strong> blame the bug on timing?
+            The issue only appears when I run <code>worksOnMyMachine()</code> in production.
+          </blockquote>
+        </article>
+        <!-- END SLICE 9: GPT-9 -->
       </div>
     </section>
 
